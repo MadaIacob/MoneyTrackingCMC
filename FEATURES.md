@@ -3,7 +3,7 @@
 MoneyTracker is an application which helps you keep an eye on your personal
 budget.
 
-For now works only from the command line (all lover the command line, right?),
+For now it works from the command line (all love the command line, right?),
 and you can control by passing some fancy commands and parameters to it.
 
 To track your spendings and incomes, you use a wallet, which starts with an
@@ -31,10 +31,10 @@ wallet is stored.)
 The wallet file looks like this:
 
 ```
-+1000 RON
-1444216713;+;200;salary advance;RON
-1444218713;-;10;food;RON
-1444296713;-;200;travel;EUR
++1000.00 RON
+1444216713;+;200.00;"salary advance";RON
+1444218713;-;10.00;food;RON
+1444296713;-;200.00;travel;EUR
 ```
 
 The configuration file looks like this:
@@ -56,7 +56,7 @@ Feature: Create wallet
 
 One should be able to create a new wallet by calling:
 ```
-> moneytracker make my.wallet 1000
+> moneytracker create my.wallet 1000
 my.wallet created with the initial amount of +1000.00 RON
 ```
 
@@ -65,13 +65,13 @@ called, with an initial amount of 1000 RON.
 
 Other examples:
 ```
-> moneytracker make other.wallet +200
+> moneytracker create other.wallet +200
 other.wallet created with the initial amount of +200.00 RON
-> moneytracker make yetother -1021.23
+> moneytracker create yetother -1021.23
 yetother created with the initial amount of -1021.23 RON
-> moneytracker make yetother -1021.23
+> moneytracker create yetother -1021.23
 error: wallet yetother already exists!
-> moneytracker make C:\learn\some.wallet 22
+> moneytracker create C:\learn\some.wallet 22
 C:\learn\some.wallet created with the initial amount of +22.00 RON
 ```
 
@@ -84,6 +84,6 @@ configuration file, by calling
 > moneytracker income 200
 Income 'salary' in an amount of 200.00 RON
 ```
-The time of the entry is the always the current time (UNIX time stamp).
+The time of the entry is always the current time (epoch timestamp).
 The currency of the entry is always RON.
 The category of the entry is always salary.
