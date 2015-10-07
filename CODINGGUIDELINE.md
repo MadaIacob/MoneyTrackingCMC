@@ -1,137 +1,98 @@
-# Dillinger
 
-Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered HTML5 Markdown editor.
+# Structure
 
-  - Type some Markdown on the left
-  - See HTML in the right
-  - Magic
 
-Markdown is a lightweight markup language based on the formatting conventions that people naturally use in email.  As [John Gruber] writes on the [Markdown site][df1]
+### Structuring folders
+- to be completed later
 
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
+### Naming files
+- File names should begin with Uppercase and be suggestive for the file's content
+(e.g. a file containing a class implementation should have that class name);
+- No spaces in the file names are allowed.
+- File extensions: .h for C++ header files, .cpp for source code files
+	
+### Headers
+- All source files should contain a standard header containing useful 
+information, as follows: File Description, Author, Creation Date
 
-This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
 
-### Version
-3.2.0
+# Coding
 
-### Tech
 
-Dillinger uses a number of open source projects to work properly:
+### General rules
 
-* [AngularJS] - HTML enhanced for web apps!
-* [Ace Editor] - awesome web-based text editor
-* [Marked] - a super fast port of Markdown to JavaScript
-* [Twitter Bootstrap] - great UI boilerplate for modern web apps
-* [node.js] - evented I/O for the backend
-* [Express] - fast node.js network app framework [@tjholowaychuk]
-* [Gulp] - the streaming build system
-* [keymaster.js] - awesome keyboard handler lib by [@thomasfuchs]
-* [jQuery] - duh
+- Indents are tabs.
+- Each line must be at most 80 characters long.
+- Comments should be // and should precede commented code.
+- Every new declared item should begin on a new line and should be commented.
+- Code blocks should be between braces that are indented the same with the 
+outer block, inner code block being indented one more tab.
+- Multiple line declarations should contain one item per line.
+- Multiple line statements should be divided accordingly to nesting levels,
+containing the same level of nesting on every line.
+	
 
-And of course Dillinger itself is open source with a [public repository][dill]
- on GitHub.
+### Macros
 
-### Installation
-
-You need Gulp installed globally:
-
-```sh
-$ npm i -g gulp
+- Name should use ALL_CAPS separated by underscore:
+```
+#define FLAG_FOO 0x0
+```
+- If a macro's replacement is not just a literal, enclose it in parentheses:
+```
+#define FLAG_BAZ (0x1 << 3)
 ```
 
-```sh
-$ git clone [git-repo-url] dillinger
-$ cd dillinger
-$ npm i -d
-$ mkdir -p downloads/files/{md,html,pdf}
-$ gulp build --prod
-$ NODE_ENV=production node app
+### Constants / Variables
+
+- Name should be a suggestive noun written in lower case, begining with lower 
+case.
+- If the name contains more thanOneWord, every new word should begin with an 
+upper case as word separator (no_underscore_allowed)
+
+### Enum 
+
+- Type name should begin with "E_" followed by variableNamingRules.
+- Values should look LIKE_MACROS
+
+### Struct
+
+- Type name should begin with "S_" followed by variableNamingRules.
+- Names of members of structs should lookLikeVariables
+
+
+### Functions and methods
+- **Names** should be verbs, in mixed case with the first letter lowercase and the following internal word’s first letter capitalized.
+
+```
+Example:
+*doSomething()*
 ```
 
-### Plugins
-
-Dillinger is currently extended with the following plugins
-
-* Dropbox
-* Github
-* Google Drive
-* OneDrive
-
-Readmes, how to use them in your own application can be found here:
-
-* [plugins/dropbox/README.md] [PlDb]
-* [plugins/github/README.md] [PlGh]
-* [plugins/googledrive/README.md] [PlGd]
-* [plugins/onedrive/README.md] [PlOd]
-
-### Development
-
-Want to contribute? Great!
-
-Dillinger uses Gulp + Webpack for fast developing.
-Make a change in your file and instantanously see your updates!
-
-Open your favorite Terminal and run these commands.
-
-First Tab:
-```sh
-$ node app
+- **Function declarations** or calls that span multiple lines should align subsequent lines with the first parameter
+```
+Example:
+void doSomething(int firstParameter,
+				 bool secondParameter,
+				 long thirdParameter)
+{
+...	
+}
 ```
 
-Second Tab:
-```sh
-$ gulp watch
+
+### Classes
+**Access modifiers** All access modifiers must be specified. Also the variable respectively the methods should be grouped accourding to access modifiers.
+
+**Statements that span multiple lines** should break after the logical operator and align each line with the start of the first line
 ```
-
-(optional) Third:
-```sh
-$ karma start
+Example:
+if(value1 == value2 &&
+   value2 == value3 &&
+   value3 == value4 ||
+   value4 == value5)
+{
+	...   
+}
 ```
-
-### Todos
-
- - Write Tests
- - Rethink Github Save
- - Add Code Comments
- - Add Night Mode
-
-License
-----
-
-MIT
-
-
-**Free Software, Hell Yeah!**
-
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does it's job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-
-
-   [dill]: <https://github.com/joemccann/dillinger>
-   [git-repo-url]: <https://github.com/joemccann/dillinger.git>
-   [john gruber]: <http://daringfireball.net>
-   [@thomasfuchs]: <http://twitter.com/thomasfuchs>
-   [df1]: <http://daringfireball.net/projects/markdown/>
-   [marked]: <https://github.com/chjj/marked>
-   [Ace Editor]: <http://ace.ajax.org>
-   [node.js]: <http://nodejs.org>
-   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
-   [keymaster.js]: <https://github.com/madrobby/keymaster>
-   [jQuery]: <http://jquery.com>
-   [@tjholowaychuk]: <http://twitter.com/tjholowaychuk>
-   [express]: <http://expressjs.com>
-   [AngularJS]: <http://angularjs.org>
-   [Gulp]: <http://gulpjs.com>
-   
-   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
-   [PlGh]:  <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
-   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
-   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
-
 
