@@ -28,9 +28,20 @@ information, as follows: File Description, Author, Creation Date
 - Code blocks should be between braces that are indented the same with the 
 outer block, inner code block being indented one more tab.
 - Multiple line declarations should contain one item per line.
+- Multiple operations / conditions should be nested in parantheses
 - Multiple line statements should be divided accordingly to nesting levels,
-containing the same level of nesting on every line.
-	
+containing the same level of nesting on every line should break after 
+the logical operator and align each line with the start of the first line
+```
+Example:
+if((value1 == value2) &&
+   (value2 == value3) &&
+   (value3 == value4) ||
+   (value4 == value5))
+{
+...	...   
+}
+```	
 
 ### Macros
 
@@ -47,29 +58,32 @@ containing the same level of nesting on every line.
 
 - Name should be a suggestive noun written in lower case, begining with lower 
 case.
-- If the name contains more thanOneWord, every new word should begin with an 
-upper case as word separator (no_underscore_allowed)
+- If the name contains more than 'oneWord', every new word should begin with an 
+upper case as word separator ('no_underscores_allowed')
 
 ### Enum 
 
-- Type name should begin with "E_" followed by variableNamingRules.
+- Type name should begin with "E_" followed by 'ClassNamingRules'.
 - Values should look LIKE_MACROS
 
 ### Struct
 
-- Type name should begin with "S_" followed by variableNamingRules.
+- Type name should begin with "S_" followed by 'ClassNamingRules'.
 - Names of members of structs should lookLikeVariables
 
 
-### Functions and methods
-- **Names** should be verbs, in mixed case with the first letter lowercase and the following internal word’s first letter capitalized.
+### Functions / Methods
+
+- Name should start with a verb, in mixed case with the first letter lowercase 
+and the following internal word’s first letter capitalized.
 
 ```
 Example:
 *doSomething()*
 ```
 
-- **Function declarations** or calls that span multiple lines should align subsequent lines with the first parameter
+- Function declarations or calls that span multiple lines should align 
+subsequent lines with the first parameter
 ```
 Example:
 void doSomething(int firstParameter,
@@ -82,17 +96,13 @@ void doSomething(int firstParameter,
 
 
 ### Classes
-**Access modifiers** All access modifiers must be specified. Also the variable respectively the methods should be grouped accourding to access modifiers.
 
-**Statements that span multiple lines** should break after the logical operator and align each line with the start of the first line
-```
-Example:
-if(value1 == value2 &&
-   value2 == value3 &&
-   value3 == value4 ||
-   value4 == value5)
-{
-	...   
-}
-```
+- Name should be a suggestive noun written in lower case, begining with upper 
+case.
+- If the name contains more than 'OneWord', every new word should begin with an 
+upper case as word separator ('no_underscores_allowed')
+- Access modifiers must always be specified. Also the variable respectively 
+the methods should be grouped accourding to access modifiers.
+
+
 
