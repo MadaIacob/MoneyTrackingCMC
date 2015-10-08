@@ -1,0 +1,9 @@
+default_wallet = my.wallet
+default_currency = RON
+default_income_category = salary
+default_spending_category = other
+currencies = RON, EUR, USD
+rate_EUR_RON = 4.42
+rate_RON_EUR = 0.23
+rate_USD_RON = 3.92
+rate_EUR_USD = 1.13
