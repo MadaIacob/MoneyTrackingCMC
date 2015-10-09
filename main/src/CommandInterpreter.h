@@ -11,7 +11,9 @@ Date					09.10.2015
 void printHelpMenu();
 void validateCreate(int argc, const char fileName[], const char initialAmount[]);
 bool validateCommand(int argc, char* argv[]);
-std::string validateAmount(const char word[]);
 bool validateFileName(std::string fileName);
+//std::string validateAmount(const char word[]);
+bool validateAmount(const char []);
+std::string truncateAmount(const char []);
 
 #endif // COMMANDINTREPRETER_H

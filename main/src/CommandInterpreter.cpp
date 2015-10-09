@@ -63,15 +63,16 @@ void validateCreate(
 		default:
 		{
 			//check if fileName already exists and for valid characters
-			if(validateFileName(fileName))
+			if(validateFileName(fileName) && validateAmount(initialAmount))
 			{
+				
 				WalletEntity wallet;
-				string aux = validateAmount(initialAmount);
-				if (aux != "") wallet.createWallet(fileName,aux);
+				wallet.createWallet(fileName, truncateAmount(initialAmount));
 			}
 			else
 			{
 			}
+			break;
 		}
 	}
 }
@@ -87,17 +88,24 @@ void printHelpMenu()
 //
 
 // validates the input, raounds the amount to two decimals
-string validateAmount(const char word[])
+bool validateAmount(const char word [])
 {
+	
 	// validate the input argv[3], and retain only three decimals
 	enum E_ReadState { INIT, EXPECT_NUM, EXPECT_NUM_SEP, EXPECT_DEC };
 	
 	int len = 0;
-	for(;word[len] != '\0';len++);
+	
+	for (int i=0; word[i] != '\0'; i++ )
+	{
+		len = i;
+	}
+	
 	int pos = 0;
 	E_ReadState state = INIT;
 	string validWord = "";
-	int countDec = 0;
+	
+	bool valid = true;
 	for (pos = 0; pos < len; pos++)
 	{
 		switch (state)
@@ -108,17 +116,15 @@ string validateAmount(const char word[])
 					(word[pos] == '-') )
 				{
 					state = EXPECT_NUM;
-					validWord += word[pos];
 				}
 				else if ('0' <= word[pos] && word[pos] <= '9')  
 				{
 					state = EXPECT_NUM_SEP;
-					validWord += word[pos];
 				}
 				else
 				{
-					printMessage(2, "",word);	//invalid format for number
-					return "";
+					//printErrorMessage(2);	//invalid format for number
+					valid = false;
 				}
 			break;
 			}
@@ -127,31 +133,29 @@ string validateAmount(const char word[])
 				if ('0' <= word[pos] && word[pos] <= '9') 
 				{
 					state = EXPECT_NUM_SEP;
-					validWord += word[pos];
+					
 				}
 				else
 				{
-					printMessage(2, "", word);
-					return "";
+					//printErrorMessage(2);
+					valid = false;
 				}
 			break;
 			}
 			case EXPECT_NUM_SEP:
 			{
-				if ('0' <= word[pos] && word[pos] <= '9')  //
+				if ('0' <= word[pos] && word[pos] <= '9') 
 				{
 					state = EXPECT_NUM_SEP;
-					validWord += word[pos];
 				}
 				else if (word[pos] == '.')
 				{
 					state = EXPECT_DEC;
-					validWord += word[pos];
 				}
 				else
 				{
-					printMessage(2, "", word);
-					return "";
+					//printErrorMessage(2);
+					valid = false;;
 				}
 			break;	
 			}
@@ -160,63 +164,76 @@ string validateAmount(const char word[])
 				if ('0' <= word[pos] && word[pos] <= '9' ) 
 				{
 					state = EXPECT_DEC;
-					if(countDec <= 2)
-					{
-						validWord += word[pos];
-					}
-					countDec++;
+					
 				}
 				else
 				{
-					printMessage(2, "", word);
-					return "";
+					//printErrorMessage(2);
+					valid=false;
 				}
 			break;
 			}
 			default:
 			{
-				break;
+			
 			break;
 			}
 		}
 	}
 	
+	return valid;
+}
+
+string truncateAmount(const char word[])
+{
+	string validAmount = ""; 
+	
+	int len = 0;
+	
+	for (int i=0; word[i] != '\0'; i++ )
+	{
+		len = i;
+	}
+	
+	int separatPos = 0;
+	for(int i = 0; i < len; i++)
+	{
+		if (word[i] == '.')
+		{
+			separatPos = i;
+		}
+		
+		else 
+		{
+		}
+	}
+
+	for (int i = 0; i < separatPos+4; i++)
+	{
+		validAmount += word[i];
+	}
+	
 	// delete leading zeros
-	double validValue = atof(validWord.c_str()); //value = 45 
+	double validValue = atof(validAmount.c_str()); 
 	
 	// round the second decimal, and get rid of third
-	double aux = validValue*1000;
-	int n3dec = abs(((int)aux)% 10);
-
 	if(validValue >= 0)
 	{
-		if(n3dec >= 5)
-		{
-			validValue = validValue + 0.01 - (n3dec/1000.00);
-		}
-		else
-		{
-			validValue = validValue - (n3dec/1000.00);
-		}
+	int aux = validValue*100 + 0.5;
+	validValue = aux / 100.00;
 	}
-	else
+	 else
 	{
-		if(n3dec >= 5)
-		{
-			validValue = validValue - 0.01 + (n3dec/1000.00);
-		}
-		else
-		{
-			validValue = validValue + (n3dec/1000.00);
-		}
-	}
+	int aux = validValue*100 - 0.4;
+	validValue = aux / 100.00;
+	} 
 	
 	// convert to string the valid amount
 	string amountConverted;
 	ostringstream sstream;
 	sstream << validValue;
 	amountConverted = sstream.str();
-	
+
 	return amountConverted;
 }
 
