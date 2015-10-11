@@ -1,7 +1,7 @@
 /*
 File Description		Implementation file representing WalletEntity class' 
 						methods implementation
-Author					Mada Iacob
+Author					madalina.iacob
 Date					8.10.2015
 */
 
@@ -14,14 +14,15 @@ Date					8.10.2015
 
 using namespace std;
 
-
+//default constructor
 WalletEntity::WalletEntity()
 {
 	
 }
+
 //creates a wallet by making a new file with a given name and a given amount
 //if amount is not specified then it is by default 00.00
-void WalletEntity::createWallet(string walletName,  string initialAmount )
+void WalletEntity::createWallet(const string walletName,const string initialAmount )
 {
 	//keep stream's state
 	bool checkStream = false; 

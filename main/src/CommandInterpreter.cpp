@@ -1,7 +1,7 @@
 /*
 File Description	User interface
 Functions			interprets commands provided by user from console 	
-Author				calin-ciprian.popita, cosmin.farcau
+Author				calin-ciprian.popita, cosmin.farcau, madalina.iacob
 Date				09.10.2015
 */ 
 
@@ -85,7 +85,7 @@ void printHelpMenu()
 	cout << "	mt create <file_name> <initial_amount>" << endl;
 }
 
-//
+
 
 // validates the input, raounds the amount to two decimals
 bool validateAmount(const char word [])
