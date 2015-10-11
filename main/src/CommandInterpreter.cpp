@@ -34,6 +34,10 @@ bool validateCommand(int argc, char* argv[])
 }
 
 //validates "create" command arguments
+
+const char fileName[]=""; 	// is this ok? 
+
+
 void validateCreate(
 	const int argc, 
 	const char fileName[], 
@@ -87,20 +91,12 @@ void printHelpMenu()
 
 
 
-// validates the input, raounds the amount to two decimals
+// validates the amount input
 bool validateAmount(const char word [])
 {
-	
-	// validate the input argv[3], and retain only three decimals
 	enum E_ReadState { INIT, EXPECT_NUM, EXPECT_NUM_SEP, EXPECT_DEC };
 	
-	int len = 0;
-	
-	for (int i=0; word[i] != '\0'; i++ )
-	{
-		len = i;
-	}
-	
+	int len = strlen(word);
 	int pos = 0;
 	E_ReadState state = INIT;
 	string validWord = "";
@@ -123,8 +119,9 @@ bool validateAmount(const char word [])
 				}
 				else
 				{
-					//printErrorMessage(2);	//invalid format for number
+					printMessage(2, fileName, word); //error message
 					valid = false;
+					return false;
 				}
 			break;
 			}
@@ -133,12 +130,12 @@ bool validateAmount(const char word [])
 				if ('0' <= word[pos] && word[pos] <= '9') 
 				{
 					state = EXPECT_NUM_SEP;
-					
 				}
 				else
 				{
-					//printErrorMessage(2);
+					printMessage(2, fileName, word);
 					valid = false;
+					return false;
 				}
 			break;
 			}
@@ -154,8 +151,9 @@ bool validateAmount(const char word [])
 				}
 				else
 				{
-					//printErrorMessage(2);
-					valid = false;;
+					printMessage(2, fileName, word);
+					valid = false;
+					return false;
 				}
 			break;	
 			}
@@ -164,18 +162,17 @@ bool validateAmount(const char word [])
 				if ('0' <= word[pos] && word[pos] <= '9' ) 
 				{
 					state = EXPECT_DEC;
-					
 				}
 				else
 				{
-					//printErrorMessage(2);
-					valid=false;
+					printMessage(2, fileName, word);
+					valid = false;
+					return false;
 				}
 			break;
 			}
 			default:
 			{
-			
 			break;
 			}
 		}
@@ -184,17 +181,13 @@ bool validateAmount(const char word [])
 	return valid;
 }
 
+// get rid of leading zeros, round to second decimal, get rif of extra decimals
 string truncateAmount(const char word[])
 {
 	string validAmount = ""; 
 	
-	int len = 0;
-	
-	for (int i=0; word[i] != '\0'; i++ )
-	{
-		len = i;
-	}
-	
+	int len = strlen(word);
+	// find the position of '.' separator
 	int separatPos = 0;
 	for(int i = 0; i < len; i++)
 	{
@@ -202,21 +195,20 @@ string truncateAmount(const char word[])
 		{
 			separatPos = i;
 		}
-		
 		else 
 		{
 		}
 	}
-
+	// keep maximum three decimals
 	for (int i = 0; i < separatPos+4; i++)
 	{
 		validAmount += word[i];
 	}
 	
-	// delete leading zeros
+	// delete leading zeros (if any)
 	double validValue = atof(validAmount.c_str()); 
 	
-	// round the second decimal, and get rid of third
+	// round the second decimal, and get rid of others (if any)
 	if(validValue >= 0)
 	{
 	int aux = validValue*100 + 0.5;
@@ -228,7 +220,7 @@ string truncateAmount(const char word[])
 	validValue = aux / 100.00;
 	} 
 	
-	// convert to string the valid amount
+	// convert to string the validated amount
 	string amountConverted;
 	ostringstream sstream;
 	sstream << validValue;
