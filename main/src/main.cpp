@@ -1,26 +1,22 @@
+/*
+File Description		application
+Author					calin-ciprian.popita, cosmin.farcau
+Date					09.10.2015
+*/ 
+
 #include <iostream>
-#include <string.h>
+#include "CommandInterpreter.h"
+#include "PrintMessage.h"
 
 using namespace std;
 
-void printHelpMenu();
-
 int main(int argc, char* argv[])
 {
-	
-	char arg1[100]; 			//how long?
-	strcpy(arg1, argv[1]);
-	
-	if(strcmp(arg1, "create")) 	//atentie strcmp return 0
+	if ((argc == 1) || (!validateCommand(argc, &argv[0])))
 	{
-		cout << "Unknown command!" << endl;
+		printMessage(0);
 		printHelpMenu();
 	}
-	else
-	{
-		cout << "create file initialized!" <<endl;
-		// create;
-	}
-	
+
 	return 0;
 }

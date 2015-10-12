@@ -1,54 +1,90 @@
-CPP=g++
+CPP = g++
 
-CPPFLAGS=-Wall -Iinc
+AR = ar crf
 
-GTEST_DIR=c:\gtest-1.7.0
+INC_FLAG = -Imain\inc
 
-GTEST_LIB=$(GTEST_DIR)\make\gtest_main.a
+TEST_FLAG = -Imain\tst
 
-GTEST_INC=-isystem $(GTEST_DIR)\include
+CPP_FLAGS = -Wall
 
-OBJECTS=\
-	src\game.o
+GTEST_DIR = C:\gtest-1.7.0
 
-HEADERS=\
-	inc\TicTacToe.h \
-	inc\TicTacToeTypes.h
+GTEST_LIB = $(GTEST_DIR)\make\gtest_main.a
 
-TESTS=\
-	tst\test.o
+GTEST_INC = -isystem $(GTEST_DIR)\include
+
+OBJECTS = \
+	main\src\WalletMain.o
 	
-LIBS=\
-	lib\TicTacToe.a
+HEADERS = \
+	main\inc\CommandInterpreter.h \
+	main\inc\PrintMessage.h \
+	main\inc\WalletEntity.h
 
+LIBS = \
+	main\lib\WalletLib.a
+	
+LIB_OBJECTS = \
+	main\src\CommandInterpreter.o \
+	main\src\PrintMessage.o \
+	main\src\WalletEntity.o
+	
+TEST_OBJECTS = \
+	main\src\CommandInterpreter.o \
+	main\src\PrintMessage.o \
+	main\src\WalletEntity.o \
+	main\tst\CreateWalletTest.o
+	
+TEST_HELPER_CPP = \
+	main\tst\CreateWalletTestHelper.cpp
+	
+TEST_HELPER_H =\
+	main\tst\CreateWalletTestHelper.h
+	
+TEST_HELPER_O = \
+	main\tst\CreateWalletTestHelper.o
+	
 # build all
-all: game.exe test.exe
+all: WalletMain.exe WalletTest.exe
 
-game.exe: $(OBJECTS) $(LIBS)
-	$(CPP) -o game.exe $(OBJECTS) $(LIBS)
+# for wallet execution
+main\lib\WalletLib.a: $(LIB_OBJECTS)
+	$(AR) main\lib\WalletLib.a $(LIB_OBJECTS)
 
-test.exe: $(LIBS) $(TESTS) $(GTEST_LIB)
-	$(CPP) -o test.exe $(TESTS) $(LIBS) $(GTEST_LIB)	
+main\src\CommandInterpreter.o: main\src\CommandInterpreter.cpp $(HEADERS)
+	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o main\src\CommandInterpreter.o -c main\src\CommandInterpreter.cpp
+	
+main\src\PrintMessage.o: main\src\PrintMessage.cpp $(HEADERS)
+	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o main\src\PrintMessage.o -c main\src\PrintMessage.cpp
+	
+main\src\WalletEntity.o: main\src\WalletEntity.cpp $(HEADERS)
+	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o main\src\WalletEntity.o -c main\src\WalletEntity.cpp
+	
+main\src\WalletMain.o: main\src\main.cpp $(HEADERS)
+	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o main\src\WalletMain.o -c main\src\main.cpp
+	
+WalletMain.exe: $(OBJECTS) $(LIBS) 
+	$(CPP) -o WalletMain.exe $(OBJECTS) $(LIBS)
+	
+# build WalletMain
+walletMain: WalletMain.exe
 
-src\game.o: src\game.cpp $(HEADERS)
-	$(CPP) $(CPPFLAGS) -o src\game.o -c src\game.cpp
+#for tests execution
+main\tst\CreateWalletTest.o: main\tst\CreateWalletTest.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o main\tst\CreateWalletTest.o -c main\tst\CreateWalletTest.cpp
 
-tst\test.o: tst\test.cpp
-	$(CPP) $(CPPFLAGS) $(GTEST_INC) -o tst\test.o -c tst\test.cpp	
-
-# play the game
-play: game.exe
-	cls
-	game.exe
-
-# run tests
-test: test.exe
-	cls
-	test.exe
+WalletTest.exe: $(LIBS) $(TEST_OBJECTS) $(GTEST_LIB)
+	$(CPP) -o WalletTest.exe $(TEST_OBJECTS) $(LIBS) $(GTEST_LIB)
+	
+# execute tests
+test : WalletTest.exe
+	WalletTest.exe
 
 # clean up
 clean:
-	del $(OBJECTS)
-	del $(TESTS)
-	del game.exe
-	del test.exe
+	rm $(LIB_OBJECTS)
+	rm $(LIBS)
+	rm $(OBJECTS)
+	rm WalletMain.exe
+	
