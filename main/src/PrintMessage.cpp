@@ -25,13 +25,14 @@ void printMessage( const char messageCode,
 		};
 		case 1:
 		{
-			cout << "error: at least wallet name should be specified !" << endl;
+			cout << "error: at least filename should be specified." << endl;
 			break;
 		};
 		case 2:
 		{
 			cout << "error: " << initialAmount 
-			<< " is not a valid initial ammount."
+			<< " is not a valid initial ammount.\nCreating "
+			<< fileName <<" aborted."
 			<< endl;
 			break;
 		};
@@ -43,12 +44,18 @@ void printMessage( const char messageCode,
 		};
 		case 4:
 		{
-			cout << "error: wallet "<< fileName << " already exists !";
+			cout << "error: wallet "<< fileName << " already exists!";
 			break;
 		};
 		case 5:
 		{
 			cout <<" writing file error! " << endl;
+			break;
+		};
+		case 6:
+		{
+			cout << fileName << " created with the initial amount of "
+			<< initialAmount << " RON" << endl;
 			break;
 		};
 		default:

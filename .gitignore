@@ -1,3 +1,9 @@
 *.o
-*.exe
 *.log
+*.exe
+*.wallet
+*.a
+*.txt
+yetother
+
+

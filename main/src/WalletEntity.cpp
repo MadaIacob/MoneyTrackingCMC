@@ -22,7 +22,9 @@ WalletEntity::WalletEntity()
 
 //creates a wallet by making a new file with a given name and a given amount
 //if amount is not specified then it is by default 00.00
-void WalletEntity::createWallet(const string walletName,const string initialAmount )
+void WalletEntity::createWallet(
+	const string walletName,
+	const string initialAmount )
 {
 	//keep stream's state
 	bool checkStream = false; 
@@ -43,10 +45,19 @@ void WalletEntity::createWallet(const string walletName,const string initialAmou
 		checkStream = outFile.good();
 		if(checkStream != true)
 		{
-			printMessage(3);
+			printMessage(5);
 		} 
 		else 
 		{
+			//convert string to char[]
+			int TempNumOne=initialAmount.size();
+			char initAm[500];
+			for (int a = 0;a <= TempNumOne; a++)
+			{
+				initAm[a]=initialAmount[a];
+			}
+			//print success message
+			printMessage(6, walletName, initAm);
 		}		
 	} 
 	else 
