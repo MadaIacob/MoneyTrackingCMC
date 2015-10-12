@@ -34,7 +34,8 @@ TEST_OBJECTS = \
 	main\src\CommandInterpreter.o \
 	main\src\PrintMessage.o \
 	main\src\WalletEntity.o \
-	main\tst\CreateWalletTest.o
+	main\tst\CreateWalletTest.o \
+	main\tst\TestCommand.o
 	
 TEST_HELPER_CPP = \
 	main\tst\CreateWalletTestHelper.cpp
@@ -51,8 +52,8 @@ walletMain: moneytracker.exe
 moneytracker: moneytracker.exe
 
 # execute tests
-test : WalletTest.exe
-	WalletTest.exe
+test : WalletTest.exe TestCommand.exe
+	WalletTest.exe TestCommand.exe
 	
 # for wallet execution
 main\lib\WalletLib.a: $(LIB_OBJECTS)
@@ -79,6 +80,14 @@ main\tst\CreateWalletTest.o: main\tst\CreateWalletTest.cpp $(TEST_HELPER_H)
 
 WalletTest.exe: $(LIBS) $(TEST_OBJECTS) $(GTEST_LIB)
 	$(CPP) -o WalletTest.exe $(TEST_OBJECTS) $(LIBS) $(GTEST_LIB)
+
+main\tst\TestCommand.o: main\tst\TestCommand.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o main\tst\TestCommand.o -c main\tst\TestCommand.cpp
+
+TestCommand.exe: $(LIBS) $(TEST_OBJECTS) $(GTEST_LIB)
+	$(CPP) -o TestCommand.exe $(TEST_OBJECTS) $(LIBS) $(GTEST_LIB)
+
+
 	
 # clean up
 clean:

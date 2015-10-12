@@ -11,6 +11,7 @@ Date				09.10.2015
 #include <fstream>
 #include <stdlib.h>
 #include <sstream>
+#include <iomanip>
 
 #include "WalletEntity.h"
 #include "CommandInterpreter.h"
@@ -202,7 +203,8 @@ string truncateAmount(const char word[])
 	// keep maximum three decimals
 	if (separatPos != 0)
 	{
-		validAmount.resize(separatPos+3);
+		validAmount.resize(separatPos+4);
+		cout << "validAmount after resize " << validAmount <<endl;
 	}
 	
 	// delete leading zeros (if any)
@@ -223,7 +225,7 @@ string truncateAmount(const char word[])
 	// convert to string the validated amount
 	string amountConverted;
 	ostringstream sstream;
-	sstream << validValue;
+	sstream << fixed << setprecision(2) << validValue;
 	amountConverted = sstream.str();
 
 	return amountConverted;
