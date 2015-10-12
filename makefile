@@ -85,5 +85,5 @@ clean:
 	rm $(LIB_OBJECTS)
 	rm $(LIBS)
 	rm $(OBJECTS)
-	rm WalletMain.exe
+	rm moneytracker.exe
 	rm main\tst\*.o
