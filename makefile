@@ -45,9 +45,15 @@ TEST_HELPER_H =\
 TEST_HELPER_O = \
 	main\tst\CreateWalletTestHelper.o
 	
-# build all
-all: WalletMain.exe WalletTest.exe
+# build WalletMain
+walletMain: moneytracker.exe
 
+moneytracker: moneytracker.exe
+
+# execute tests
+test : WalletTest.exe
+	WalletTest.exe
+	
 # for wallet execution
 main\lib\WalletLib.a: $(LIB_OBJECTS)
 	$(AR) main\lib\WalletLib.a $(LIB_OBJECTS)
@@ -64,12 +70,9 @@ main\src\WalletEntity.o: main\src\WalletEntity.cpp $(HEADERS)
 main\src\WalletMain.o: main\src\main.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o main\src\WalletMain.o -c main\src\main.cpp
 	
-WalletMain.exe: $(OBJECTS) $(LIBS) 
-	$(CPP) -o WalletMain.exe $(OBJECTS) $(LIBS)
+moneytracker.exe: $(OBJECTS) $(LIBS) 
+	$(CPP) -o moneytracker.exe $(OBJECTS) $(LIBS)
 	
-# build WalletMain
-walletMain: WalletMain.exe
-
 #for tests execution
 main\tst\CreateWalletTest.o: main\tst\CreateWalletTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o main\tst\CreateWalletTest.o -c main\tst\CreateWalletTest.cpp
@@ -77,14 +80,10 @@ main\tst\CreateWalletTest.o: main\tst\CreateWalletTest.cpp $(TEST_HELPER_H)
 WalletTest.exe: $(LIBS) $(TEST_OBJECTS) $(GTEST_LIB)
 	$(CPP) -o WalletTest.exe $(TEST_OBJECTS) $(LIBS) $(GTEST_LIB)
 	
-# execute tests
-test : WalletTest.exe
-	WalletTest.exe
-
 # clean up
 clean:
 	rm $(LIB_OBJECTS)
 	rm $(LIBS)
 	rm $(OBJECTS)
 	rm WalletMain.exe
-	
+	rm main\tst\*.o
