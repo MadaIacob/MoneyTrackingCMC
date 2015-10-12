@@ -1,0 +1,63 @@
+Example #0 
+[TEST: output] 
+my.wallet created with the initial amount of +1000.00 RON
+[TEST: file] 
++1000.00 RON 
+... end ... 
+
+Example #1 
+[TEST: output] 
+other.wallet created with the initial amount of +200.00 RON
+[TEST: file] 
++200.00 RON 
+... end ... 
+
+Example #2 
+[TEST: output] 
+yetother created with the initial amount of -1021.23 RON
+[TEST: file] 
++200.00 RON 
+... end ... 
+
+Example #3 
+[TEST: output] 
+error: wallet yetother already exists!
+[TEST: file] 
++200.00 RON 
+... end ... 
+
+Example #4 
+[TEST: output] 
+C:\learn\some.wallet created with the initial amount of +22.13 RON
+[TEST: file] 
++22.13 RON 
+... end ... 
+
+Example #5 
+[TEST: output] 
+noinitial.wallet created with the initial amount of +00.00 RON
+[TEST: file] 
++00.00 RON 
+... end ... 
+
+Example #6 
+[TEST: output] 
+error: 12,24 is not a valid initial ammount.
+Creating wrongdec.wallet aborted.
+[TEST: file] 
+The system cannot find the file specified.
+... end ... 
+
+Example #7 
+[TEST: output] 
+leading0.wallet created with the initial amount of -12.24 RON
+[TEST: file] 
+-12.24 RON 
+... end ... 
+
+Example #8 
+[TEST: output] 
+error: at least filename should be specified.
+... end ... 
+
+Could Not Find C:\learn\MoneyTracker\wrongdec.wallet
