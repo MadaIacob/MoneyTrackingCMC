@@ -184,7 +184,7 @@ bool validateAmount(const char word [])
 // get rid of leading zeros, round to second decimal, get rif of extra decimals
 string truncateAmount(const char word[])
 {
-	string validAmount = ""; 
+	string validAmount(word); 
 	
 	int len = strlen(word);
 	// find the position of '.' separator
@@ -200,9 +200,9 @@ string truncateAmount(const char word[])
 		}
 	}
 	// keep maximum three decimals
-	for (int i = 0; i < separatPos+4; i++)
+	if (separatPos != 0)
 	{
-		validAmount += word[i];
+		validAmount.resize(separatPos+3);
 	}
 	
 	// delete leading zeros (if any)
