@@ -23,7 +23,7 @@ Example #3
 [TEST: output] 
 error: wallet yetother already exists!
 [TEST: file] 
-+200.00 RON
+-1021.23 RON
 ... end ... 
 
 Example #4 
@@ -60,4 +60,4 @@ Example #8
 error: at least filename should be specified.
 ... end ... 
 
-Could Not Find C:\learn\MoneyTracker\wrongdec.wallet
+Could Not Find C:\learn\MoneyTrackingCMC\wrongdec.wallet

@@ -39,7 +39,7 @@ void WalletEntity::createWallet(
 	if(checkStream == true)
 	{
 		//writes into the new file the initial amount
-		outFile << initialAmount << " " << "RON";
+		outFile << initialAmount << " " << "RON\n";
 		
 		//take stream's state after writing
 		checkStream = outFile.good();
