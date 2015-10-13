@@ -95,4 +95,4 @@ clean:
 	rm $(LIBS)
 	rm $(OBJECTS)
 	rm moneytracker.exe
-	rm main\tst\*.o
+	rm $(TEST_OBJECTS)

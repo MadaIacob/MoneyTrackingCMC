@@ -68,7 +68,8 @@ void validateCreate(
 		default:
 		{
 			//check if fileName already exists and for valid characters
-			if(validateFileName(fileName) && validateAmount(initialAmount))
+			if(validateFileName(fileName) && 
+				validateAmount(initialAmount, fileName))
 			{
 				
 				WalletEntity wallet;
@@ -93,7 +94,7 @@ void printHelpMenu()
 
 
 // validates the amount input
-bool validateAmount(const char word [])
+bool validateAmount(const char word [], const string fileName)
 {
 	enum E_ReadState { INIT, EXPECT_NUM, EXPECT_NUM_SEP, EXPECT_DEC };
 	
@@ -121,6 +122,7 @@ bool validateAmount(const char word [])
 				else
 				{
 					printMessage(2, fileName, word); //error message
+					//cout << endl << fileName << "  " << word << endl;
 					valid = false;
 					return false;
 				}
@@ -135,6 +137,7 @@ bool validateAmount(const char word [])
 				else
 				{
 					printMessage(2, fileName, word);
+					//cout << endl << fileName << "  " << word << endl;
 					valid = false;
 					return false;
 				}
@@ -153,6 +156,7 @@ bool validateAmount(const char word [])
 				else
 				{
 					printMessage(2, fileName, word);
+					//cout << endl << fileName << "  " << word << endl;
 					valid = false;
 					return false;
 				}
@@ -167,6 +171,7 @@ bool validateAmount(const char word [])
 				else
 				{
 					printMessage(2, fileName, word);
+					//cout << endl << fileName << "  " << word << endl;
 					valid = false;
 					return false;
 				}
@@ -204,7 +209,6 @@ string truncateAmount(const char word[])
 	if (separatPos != 0)
 	{
 		validAmount.resize(separatPos+4);
-		cout << "validAmount after resize " << validAmount <<endl;
 	}
 	
 	// delete leading zeros (if any)
@@ -227,6 +231,7 @@ string truncateAmount(const char word[])
 	ostringstream sstream;
 	sstream << fixed << setprecision(2) << validValue;
 	amountConverted = sstream.str();
+	if(validValue >=0 ) amountConverted = '+' + amountConverted;
 
 	return amountConverted;
 }

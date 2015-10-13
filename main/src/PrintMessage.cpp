@@ -44,7 +44,7 @@ void printMessage( const char messageCode,
 		};
 		case 4:
 		{
-			cout << "error: wallet "<< fileName << " already exists!";
+			cout << "error: wallet "<< fileName << " already exists!\n";
 			break;
 		};
 		case 5:

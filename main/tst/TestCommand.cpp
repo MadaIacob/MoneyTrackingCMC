@@ -9,32 +9,61 @@ Date					11.10.2015
 #include "CommandInterpreter.h"
 
 
-
 // validAmount function
-TEST(CommandInterpreter, ValidAmount_NotAllowedChar)
+TEST(validateAmountTest, notAllowedCharacters)
 {
-	ASSERT_EQ(false, validateAmount("-s34d3.5"));
-	ASSERT_EQ(false, validateAmount("3ddd4.5"));
-	ASSERT_EQ(false, validateAmount("f633.5"));
-	ASSERT_EQ(false, validateAmount("+343.000d35"));
-	ASSERT_EQ(false, validateAmount("+34*3.00035"));
-	ASSERT_EQ(false, validateAmount("+3^43.00035"));
+	EXPECT_EQ(false, validateAmount("-s34d3.5",""));
+	EXPECT_EQ(true, validateAmount("+0.000",""));
+	EXPECT_EQ(true, validateAmount("0",""));
+	EXPECT_EQ(true, validateAmount("-0.000",""));
+	EXPECT_EQ(false, validateAmount("3ddd4.5",""));
+	EXPECT_EQ(false, validateAmount("f633.5",""));
+	EXPECT_EQ(false, validateAmount("+343.000d35",""));
+	EXPECT_EQ(false, validateAmount("+34*3.00035",""));
+	EXPECT_EQ(false, validateAmount("+3^43.00035",""));
+	EXPECT_EQ(false, validateAmount("-3^43.0/0*.35",""));
+	EXPECT_EQ(false, validateAmount("+3^43.00<>\?035",""));
+	EXPECT_EQ(false, validateAmount("-3^43.00:\"/\|?035",""));
+	EXPECT_EQ(false, validateAmount("+-456",""));
+	EXPECT_EQ(false, validateAmount("-+32.5456",""));
 }
 
-TEST(CommandInterpreter, ValidAmount_LeadingZeros)
+TEST(validateAmountTest, leadingZeros)
 {
-	ASSERT_EQ(true, validateAmount("-00003493.47895"));
-	ASSERT_EQ(false, validateAmount("-0003d4.3695"));
-	ASSERT_EQ(true, validateAmount("+000000006.00005"));
-	ASSERT_EQ(true, validateAmount("000039998.00035"));
+	EXPECT_EQ(true, validateAmount("+0000.000",""));
+	EXPECT_EQ(true, validateAmount("00000",""));
+	EXPECT_EQ(true, validateAmount("-00.000",""));
+	EXPECT_EQ(true, validateAmount("-00003493.47895",""));
+	EXPECT_EQ(false, validateAmount("-0003d4.3695",""));
+	EXPECT_EQ(true, validateAmount("+000000006.00005",""));
+	EXPECT_EQ(true, validateAmount("000039998.00035",""));
+	EXPECT_EQ(true, validateAmount("+65",""));
+	EXPECT_EQ(true, validateAmount("39998",""));
+	EXPECT_EQ(true, validateAmount("-5",""));
+	EXPECT_EQ(true, validateAmount("-35987",""));
 }
 
-// truncateAmount function; aici pot testa doar cu valori fara caractere speciale
-// sau litere !?
-TEST(CommandInterpreter, TruncateAmount)
+
+TEST(truncateAmountTest, allowedCharacters)
 {
-	ASSERT_EQ("-3493.48", truncateAmount("-00003493.47895"));
-	ASSERT_EQ("-34.37", truncateAmount("-00034.3695"));
-	ASSERT_EQ("6", truncateAmount("+000000006.00005"));
-	ASSERT_EQ("39998", truncateAmount("000039998.00035"));
+	EXPECT_EQ("-3493.48", truncateAmount("-00003493.47895"));
+	EXPECT_EQ("-34.37", truncateAmount("-00034.3695"));
+	EXPECT_EQ("+6.00", truncateAmount("+000000006.00005"));
+	EXPECT_EQ("+39998.00", truncateAmount("000039998.00035"));
+	EXPECT_EQ("+349348.00", truncateAmount("349348"));
+	EXPECT_EQ("-3437.00", truncateAmount("-3437"));
+	EXPECT_EQ("+6.00", truncateAmount("+6"));
+	EXPECT_EQ("+39998.00", truncateAmount("000039998.00035"));
+	EXPECT_EQ("+0.00", truncateAmount("+000"));
+	EXPECT_EQ("+0.00", truncateAmount("-0"));
+	EXPECT_EQ("+0.00", truncateAmount("-000"));
+	EXPECT_EQ("+0.00", truncateAmount("+0.00"));
+	EXPECT_EQ("+0.00", truncateAmount("-000.000"));
+	EXPECT_EQ("+0.00", truncateAmount("-0.00"));
+}
+
+TEST(validateFileNameTest, existingFileName)
+{
+	EXPECT_EQ(false, validateFileName("my.wallet"));
+	EXPECT_EQ(true, validateFileName("not.wallet"));
 }

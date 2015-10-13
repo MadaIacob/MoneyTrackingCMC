@@ -28,10 +28,12 @@ TEST(CreateWalletTest, TestCreate)
 	helperCreateWallet("yetother");
 	helperCreateWallet("C:\\mada\\tst");
 	helperCreateWallet("C:/learn/MoneyTrackingCMC/madaFile.txt");
+	helperCreateWallet("C**%^&%");
 	
 	EXPECT_EQ(1 , walletCreated("yetother"));
 	EXPECT_EQ(0 , walletCreated("C:\\mada\\tst"));
 	EXPECT_EQ(1 , walletCreated("C:/learn/MoneyTrackingCMC/madaFile.txt"));
+	EXPECT_EQ(0 , walletCreated("C**%^&%"));
 	
 }
 
