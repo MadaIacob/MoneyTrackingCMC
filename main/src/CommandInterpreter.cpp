@@ -92,19 +92,23 @@ void printHelpMenu()
 }
 
 
-
 // validates the amount input
 bool validateAmount(const char word [], const string fileName)
 {
-	enum E_ReadState { INIT, EXPECT_NUM, EXPECT_NUM_SEP, EXPECT_DEC };
-	
-	int len = strlen(word);
-	int pos = 0;
-	E_ReadState state = INIT;
-	string validWord = "";
-	
+	// valid = true means the input amount is correctly written by the user
+	// and gets validated; this will be returned by 'validateAmount'
 	bool valid = true;
-	for (pos = 0; pos < len; pos++)
+
+	// states in which the 'switch' below can get during the 'for': INITial,
+	// EXPECT NUMber, EXPECT NUMber or SEParator, EXPECT DECimal
+	// e.g. in the INIT state, if the first char is + or - we then expect a num
+	// if it is a num, then we expect the next to be a num or separator
+	enum E_ReadState { INIT, EXPECT_NUM, EXPECT_NUM_SEP, EXPECT_DEC };
+	E_ReadState state = INIT;
+	
+	// move through each char of the 'word' (initial amount)
+	int len = strlen(word);
+	for (int pos = 0; pos < len; pos++)
 	{
 		switch (state)
 		{
@@ -121,8 +125,8 @@ bool validateAmount(const char word [], const string fileName)
 				}
 				else
 				{
-					printMessage(2, fileName, word); //error message
-					//cout << endl << fileName << "  " << word << endl;
+					// error message
+					printMessage(2, fileName, word);
 					valid = false;
 					return false;
 				}
@@ -137,7 +141,6 @@ bool validateAmount(const char word [], const string fileName)
 				else
 				{
 					printMessage(2, fileName, word);
-					//cout << endl << fileName << "  " << word << endl;
 					valid = false;
 					return false;
 				}
@@ -156,7 +159,6 @@ bool validateAmount(const char word [], const string fileName)
 				else
 				{
 					printMessage(2, fileName, word);
-					//cout << endl << fileName << "  " << word << endl;
 					valid = false;
 					return false;
 				}
@@ -171,7 +173,6 @@ bool validateAmount(const char word [], const string fileName)
 				else
 				{
 					printMessage(2, fileName, word);
-					//cout << endl << fileName << "  " << word << endl;
 					valid = false;
 					return false;
 				}
@@ -225,7 +226,7 @@ string truncateAmount(const char word[])
 	int aux = validValue*100 - 0.4;
 	validValue = aux / 100.00;
 	} 
-	
+
 	// convert to string the validated amount
 	string amountConverted;
 	ostringstream sstream;
@@ -235,8 +236,6 @@ string truncateAmount(const char word[])
 
 	return amountConverted;
 }
-
-// madalina
 
 
 //helper function. Converts windows path to c++ accepted path
