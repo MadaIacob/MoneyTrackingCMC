@@ -53,9 +53,8 @@ moneytracker: moneytracker.exe
 
 # execute tests 
 # must be in different lines!!!
-test : WalletTest.exe TestCommand.exe
-	WalletTest.exe
-	TestCommand.exe
+test : Test.exe
+	Test.exe
 	
 # for wallet execution
 main\lib\WalletLib.a: $(LIB_OBJECTS)
@@ -80,16 +79,16 @@ moneytracker.exe: $(OBJECTS) $(LIBS)
 main\tst\CreateWalletTest.o: main\tst\CreateWalletTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o main\tst\CreateWalletTest.o -c main\tst\CreateWalletTest.cpp
 
-WalletTest.exe: $(LIBS) $(TEST_OBJECTS) $(GTEST_LIB)
-	$(CPP) -o WalletTest.exe $(TEST_OBJECTS) $(LIBS) $(GTEST_LIB)
-
+main\tst\CreateWalletTestHelper.o: main\tst\CreateWalletTestHelper.cpp $(TEST_HELPER_H)
+	echo "Helllo"
+	$(CPP) $(CPP_FLAGS) $(TEST_FLAG) $(INC_FLAG) -o main\tst\CreateWalletTestHelper.o -c main\tst\CreateWalletTestHelper.cpp
+	echo "I am there"
+	
 main\tst\TestCommand.o: main\tst\TestCommand.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o main\tst\TestCommand.o -c main\tst\TestCommand.cpp
 
-TestCommand.exe: $(LIBS) $(TEST_OBJECTS) $(GTEST_LIB)
-	$(CPP) -o TestCommand.exe $(TEST_OBJECTS) $(LIBS) $(GTEST_LIB)
-
-
+Test.exe: $(LIBS) $(TEST_OBJECTS) $(GTEST_LIB) main\tst\CreateWalletTestHelper.o
+	$(CPP) -o Test.exe $(TEST_OBJECTS) $(TEST_FLAG) main\tst\CreateWalletTestHelper.o $(LIBS) $(GTEST_LIB)
 	
 # clean up
 clean:

@@ -7,7 +7,7 @@ Date					11.10.2015
 #include "gtest/gtest.h"
 
 #include "CommandInterpreter.h"
-
+#include "CreateWalletTestHelper.h"
 
 // validAmount function
 TEST(validateAmountTest, notAllowedCharacters)
@@ -23,7 +23,7 @@ TEST(validateAmountTest, notAllowedCharacters)
 	EXPECT_EQ(false, validateAmount("+3^43.00035",""));
 	EXPECT_EQ(false, validateAmount("-3^43.0/0*.35",""));
 	EXPECT_EQ(false, validateAmount("+3^43.00<>\?035",""));
-	EXPECT_EQ(false, validateAmount("-3^43.00:\"/\|?035",""));
+	EXPECT_EQ(false, validateAmount("-3^43.00:\"?035",""));
 	EXPECT_EQ(false, validateAmount("+-456",""));
 	EXPECT_EQ(false, validateAmount("-+32.5456",""));
 }
@@ -64,6 +64,7 @@ TEST(truncateAmountTest, allowedCharacters)
 
 TEST(validateFileNameTest, existingFileName)
 {
+	helperCreateWallet("my.wallet","0.23");
 	EXPECT_EQ(false, validateFileName("my.wallet"));
 	EXPECT_EQ(true, validateFileName("not.wallet"));
 }
