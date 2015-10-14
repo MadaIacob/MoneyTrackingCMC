@@ -10,6 +10,6 @@ Date				09.10.2015
 
 void printMessage( const char errorCode = -1,
 	std::string fileName = "",
-	const char initialAmount[] = "");
+	std::string initialAmount = "");
 
 #endif //PRINTMESSAGE_H

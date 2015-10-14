@@ -13,7 +13,7 @@ using namespace std;
 //prints messages
 void printMessage( const char messageCode,
 	string fileName,
-	const char initialAmount[]
+	string initialAmount
 	)
 {
 	switch (messageCode)
@@ -58,7 +58,7 @@ void printMessage( const char messageCode,
 			<< initialAmount << " RON" << endl;
 			break;
 		};
-		default:
+		default: //unknown messageCode value
 		{
 			cout << "unknown" << endl;
 			
