@@ -51,9 +51,11 @@ walletMain: moneytracker.exe
 
 moneytracker: moneytracker.exe
 
-# execute tests
+# execute tests 
+# must be in different lines!!!
 test : WalletTest.exe TestCommand.exe
-	WalletTest.exe TestCommand.exe
+	WalletTest.exe
+	TestCommand.exe
 	
 # for wallet execution
 main\lib\WalletLib.a: $(LIB_OBJECTS)
