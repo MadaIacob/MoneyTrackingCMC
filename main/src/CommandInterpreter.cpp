@@ -20,27 +20,29 @@ Date				09.10.2015
 using namespace std;
 
 //validates and executes commands provided by user from console
+//returns "true" if a valid command is provided
 bool validateCommand(int argc, char* argv[])
 {
 	bool validCommand = false;
 	//if command is "create"
 	if(strcmp(argv[1], "create") == 0) 
 	{
-		//check and execute "create" with provided arguments
-		validateCreate(argc, argv[2], argv[3]);
+		//execute "create" command
+		executeCreate(argc, argv[2], argv[3]);
 		validCommand = true;
 	}
 	else
 	{
+		// no valid command provided, keep validCommand = false
 	}
 	return validCommand;
 }
 
-//validates and executes "create" command arguments
-void validateCreate(
-	const int argc, 
-	const char fileName[], 
-	const char initialAmount[])
+//validates arguments for "create" command and executes it according to them
+void executeCreate(
+	const int argc, //number of arguments from command line
+	const char fileName[], //new wallet name
+	const char initialAmount[]) //initial amount for new wallet
 {
 	//number of arguments for "create" command
 	switch (argc)
@@ -53,14 +55,16 @@ void validateCreate(
 		}
 		case 3: //"create" command with fileName only
 		{
-			//check if fileName already exists and for valid characters
+			//check if fileName already exists
 			if(validateFileName(fileName))
 			{
 				WalletEntity wallet;
+				//create fileName wallet with "+0.00" initialAmount
 				wallet.createWallet(fileName);
 			}
 			else
 			{
+				//fileName contains not allowed characters or already exists
 			}
 			break;
 		}
@@ -73,10 +77,13 @@ void validateCreate(
 			{
 				
 				WalletEntity wallet;
+				//create fileName wallet with given initialAmount
 				wallet.createWallet(fileName, truncateAmount(initialAmount));
 			}
 			else
 			{
+				//fileName contains not allowed characters or already exists
+				//of initialAmount is not a valid amount
 			}
 			break;
 		}
@@ -84,11 +91,11 @@ void validateCreate(
 }
 
 
-//displays the list of valid commands and arguments
+//displays Help Menu - a list of valid commands and arguments
 void printHelpMenu()
 {
 	cout << endl << "Accepted commands and arguments:" << endl;
-	cout << "	mt create <file_name> <initial_amount>" << endl;
+	cout << " moneytracker[.exe] create <file_name> <initial_amount>" << endl;
 }
 
 
@@ -238,7 +245,8 @@ string truncateAmount(const char word[])
 }
 
 
-//converts windows path to c++ accepted path
+//converts windows path to c++ accepted path 
+//(replaces all '\' characters with '/')
 string convertPath(string givenPath)
 {
 	for(unsigned int i = 0; i < givenPath.length(); i++)
@@ -252,38 +260,58 @@ string convertPath(string givenPath)
 	return givenPath;
 }
 
-//validates file name introducesd by user and checks if the file already exists. 
-//Returns true if the fileName is a valid one and false otherwise
+//checks if the file fileName already exists. 
+//Returns true if fileName is not already in use and false otherwise
 bool validateFileName(string fileName)
 {
-	bool isValidFileName = true;
-	
-	size_t found = fileName.find("\\");
-	
-	//replace "\" with "/" in fileName
-	if(found != std::string::npos)
+	//check for not allowed characters in fileName
+	string notAllowedChars = ":?\"*"; 
+	//check all chars in notAllowedChars string
+    for(unsigned int i = 0; i < notAllowedChars.length(); i++)
 	{
+		//save first position on which notAllowedChars[i] was found in fileName
+		size_t firstFound = fileName.find(notAllowedChars[i]);
+		//check if notAllowedChars[i] was found in fileName
+		if(!firstFound)
+		{	
+			//print "error: characters  < > : \" | ? *  are not allowed for naming files!"
+			printMessage(3);
+			//invalidate fileName (fileName contains not allowed characters)
+			return false;
+		}
+		
+	}
+
+	//save first position on which '\' was found in fileName
+	size_t firstFound = fileName.find("\\");
+	//if at least one '\' found
+	if(!firstFound)
+	{
+		//replace all '\' with '/' in fileName
 		fileName = convertPath(fileName);
 	}
 	else
 	{
+		//keep fileName unchanged
 	}
+
+	bool isValidFileName = true;
 	
-	//checks if the file already exists
-	if(isValidFileName)
+	ifstream fileChecking(fileName.c_str());
+	
+	//check if fileName already exists
+	if(fileChecking.good())
 	{
-		ifstream fileChecking(fileName.c_str());
-		if(fileChecking.good())
-		{
-			fileChecking.close();
-			isValidFileName = false;
-			printMessage(4,fileName);
-		}
-		else
-		{
-			
-		}
+		fileChecking.close();
+		isValidFileName = false;
+		//print "error: wallet "<< fileName << " already exists!\n"
+		printMessage(4,fileName);
 	}
+	else
+	{
+		//valid fileName, so keep isValidFileName=true
+	}
+
 	return isValidFileName;
 	
 } 

@@ -16,8 +16,7 @@ using namespace std;
 
 //default constructor
 WalletEntity::WalletEntity()
-{
-	
+{	
 }
 
 //creates a wallet by making a new file with a given name and a given amount
@@ -36,14 +35,14 @@ void WalletEntity::createWallet(
 	//will be true if none of the stream's error state flag is set
 	checkStream = outFile.good();
 
-	if(checkStream == true)
+	if(checkStream)
 	{
 		//write initialAmount into walletName file
 		outFile << initialAmount << " " << "RON\n";
 		
 		//check if the writing was ok
 		checkStream = outFile.good();
-		if(checkStream != true)
+		if(!checkStream)
 		{
 			//if writing was not ok, print " writing file error! "
 			printMessage(5);
