@@ -26,42 +26,37 @@ void WalletEntity::createWallet(
 	const string walletName,
 	const string initialAmount )
 {
-	//keep stream's state
+	//stream's state
 	bool checkStream = false; 
 	
-	//creates the file for writing with the given name
+	//create walletName file  
 	ofstream outFile(walletName.c_str());
 	
-	//take stream's state before writing
+	//check if walletName file was created
 	//will be true if none of the stream's error state flag is set
 	checkStream = outFile.good();
 
 	if(checkStream == true)
 	{
-		//writes into the new file the initial amount
+		//write initialAmount into walletName file
 		outFile << initialAmount << " " << "RON\n";
 		
-		//take stream's state after writing
+		//check if the writing was ok
 		checkStream = outFile.good();
 		if(checkStream != true)
 		{
+			//if writing was not ok, print " writing file error! "
 			printMessage(5);
 		} 
 		else 
 		{
-			//convert string to char[]
-			int TempNumOne=initialAmount.size();
-			char initAm[500];
-			for (int a = 0;a <= TempNumOne; a++)
-			{
-				initAm[a]=initialAmount[a];
-			}
-			//print success message
-			printMessage(6, walletName, initAm);
+			//if writing was ok, print wallet created message
+			printMessage(6, walletName, initialAmount);
 		}		
 	} 
 	else 
 	{
+		//print "error: characters  < > : \" / \\ | ? *  are not allowed for naming files!"
 		printMessage(3);
 	}		
 	
