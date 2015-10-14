@@ -38,7 +38,7 @@ void printMessage( const char messageCode,
 		};
 		case 3:
 		{
-			cout << "error: characters  < > : \" / \\ | ? *  are not allowed !"
+			cout << "error: characters  < > : \" / \\ | ? *  are not allowed for naming files!"
 			<< endl;
 			break;
 		};

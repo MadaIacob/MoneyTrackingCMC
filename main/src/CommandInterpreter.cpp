@@ -23,8 +23,10 @@ using namespace std;
 bool validateCommand(int argc, char* argv[])
 {
 	bool validCommand = false;
+	//if command is "create"
 	if(strcmp(argv[1], "create") == 0) 
 	{
+		//check and execute "create" with provided arguments
 		validateCreate(argc, argv[2], argv[3]);
 		validCommand = true;
 	}
@@ -34,25 +36,22 @@ bool validateCommand(int argc, char* argv[])
 	return validCommand;
 }
 
-//validates "create" command arguments
-
-const char fileName[]=""; 	// is this ok? 
-
-
+//validates and executes "create" command arguments
 void validateCreate(
 	const int argc, 
 	const char fileName[], 
 	const char initialAmount[])
 {
+	//number of arguments for "create" command
 	switch (argc)
 	{
-		case 2:
+		case 2:// "create" command with no arguments
 		{
-			// print " error: wallet name required !"
+			// print "error: at least filename should be specified."
 			printMessage(1);
 			break;
 		}
-		case 3:
+		case 3: //"create" command with fileName only
 		{
 			//check if fileName already exists and for valid characters
 			if(validateFileName(fileName))
@@ -65,9 +64,10 @@ void validateCreate(
 			}
 			break;
 		}
-		default:
+		default: //"create" command with at least fileName and amount
 		{
-			//check if fileName already exists and for valid characters
+			//check if fileName already exists
+			//also check if initialAmount is valid
 			if(validateFileName(fileName) && 
 				validateAmount(initialAmount, fileName))
 			{
@@ -238,7 +238,7 @@ string truncateAmount(const char word[])
 }
 
 
-//helper function. Converts windows path to c++ accepted path
+//converts windows path to c++ accepted path
 string convertPath(string givenPath)
 {
 	for(unsigned int i = 0; i < givenPath.length(); i++)
@@ -256,19 +256,17 @@ string convertPath(string givenPath)
 //Returns true if the fileName is a valid one and false otherwise
 bool validateFileName(string fileName)
 {
-	bool isValidFileName = false;
+	bool isValidFileName = true;
 	
 	size_t found = fileName.find("\\");
 	
-	//validate syntactically the file name
+	//replace "\" with "/" in fileName
 	if(found != std::string::npos)
 	{
 		fileName = convertPath(fileName);
-		isValidFileName = true;
 	}
 	else
 	{
-		isValidFileName = true;
 	}
 	
 	//checks if the file already exists
