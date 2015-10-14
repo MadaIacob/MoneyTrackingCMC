@@ -1,6 +1,6 @@
 /*
 File Description		Tests for the CommandInterpreter functions 
-Author					Cosmin Farcau
+Author					cosmin.farcau, calin-ciprian.popita
 Date					11.10.2015
 */
 
@@ -9,9 +9,9 @@ Date					11.10.2015
 #include "CommandInterpreter.h"
 #include "CreateWalletTestHelper.h"
 
-// validAmount function
 TEST(validateAmountTest, notAllowedCharacters)
 {
+	//test
 	EXPECT_EQ(false, validateAmount("-s34d3.5",""));
 	EXPECT_EQ(true, validateAmount("+0.000",""));
 	EXPECT_EQ(true, validateAmount("0",""));
@@ -26,10 +26,12 @@ TEST(validateAmountTest, notAllowedCharacters)
 	EXPECT_EQ(false, validateAmount("-3^43.00:\"?035",""));
 	EXPECT_EQ(false, validateAmount("+-456",""));
 	EXPECT_EQ(false, validateAmount("-+32.5456",""));
+
 }
 
 TEST(validateAmountTest, leadingZeros)
 {
+	//test
 	EXPECT_EQ(true, validateAmount("+0000.000",""));
 	EXPECT_EQ(true, validateAmount("00000",""));
 	EXPECT_EQ(true, validateAmount("-00.000",""));
@@ -41,11 +43,12 @@ TEST(validateAmountTest, leadingZeros)
 	EXPECT_EQ(true, validateAmount("39998",""));
 	EXPECT_EQ(true, validateAmount("-5",""));
 	EXPECT_EQ(true, validateAmount("-35987",""));
-}
 
+}
 
 TEST(truncateAmountTest, allowedCharacters)
 {
+	//test
 	EXPECT_EQ("-3493.48", truncateAmount("-00003493.47895"));
 	EXPECT_EQ("-34.37", truncateAmount("-00034.3695"));
 	EXPECT_EQ("+6.00", truncateAmount("+000000006.00005"));
@@ -60,11 +63,19 @@ TEST(truncateAmountTest, allowedCharacters)
 	EXPECT_EQ("+0.00", truncateAmount("+0.00"));
 	EXPECT_EQ("+0.00", truncateAmount("-000.000"));
 	EXPECT_EQ("+0.00", truncateAmount("-0.00"));
+
 }
 
 TEST(validateFileNameTest, existingFileName)
 {
+	//set-up
 	helperCreateWallet("my.wallet","0.23");
+	
+	//test
 	EXPECT_EQ(false, validateFileName("my.wallet"));
 	EXPECT_EQ(true, validateFileName("not.wallet"));
+	
+	//tear-down		
+	bool removeFile = remove("my.wallet");
+
 }
