@@ -14,5 +14,11 @@ bool validateCommand(int argc, char* argv[]);
 bool validateFileName(std::string fileName);
 bool validateAmount(const char [], const std::string );
 std::string truncateAmount(const char []);
+void executeIncomeSpend(
+	const int argc, 
+	std::string command, 
+	const char amount[],
+	const char fileName[]);
+std::string displayGMT(time_t myTime);
 
 #endif // COMMANDINTREPRETER_H
