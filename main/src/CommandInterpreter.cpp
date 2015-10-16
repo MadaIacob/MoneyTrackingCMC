@@ -37,7 +37,7 @@ bool validateCommand(int argc, char* argv[])
 			(strcmp(argv[1], "spend") == 0))
 	{
 		//execute "income" or "spend" command
-		executeIncomeSpend(argc, argv[1], argv[3], argv[2]);
+		executeIncomeSpend(argc, argv[1], argv[2], argv[3]);
 		validCommand = true;
 	}
 	else
@@ -111,7 +111,7 @@ void executeCreate(
 //according to them
 void executeIncomeSpend(
 	const int argc, //number of arguments from command line
-	string command, //"income" or "spend"
+	const string command, //"income" or "spend"
 	const char amount[], //amount for new operation
 	const char fileName[]) //wallet name
 {
@@ -128,18 +128,15 @@ void executeIncomeSpend(
 		}
 		default: //income/spend command with amount as first argument
 		{
-			
-			//if(!validateAmount(amount))
+			if(!validateAmount(amount))
 			{	//amount is not valid
-		
 				//print error: parameter for 'income' should be a positive number
 				//or
 				//print error: parameter for 'spend' should be a positive number
 				printMessage(8, command);
 			}
-			//else 
+			else 
 			{	//amount is valid
-				
 				//truncate amount to have only two decimals and no leading zeros
 				string truncatedAmount=truncateAmount(amount);
 				//check if validated sum is negative or zero
@@ -149,6 +146,7 @@ void executeIncomeSpend(
 					//print error: income should be higher than 0.
 					//or
 					//print error: spend should be higher than 0.
+					
 					printMessage(11, command);
 				}
 				else
@@ -158,10 +156,11 @@ void executeIncomeSpend(
 					
 					//check for "default_wallet" tag in config file
 					if(existsConfigTag("default_wallet"))
-					{
+					{				
 						//check if the file specified in "default_wallet" tag exists
 						if(!validateFileName(readConfig("default_wallet")))
-						{
+						{	//the file specified in "default_wallet" tag exists
+							
 							//prepare values for WalletEntity
 							string sign = "+" ;
 							string category = "salary" ;
@@ -214,7 +213,9 @@ void executeIncomeSpend(
 						}
 						else 
 						{
-							//file specified in "default_wallet" tag 
+							//file specified in "default_wallet" tag doesn't exist
+							//print error: could not open 'C:\path\some.wallet' to register transaction
+							printMessage(12, readConfig("default_wallet"));
 						}
 					}	
 					else
@@ -245,7 +246,6 @@ bool validateAmount(const char word [])
 	// valid = true means the input amount is correctly written by the user
 	// and gets validated; this will be returned by 'validateAmount'
 	bool valid = true;
-
 	// states in which the 'switch' below can get during the 'for': INITial,
 	// EXPECT NUMber, EXPECT NUMber or SEParator, EXPECT DECimal
 	// e.g. in the INIT state, if the first char is + or - we then expect a num
@@ -407,25 +407,6 @@ string convertPath(string givenPath)
 //Returns true if fileName is not already in use and false otherwise
 bool validateFileName(string fileName)
 {
-	/* NOT NEEDED IN SPRINT 2
-	//check for not allowed characters in fileName
-	string notAllowedChars = ":?\"*"; 
-	//check all chars in notAllowedChars string
-    for(unsigned int i = 0; i < notAllowedChars.length(); i++)
-	{
-		//save first position on which notAllowedChars[i] was found in fileName
-		size_t firstFound = fileName.find(notAllowedChars[i]);
-		//check if notAllowedChars[i] was found in fileName
-		if(!firstFound)
-		{	
-			//print "error: characters  < > : \" | ? *  are not allowed for naming files!"
-			printMessage(3);
-			//invalidate fileName (fileName contains not allowed characters)
-			return false;
-		}
-		
-	}*/
-
 	//save first position on which '\' was found in fileName
 	size_t firstFound = fileName.find("\\");
 	//if at least one '\' found
@@ -463,7 +444,7 @@ bool validateFileName(string fileName)
 //gets unix timestamp format 
 //returns a string containing GMT calculated time, formatted like:
 //"Thu, 08 Oct 2015 10:52:40 GMT"
-string displayGMT(time_t myTime)
+string displayGMT(const time_t myTime)
 {
   struct tm * timeinfo;
   char buffer [100];//buffer for streaming time

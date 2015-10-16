@@ -83,10 +83,10 @@ TEST(truncateAmountTest, allowedCharacters)
 TEST(validateFileNameTest, existingFileName)
 {
 	//set-up
-	helperCreateWallet("my.wallet","0.23");
+	helperCreateWallet("some.wallet","0.23");
 	
 	//test
-	EXPECT_EQ(false, validateFileName("my.wallet"));
+	EXPECT_EQ(false, validateFileName("some.wallet"));
 	EXPECT_EQ(true, validateFileName("not.wallet"));
 	
 	//tear-down		

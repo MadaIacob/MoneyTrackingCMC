@@ -3,7 +3,7 @@ File Description		Smaller functions used accross the application
 Author					cosmin.farcau, madalina.iacob
 Date					15.10.2015
 */
-
+#include <iostream>
 #include <string>
 #include <fstream>
 #include "HelperFunctions.h"
@@ -28,15 +28,10 @@ string cutSign(string validAmount)
 {
 	string cutAmount = "" ;
 	int len = validAmount.length();
-	if (validAmount[0] == '-')
-		for(int i = 1; i < len; i++)
+	for(int i = 1; i < len; i++)
 		{
 			cutAmount += validAmount[i] ;
 		}
-	else
-	{
-		cutAmount = validAmount ;
-	}	
 	return cutAmount;
 }
 
@@ -50,7 +45,7 @@ bool existsConfigTag(string configTag)
 	// value to return
 	bool valid = false ;
 	// while below reads each line in the file and puts it in string lineRead
-	string lineRead ;
+	string lineRead = "";
 	//n counts lines that are read
 	int n = 0; 
 	while (getline(fileToOpen, lineRead))
@@ -97,7 +92,7 @@ bool existsConfigTag(string configTag)
 
 string readConfig(string configTag)
 {
-	ifstream configFile("..\\..\\moneytracker.config");
+	ifstream configFile("moneytracker.config");
 	string line;
 	string word = "";
 	
