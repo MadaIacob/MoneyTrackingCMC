@@ -163,7 +163,7 @@ void executeIncomeSpend(
 						if(!validateFileName(readConfig("default_wallet")))
 						{
 							//prepare values for WalletEntity
-							char sign = '+' ;
+							string sign = "+" ;
 							string category = "salary" ;
 							string messageFlag = "Income";// parameter for printMessage
 							if (command == "spend") 
@@ -190,7 +190,7 @@ void executeIncomeSpend(
 								"RON");
 								
 							//if writing to file succesfull
-							if(addWalletEntity(walletEntity))
+							if(walletEntity.addWalletEntity(readConfig("default_wallet")))
 							{
 								//print a success message
 								// like "Spending 'other' in an amount of 145.12 RON was registered."

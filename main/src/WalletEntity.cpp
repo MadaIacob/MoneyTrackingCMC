@@ -12,7 +12,7 @@ Date					8.10.2015
 #include <sstream>
 
 #include "WalletEntity.h"
-//#include "PrintMessage.h"
+#include "PrintMessage.h"
 
 using namespace std;
 
@@ -63,18 +63,18 @@ void WalletEntity::createWallet(
 		if(!checkStream)
 		{
 			//if writing was not ok, print " writing file error! "
-			//printMessage(5);
+			printMessage(5);
 		} 
 		else 
 		{
 			//if writing was ok, print wallet created message
-			//printMessage(6, walletName, initialAmount);
+			printMessage(6, walletName, initialAmount);
 		}		
 	} 
 	else 
 	{
 		//print "error: characters  < > : \" / \\ | ? *  are not allowed for naming files!"
-		//printMessage(3);
+		printMessage(3);
 	}		
 	
 	//closes the file

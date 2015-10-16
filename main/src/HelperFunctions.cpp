@@ -44,9 +44,9 @@ string cutSign(string validAmount)
 // and '=' found and some text after '=' is found
 bool existsConfigTag(string configTag)
 {
-	git// open config file
+	// open config file
 	ifstream fileToOpen ;
-	fileToOpen.open ("..\\..\\moneytracker.config") ;
+	fileToOpen.open ("../../moneytracker.config") ;
 	// value to return
 	bool valid = false ;
 	// while below reads each line in the file and puts it in string lineRead
