@@ -96,7 +96,11 @@ void printMessage( const char messageCode,
 			<< "' to register transaction" << endl;
 			break;
 		};
-		
+		case 13: //error: could not open 'moneytracker.config'
+		{
+			cout << "error: could not open '" << parameter1	<< "'" << endl;
+			break;
+		};
 		
 		default: //unknown messageCode value
 		{
