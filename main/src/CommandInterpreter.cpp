@@ -221,6 +221,8 @@ void executeIncomeSpend(
 					else
 					{
 						// tag "default_wallet" is not implemented in config
+						//print //error: 'default_wallet' is not known. Check config file!
+						printMessage(13, "moneytracker.config");
 					}
 				}
 			}
