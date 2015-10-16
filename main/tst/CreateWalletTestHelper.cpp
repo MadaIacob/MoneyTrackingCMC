@@ -99,3 +99,10 @@ string readLastLine(const string fileName)
 	}
 	return lastLine;
 }
+
+//helper function
+//creates a new file with given name and containt
+void createFile(const string fileName,const string containt)
+{
+	
+}

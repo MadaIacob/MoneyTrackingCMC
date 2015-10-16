@@ -1,6 +1,6 @@
 /*
 File Description		Smaller functions used accross the application 
-Author					cosmin.farcau 
+Author					cosmin.farcau, madalina.iacob
 Date					15.10.2015
 */
 
@@ -46,7 +46,7 @@ bool existsConfigTag(string configTag)
 {
 	// open config file
 	ifstream fileToOpen ;
-	fileToOpen.open ("../../moneytracker.config") ;
+	fileToOpen.open ("moneytracker.config") ;
 	// value to return
 	bool valid = false ;
 	// while below reads each line in the file and puts it in string lineRead
