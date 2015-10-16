@@ -94,3 +94,35 @@ bool existsConfigTag(string configTag)
 	
 	return valid;
 }
+
+string readConfig(string configTag)
+{
+	ifstream configFile("..\\..\\moneytracker.config");
+	string line;
+	string word = "";
+	
+	
+	while(getline(configFile, line))
+	{
+		size_t foundTag = line.find(configTag);
+		if(foundTag != std::string::npos)
+		{
+			foundTag = line.find("=");
+			unsigned int pos = foundTag +1;
+			while(pos < line.size())
+			{
+				if(line[pos] != ' ' && line[pos] != '\t')
+				{
+					word = word + line[pos];
+					pos++;
+				}
+				else
+				{
+					pos++;
+				}					
+			}
+			break;
+		}
+	}
+	return word;
+}
