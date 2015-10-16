@@ -12,8 +12,10 @@ Date				09.10.2015
 using namespace std;
 //prints messages
 void printMessage( const char messageCode,
-	string fileName,
-	string initialAmount
+	string parameter1,
+	string parameter2,
+	string parameter3,
+	string parameter4
 	)
 {
 	switch (messageCode)
@@ -30,9 +32,9 @@ void printMessage( const char messageCode,
 		};
 		case 2:
 		{
-			cout << "error: " << initialAmount 
+			cout << "error: " << parameter2 
 			<< " is not a valid initial ammount.\nCreating "
-			<< fileName <<" aborted."
+			<< parameter1 <<" aborted."
 			<< endl;
 			break;
 		};
@@ -44,7 +46,7 @@ void printMessage( const char messageCode,
 		};
 		case 4:
 		{
-			cout << "error: wallet "<< fileName << " already exists!\n";
+			cout << "error: wallet "<< parameter1 << " already exists!\n";
 			break;
 		};
 		case 5:
@@ -54,10 +56,42 @@ void printMessage( const char messageCode,
 		};
 		case 6:
 		{
-			cout << fileName << " created with the initial amount of "
-			<< initialAmount << " RON" << endl;
+			cout << parameter1 << " created with the initial amount of "
+			<< parameter2 << " RON" << endl;
 			break;
 		};
+		case 7://error: no ammount specified for 'spend'.
+		{
+			cout << "error: no ammount specified for '" << parameter1 << "'." 
+			<< endl;
+			break;
+		};
+		case 8://error: parameter for 'income' should be a positive number
+		{
+			cout << "error: parameter for '" << parameter1 
+			<< "' should be a positive number" 	<< endl;
+			break;
+		};
+		case 9://Spending 'other' in an amount of 145.12 RON was registered.
+		{
+			cout << parameter1 << " '" << parameter2
+			<< "' in an amount of "<< parameter3 <<" "<<parameter4
+			<<" was registered." << endl;
+			break;
+		};
+		case 10://Transaction time: Thu, 08 Oct 2015 10:52:40 GMT
+		{
+			cout << "Transaction time: " << parameter1 << endl;
+			break;
+		};
+		case 11: //error: income should be higher than 0.
+		{
+			cout << "error: " << parameter1
+			<< " should be higher than 0." << endl;
+			break;
+		};
+		
+		
 		default: //unknown messageCode value
 		{
 			cout << "unknown" << endl;

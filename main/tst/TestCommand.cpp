@@ -9,6 +9,20 @@ Date					11.10.2015
 #include "CommandInterpreter.h"
 #include "CreateWalletTestHelper.h"
 
+TEST(validateCommand, outOfRangeValues)
+{
+	//set-up
+	char* argv[];
+	argv[0] = "unknown\0";
+	argv[1] = "unknown\0";
+	
+	//test
+	EXPECT_FALSE(validateCommand(2,&argv[0]));
+	
+	//tear-down		
+
+}
+
 TEST(validateAmountTest, notAllowedCharacters)
 {
 	//test

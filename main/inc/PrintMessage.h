@@ -9,7 +9,9 @@ Date				09.10.2015
 #define PRINTMESSAGE_H
 
 void printMessage( const char errorCode = -1,
-	std::string fileName = "",
-	std::string initialAmount = "");
+	std::string parameter1 = "",
+	std::string parameter2 = "",
+	std::string parameter3 = "",
+	std::string parameter4 = "");
 
 #endif //PRINTMESSAGE_H
