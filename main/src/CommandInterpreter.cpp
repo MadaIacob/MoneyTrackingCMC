@@ -12,10 +12,12 @@ Date				09.10.2015
 #include <stdlib.h>
 #include <sstream>
 #include <iomanip>
+#include <time.h>
 
 #include "WalletEntity.h"
 #include "CommandInterpreter.h"
 #include "PrintMessage.h"
+#include "HelperFunctions.h"
 
 using namespace std;
 
@@ -29,6 +31,13 @@ bool validateCommand(int argc, char* argv[])
 	{
 		//execute "create" command
 		executeCreate(argc, argv[2], argv[3]);
+		validCommand = true;
+	}
+	else if((strcmp(argv[1], "income") == 0) ||
+			(strcmp(argv[1], "spend") == 0))
+	{
+		//execute "income" or "spend" command
+		executeIncomeSpend(argc, argv[1], argv[3], argv[2]);
 		validCommand = true;
 	}
 	else
@@ -64,7 +73,9 @@ void executeCreate(
 			}
 			else
 			{
-				//fileName contains not allowed characters or already exists
+				//fileName already exists
+				//print "error: wallet "<< fileName << " already exists!\n"
+				printMessage(4,fileName);
 			}
 			break;
 		}
@@ -72,20 +83,147 @@ void executeCreate(
 		{
 			//check if fileName already exists
 			//also check if initialAmount is valid
-			if(validateFileName(fileName) && 
-				validateAmount(initialAmount, fileName))
-			{
-				
-				WalletEntity wallet;
-				//create fileName wallet with given initialAmount
-				wallet.createWallet(fileName, truncateAmount(initialAmount));
-			}
+			if(validateFileName(fileName)) 
+				if(validateAmount(initialAmount))
+				{
+					
+					WalletEntity wallet;
+					//create fileName wallet with given initialAmount
+					wallet.createWallet(fileName, truncateAmount(initialAmount));
+				}
+				else
+				{					
+					//initialAmount is not a valid amount
+					printMessage(2, fileName, initialAmount);
+				}
 			else
 			{
-				//fileName contains not allowed characters or already exists
-				//of initialAmount is not a valid amount
+				//fileName already exists
+				//print "error: wallet "<< fileName << " already exists!\n"
+				printMessage(4,fileName);
 			}
 			break;
+		}
+	}
+}
+
+//validates arguments for "income" or "spend" command and executes it 
+//according to them
+void executeIncomeSpend(
+	const int argc, //number of arguments from command line
+	string command, //"income" or "spend"
+	const char amount[], //amount for new operation
+	const char fileName[]) //wallet name
+{
+	//number of arguments for "income" or "spend" command
+	switch (argc)
+	{
+		case 2:// "income/spend" command with no arguments
+		{
+			// print error: no ammount specified for 'income'.
+			//or
+			// print error: no ammount specified for 'spend'.
+			printMessage(7, command);
+			break;
+		}
+		default: //income/spend command with amount as first argument
+		{
+			
+			//if(!validateAmount(amount))
+			{	//amount is not valid
+		
+				//print error: parameter for 'income' should be a positive number
+				//or
+				//print error: parameter for 'spend' should be a positive number
+				printMessage(8, command);
+			}
+			//else 
+			{	//amount is valid
+				
+				//truncate amount to have only two decimals and no leading zeros
+				string truncatedAmount=truncateAmount(amount);
+				//check if validated sum is negative or zero
+				if(atof(truncatedAmount.c_str()) <= 0.00)								
+				{
+					//amount is valid, but negative or zero 
+					//print error: income should be higher than 0.
+					//or
+					//print error: spend should be higher than 0.
+					printMessage(11, command);
+				}
+				else
+				{
+					//amount is valid and positive, execute "income/spend" command
+					//in default wallet
+					
+					//check for "default_wallet" tag in config file
+					if(existsConfigTag("default_wallet"))
+					{
+						//check if the file specified in "default_wallet" tag exists
+						if(!validateFileName(readConfig("default_wallet")))
+						{
+							//prepare values for WalletEntity
+							char sign = '+' ;
+							string category = "salary" ;
+							string messageFlag = "Income";// parameter for printMessage
+							if (command == "spend") 
+							{
+								sign = '-' ;
+								category = "other";
+								messageFlag = "Spending";
+							}
+							else 
+							{
+								
+							}
+							//cut sign to amount
+							string cutAmount = cutSign(truncatedAmount) ;
+							//get current time
+							time_t transactionTime = time(0) ;
+							
+							//create walletEntity with default values
+							WalletEntity walletEntity(
+								transactionTime, 
+								sign, 
+								cutAmount, 
+								category,
+								"RON");
+								
+							//if writing to file succesfull
+							if(addWalletEntity(walletEntity))
+							{
+								//print a success message
+								// like "Spending 'other' in an amount of 145.12 RON was registered."
+								printMessage(
+									9, 
+									messageFlag, 
+									category, 
+									cutAmount, 
+									"RON");
+								// and one like "Transaction time: Thu, 08 Oct 2015 10:52:40 GMT"
+								printMessage(
+									10, 
+									//convert transactionTime to string
+									displayGMT(transactionTime));				
+								
+							} 
+							else
+							{
+								//writing to file not succesfull
+							}
+						}
+						else 
+						{
+							//file specified in "default_wallet" tag 
+						}
+					}	
+					else
+					{
+						// tag "default_wallet" is not implemented in config
+					}
+				}
+			}
+		break;
 		}
 	}
 }
@@ -95,12 +233,14 @@ void executeCreate(
 void printHelpMenu()
 {
 	cout << endl << "Accepted commands and arguments:" << endl;
-	cout << " moneytracker[.exe] create <file_name> <initial_amount>" << endl;
+	cout << " moneytracker[.exe] create  <file_name> <initial_amount>" << endl;
+	cout << " moneytracker[.exe] income  <initial_amount>" << endl;
+	cout << " moneytracker[.exe] spend   <initial_amount>" << endl;
 }
 
 
 // validates the amount input
-bool validateAmount(const char word [], const string fileName)
+bool validateAmount(const char word [])
 {
 	// valid = true means the input amount is correctly written by the user
 	// and gets validated; this will be returned by 'validateAmount'
@@ -133,7 +273,7 @@ bool validateAmount(const char word [], const string fileName)
 				else
 				{
 					// error message
-					printMessage(2, fileName, word);
+					//printMessage(2, fileName, word);
 					valid = false;
 					return false;
 				}
@@ -147,7 +287,8 @@ bool validateAmount(const char word [], const string fileName)
 				}
 				else
 				{
-					printMessage(2, fileName, word);
+					//error message
+					//printMessage(2, fileName, word);
 					valid = false;
 					return false;
 				}
@@ -165,7 +306,8 @@ bool validateAmount(const char word [], const string fileName)
 				}
 				else
 				{
-					printMessage(2, fileName, word);
+					//error message
+					//printMessage(2, fileName, word);
 					valid = false;
 					return false;
 				}
@@ -179,7 +321,8 @@ bool validateAmount(const char word [], const string fileName)
 				}
 				else
 				{
-					printMessage(2, fileName, word);
+					//error message
+					//printMessage(2, fileName, word);
 					valid = false;
 					return false;
 				}
@@ -264,6 +407,7 @@ string convertPath(string givenPath)
 //Returns true if fileName is not already in use and false otherwise
 bool validateFileName(string fileName)
 {
+	/* NOT NEEDED IN SPRINT 2
 	//check for not allowed characters in fileName
 	string notAllowedChars = ":?\"*"; 
 	//check all chars in notAllowedChars string
@@ -280,7 +424,7 @@ bool validateFileName(string fileName)
 			return false;
 		}
 		
-	}
+	}*/
 
 	//save first position on which '\' was found in fileName
 	size_t firstFound = fileName.find("\\");
@@ -305,7 +449,7 @@ bool validateFileName(string fileName)
 		fileChecking.close();
 		isValidFileName = false;
 		//print "error: wallet "<< fileName << " already exists!\n"
-		printMessage(4,fileName);
+		//printMessage(4,fileName);
 	}
 	else
 	{
@@ -315,4 +459,22 @@ bool validateFileName(string fileName)
 	return isValidFileName;
 	
 } 
+
+//gets unix timestamp format 
+//returns a string containing GMT calculated time, formatted like:
+//"Thu, 08 Oct 2015 10:52:40 GMT"
+string displayGMT(time_t myTime)
+{
+  struct tm * timeinfo;
+  char buffer [100];//buffer for streaming time
+  
+  //calculate GMT format for myTime
+  timeinfo = gmtime (&myTime);
+
+  //stream GMT formatted time to buffer
+  strftime (buffer,100,"%a, %d %b %Y %H:%M:%S GMT",timeinfo);
+
+  return buffer;
+  
+}
 

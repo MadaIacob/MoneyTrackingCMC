@@ -15,13 +15,14 @@ GTEST_INC = -isystem $(GTEST_DIR)\include
 HEADERS = \
 	..\inc\CommandInterpreter.h \
 	..\inc\PrintMessage.h \
-	..\inc\WalletEntity.h
+	..\inc\WalletEntity.h \
+	..\inc\HelperFunctions.h
 	
 OBJECTS = \
 	CommandInterpreter.o \
 	PrintMessage.o \
-	WalletEntity.o
-	
+	WalletEntity.o \
+	HelperFunctions.o
 
 WALLET_LIB = ..\lib\WalletLib.a
 
@@ -42,6 +43,9 @@ WalletEntity.o: WalletEntity.cpp $(HEADERS)
 	
 WalletMain.o: main.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o WalletMain.o -c main.cpp
+	
+HelperFunctions.o: HelperFunctions.cpp $(HEADERS)
+	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o HelperFunctions.o -c HelperFunctions.cpp
 	
 # clean up
 clean:
