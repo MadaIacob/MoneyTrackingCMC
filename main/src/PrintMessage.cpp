@@ -90,6 +90,12 @@ void printMessage( const char messageCode,
 			<< " should be higher than 0." << endl;
 			break;
 		};
+		case 12: //error: could not open 'C:\path\some.wallet' to register transaction
+		{
+			cout << "error: could not open '" << parameter1
+			<< "' to register transaction" << endl;
+			break;
+		};
 		
 		
 		default: //unknown messageCode value
