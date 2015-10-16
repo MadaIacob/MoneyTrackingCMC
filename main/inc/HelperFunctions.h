@@ -14,4 +14,8 @@ bool isFirstMinus (std::string amount);
 
 std::string cutSign(std::string validAmount);
 
+bool existsConfigTag(std::string configTag);
+
+std::string readConfig(std::string configTag);
+
 #endif
