@@ -10,6 +10,9 @@ Date					11.10.2015
 #include <stdio.h>
 #include <string>
 #include <iostream>
+#include <ctime>
+#include <sstream>
+
 #include "CreateWalletTestHelper.h"
 
 //using namespace std;
@@ -46,8 +49,8 @@ TEST(CreateWalletTest, inCurrentFolder)
 	helperCreateWallet("C**%^&%");
 	
 	//test
-	EXPECT_EQ(1 , walletCreated("yetother"));
-	EXPECT_EQ(0 , walletCreated("C**%^&%"));
+	EXPECT_EQ(true , walletCreated("yetother"));
+	EXPECT_EQ(false , walletCreated("C**%^&%"));
 	
 	//tear-down
 	remove("yetother");
@@ -63,7 +66,7 @@ TEST(CreateWalletTest, withAbsolutePath)
 	helperCreateWallet(file);
 	
 	//test
-	EXPECT_EQ(1 , walletCreated(file));
+	EXPECT_EQ(true , walletCreated(file));
 	
 	//tear-down
 	if(createDir == true)
@@ -71,6 +74,43 @@ TEST(CreateWalletTest, withAbsolutePath)
 		remove(file.c_str());
 		RemoveDirectory(path.c_str());
 	}
+}
 
+//to add read and check last line
+TEST(AddWalletEntityTest, checkIfWrites)
+{
+	//set-up
+	std::string currentLine;
+	std::string content;
+	std::string currentTimeString;
+	std::string expectedLine;
+	bool isAppended;
+	time_t currentTime = time(NULL);
+	
+	//convert from time_t to string
+	std::stringstream ss;
+	ss << currentTime;
+	currentTimeString = ss.str();
+	
+	helperCreateWallet("testIncome.txt");
+	content = readWallet("testIncome.txt");
+	
+	isAppended = helperAddWalletEntity(currentTime, "+", "153.36", "salary", "RON", "testIncome.txt");
+	
+	expectedLine = currentTimeString + ";" +
+				   "+" + ";" +
+				   "153.36" + ";" + 
+				   "salary" + ";" +
+				   "RON";
+	currentLine = readLastLine("testIncome.txt");
+	
+	//test
+	EXPECT_EQ(true,isAppended);
+	EXPECT_EQ(expectedLine, currentLine);
+	
+	EXPECT_NE(content,readWallet("testIncome.txt"));
+	
+	//tear-down
+	remove("testIncome.txt");
 }
 

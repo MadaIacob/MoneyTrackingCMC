@@ -2,12 +2,29 @@
 
 #include <fstream>
 #include <string>
+#include <ctime>
+#include <iostream>
+#include <sstream>
 
 #include "WalletEntity.h"
 #include "CreateWalletTestHelper.h"
 
 using namespace std;
 
+//helper function
+//add a new entry to the wallet
+bool helperAddWalletEntity(
+	const time_t time,
+	const string sign,
+	const string amount,
+	const string category,
+	const string currency,
+	const string walletName)
+{
+	WalletEntity wallet(time,sign,amount,category,currency);
+	
+	return wallet.addWalletEntity(walletName);
+}
 //helper function
 //calls createWallet method from WalletEntity class
 void helperCreateWallet(const string walletName, const string amount)
@@ -24,10 +41,14 @@ string readWallet(const string walletName)
 	ifstream wallet(walletName.c_str());
 	
 	string walletContent;
-	
+	string line;
 	//read from the given file
-	getline(wallet,walletContent);
+	//getline(wallet,walletContent);
 	
+	while(getline(wallet,line))
+	{
+		walletContent += line;
+	}
 	return walletContent;
 }
 
@@ -49,4 +70,32 @@ bool walletCreated(const string walletName)
 	}
 	
 	return isCreated;
+}
+
+//helper function
+//returns the last line from the file
+string readLastLine(const string fileName)
+{
+	ifstream file(fileName.c_str());
+	string lastLine;
+	string line;
+	if(file.is_open())
+	{
+		while(getline(file,line))
+		{
+			bool isEmpty = true;
+			for(unsigned int i = 0; i< line.size(); i++)
+			{
+				char ch = line[i];
+				isEmpty = isEmpty && isspace(ch);
+			}
+			if(!isEmpty)
+			{
+				lastLine = line; 
+			}
+		}
+				
+		file.close();
+	}
+	return lastLine;
 }
