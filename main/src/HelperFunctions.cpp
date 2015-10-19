@@ -55,7 +55,7 @@ bool existsConfigTag(string configTag,string configFileName)
 		std::size_t foundDef = lineRead.find("default_wallet");
 		if (foundDef!=std::string::npos)
 		{
-			int pos = foundDef;
+			size_t pos = foundDef;
 			while(pos > 0)
 			{
 				if(lineRead[pos -1] != ' ' && lineRead[pos - 1] != '\t')
@@ -114,20 +114,24 @@ string readConfig(string configTag, string configFileName)
 	string line;
 	string word = "";
 	
-	
 	while(getline(configFile, line))
 	{
+		//if configTag wa found start storing default wallet name
 		size_t foundTag = line.find(configTag);
 		if(foundTag != std::string::npos)
 		{
 			foundTag = line.find("=");
-			unsigned int pos = foundTag +1;
+			size_t pos = foundTag +1;
 			while(pos < line.size())
 			{
 				if(line[pos] != ' ' && line[pos] != '\t')
 				{
-					word = word + line[pos];
-					pos++;
+					while(pos < line.size() && line[pos] != ' ' && line[pos] != '\t')
+					{
+						word = word + line[pos];
+						pos++;
+					}
+					break;
 				}
 				else
 				{
