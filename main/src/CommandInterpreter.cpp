@@ -257,10 +257,8 @@ bool validateAmount(const char word [])
 	// valid = true means the input amount is correctly written by the user
 	// and gets validated; this will be returned by 'validateAmount'
 	bool valid = true;
-	// states in which the 'switch' below can get during the 'for': INITial,
-	// EXPECT NUMber, EXPECT NUMber or SEParator, EXPECT DECimal
-	// e.g. in the INIT state, if the first char is + or - we then expect a num
-	// if it is a num, then we expect the next to be a num or separator
+
+	// states in which the 'switch' below can get during the 'for': 
 	enum E_ReadState { INIT, EXPECT_NUM, EXPECT_NUM_SEP, EXPECT_DEC };
 	E_ReadState state = INIT;
 	
@@ -270,15 +268,18 @@ bool validateAmount(const char word [])
 	{
 		switch (state)
 		{
+			//INITial state, when the 'for' starts, first char in word 
 			case INIT:
 			{
 				if((word[pos] == '+') || 
 					(word[pos] == '-') )
 				{
+				// if first char is + or - the next is expected to be a number
 					state = EXPECT_NUM;
 				}
 				else if ('0' <= word[pos] && word[pos] <= '9')  
 				{
+				// if char is a number, then we expect the next to be a num or separator
 					state = EXPECT_NUM_SEP;
 				}
 				else
@@ -288,6 +289,7 @@ bool validateAmount(const char word [])
 				}
 			break;
 			}
+			//you get in this state when a number was expected
 			case EXPECT_NUM:
 			{
 				if ('0' <= word[pos] && word[pos] <= '9') 
@@ -301,14 +303,18 @@ bool validateAmount(const char word [])
 				}
 			break;
 			}
+			//you get in this state when a number or the '.' separator was expected
 			case EXPECT_NUM_SEP:
 			{
 				if ('0' <= word[pos] && word[pos] <= '9') 
 				{
+					//after getting into EXPECT_NUM_SEP state, if char is num
+					//the next expected is again num or sep
 					state = EXPECT_NUM_SEP;
 				}
 				else if (word[pos] == '.')
 				{
+					//after hte separator you only expect numbers (decimals)
 					state = EXPECT_DEC;
 				}
 				else
@@ -318,10 +324,12 @@ bool validateAmount(const char word [])
 				}
 			break;	
 			}
+			//you get in this state when a number is expected, but after the '.'
 			case EXPECT_DEC:
 			{
 				if ('0' <= word[pos] && word[pos] <= '9' ) 
 				{
+					//if char is decimal, the next is expected to be also decimal
 					state = EXPECT_DEC;
 				}
 				else
@@ -342,8 +350,10 @@ bool validateAmount(const char word [])
 }
 
 // get rid of leading zeros, round to second decimal, get rif of extra decimals
+// and return the modified string
 string truncateAmount(const char word[])
 {
+	//keep word as a string
 	string validAmount(word); 
 	
 	int len = strlen(word);
@@ -365,10 +375,10 @@ string truncateAmount(const char word[])
 		validAmount.resize(separatPos+4);
 	}
 	
-	// delete leading zeros (if any)
+	// delete leading zeros (if any) by converting string to double
 	double validValue = atof(validAmount.c_str()); 
 	
-	// round the second decimal, and get rid of others (if any)
+	// round the second decimal, and get rid of third (if there is)
 	if(validValue >= 0)
 	{
 	int aux = validValue*100 + 0.5;
