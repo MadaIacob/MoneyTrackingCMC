@@ -20,21 +20,21 @@ Date					11.10.2015
 TEST(CreateWalletTest, fileContent)
 {
 	//set-up
-	helperCreateWallet("my.wallet" , "+1000");
+	helperCreateWallet("some.wallet" , "+1000");
 	helperCreateWallet("other.wallet" , "+200");
 	helperCreateWallet("yetother" , "-1021.23");
 	helperCreateWallet("noinitial.wallet");
 	helperCreateWallet("leading0.wallet" , "-00012.24");
 	
 	//test
-	EXPECT_EQ("+1000 RON" , readWallet("my.wallet"));
+	EXPECT_EQ("+1000 RON" , readWallet("some.wallet"));
 	EXPECT_EQ("+200 RON" , readWallet("other.wallet"));
 	EXPECT_EQ("-1021.23 RON" , readWallet("yetother"));
 	EXPECT_EQ("+00.00 RON", readWallet("noinitial.wallet"));
 	EXPECT_EQ("-00012.24 RON", readWallet("leading0.wallet"));
 	
 	//tear-down
-	remove("my.wallet");
+	remove("some.wallet");
 	remove("other.wallet");
 	remove("yetother");
 	remove("noinitial.wallet");

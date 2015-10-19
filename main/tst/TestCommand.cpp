@@ -90,6 +90,6 @@ TEST(validateFileNameTest, existingFileName)
 	EXPECT_EQ(true, validateFileName("not.wallet"));
 	
 	//tear-down		
-	remove("my.wallet");
+	remove("some.wallet");
 
 }
