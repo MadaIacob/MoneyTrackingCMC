@@ -7,6 +7,7 @@ Date					15.10.2015
 #include <string>
 #include <fstream>
 #include "HelperFunctions.h"
+#include "PrintMessage.h"
 
 using namespace std;
 
@@ -29,6 +30,14 @@ bool existsConfigTag(string configTag,string configFileName)
 	// open config file
 	ifstream fileToOpen ;
 	fileToOpen.open (configFileName.c_str()) ;
+	if(!fileToOpen.is_open())
+	{
+		//print message like 
+		//error: could not open 'moneytracker.config'
+		printMessage(13, configFileName);
+		return false;
+	}
+	else {}
 	// value to return
 	bool valid = false ;
 	// while below reads each line in the file and puts it in string lineRead
@@ -47,6 +56,9 @@ bool existsConfigTag(string configTag,string configFileName)
 			{
 				if(lineRead[pos -1] != ' ' && lineRead[pos - 1] != '\t')
 				{
+					//print message like
+					//error: no default wallet configured in 'moneytracker.config'
+					printMessage(14, configFileName);
 					return false;
 				}
 				pos--;
@@ -64,28 +76,32 @@ bool existsConfigTag(string configTag,string configFileName)
 				}
 				else
 				{
+					//print message like
+					//error: no default wallet configured in 'moneytracker.config'
+					printMessage(14, configFileName);
 					return false ;
 				}
 			}
 			//check if after the '=' some char is found
 			pos = pos + 1;
-			//cout << "valid " << valid << endl;
 			while(!valid && pos < lineRead.size())
 			{
-				//cout << lineRead[pos] << " " << pos << endl;
+				
 				if(lineRead[pos] == ' ' || lineRead[pos] == '\t')
-				{	//cout << "in if" << endl;
+				{	
 					pos++;
 				}
 				else
 				{
-					//cout << "in else" << endl;
 					valid = true;					
 				}
 			}
 		}
 		else
 		{
+			//print message like
+			//error: no default wallet configured in 'moneytracker.config'
+			printMessage(14, configFileName);
 			valid = false;
 		}
 	}

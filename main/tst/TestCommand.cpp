@@ -8,21 +8,42 @@ Date					11.10.2015
 
 #include "CommandInterpreter.h"
 #include "CreateWalletTestHelper.h"
-/*
+
 TEST(validateCommand, outOfRangeValues)
 {
 	//set-up
-	char* argv[2];
-	argv[0][7] = "unknown";
-	argv[1][7] = "unknown";
-	
+	char* argv1[2]={(char*) "unknown", (char*) "unknown"};
+	char* argv2[2]={(char*) "moneytracker.exe", (char*) "unknown"};
+			
 	//test
-	EXPECT_FALSE(validateCommand(2,&argv[0]));
+	EXPECT_FALSE(validateCommand(0,&argv1[0]));
+	EXPECT_FALSE(validateCommand(1,&argv1[0]));
+	EXPECT_FALSE(validateCommand(2,&argv1[0]));
+	EXPECT_FALSE(validateCommand(3,&argv1[0]));
+	EXPECT_FALSE(validateCommand(0,&argv2[0]));
+	EXPECT_FALSE(validateCommand(1,&argv2[0]));
+	EXPECT_FALSE(validateCommand(2,&argv2[0]));
+	EXPECT_FALSE(validateCommand(3,&argv2[0]));
 	
 	//tear-down		
 
-}*/
+}
 
+TEST(validateCommand, inRangeValues)
+{
+	//set-up
+	char* argv1[3]={(char*) "moneytracker.exe",(char*) "create"};
+	char* argv2[3]={(char*) "moneytracker.exe",(char*) "income"};
+	char* argv3[3]={(char*) "moneytracker.exe",(char*) "spend"};
+			
+	//test
+	EXPECT_TRUE(validateCommand(2,&argv1[0]));
+	EXPECT_TRUE(validateCommand(2,&argv2[0]));
+	EXPECT_TRUE(validateCommand(2,&argv3[0]));
+	
+	//tear-down		
+
+}
 TEST(validateAmountTest, notAllowedCharacters)
 {
 	//test

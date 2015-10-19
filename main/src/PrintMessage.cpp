@@ -101,6 +101,12 @@ void printMessage( const char messageCode,
 			cout << "error: could not open '" << parameter1	<< "'" << endl;
 			break;
 		};
+		case 14: //error: no default wallet configured in 'moneytracker.config'
+		{
+			cout << "error: no default wallet configured in '" 
+			<< parameter1 << "'" << endl;
+			break;
+		};
 		
 		default: //unknown messageCode value
 		{
