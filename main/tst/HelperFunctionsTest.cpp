@@ -1,6 +1,6 @@
 /*
 File Description		Tests for the helperFunctions 
-Author					cosmin.farcau, 
+Author					cosmin.farcau, madalina.iacob
 Date					14.10.2015
 */
 
