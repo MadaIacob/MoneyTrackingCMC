@@ -47,6 +47,7 @@ bool validateCommand(int argc, char* argv[])
 }
 
 //validates arguments for "create" command and executes it according to them
+//returns true if new wallet was successfully created
 bool executeCreate(
 	const int argc, //number of arguments from command line
 	const char fileName[], //new wallet name
@@ -113,6 +114,7 @@ bool executeCreate(
 
 //validates arguments for "income" or "spend" command and executes it 
 //according to them
+//returns true if income/spend was successfully executed
 bool executeIncomeSpend(
 	const int argc, //number of arguments from command line
 	const string command, //"income" or "spend"
@@ -193,7 +195,7 @@ bool executeIncomeSpend(
 								category,
 								"RON");
 								
-							//if writing to file succesfull
+							//if writing to file successful
 							if(walletEntity.addWalletEntity(readConfig("default_wallet")))
 							{
 								//print a success message
@@ -281,8 +283,6 @@ bool validateAmount(const char word [])
 				}
 				else
 				{
-					// error message
-					//printMessage(2, fileName, word);
 					valid = false;
 					return false;
 				}
@@ -296,8 +296,6 @@ bool validateAmount(const char word [])
 				}
 				else
 				{
-					//error message
-					//printMessage(2, fileName, word);
 					valid = false;
 					return false;
 				}
@@ -315,8 +313,6 @@ bool validateAmount(const char word [])
 				}
 				else
 				{
-					//error message
-					//printMessage(2, fileName, word);
 					valid = false;
 					return false;
 				}
@@ -330,8 +326,6 @@ bool validateAmount(const char word [])
 				}
 				else
 				{
-					//error message
-					//printMessage(2, fileName, word);
 					valid = false;
 					return false;
 				}
