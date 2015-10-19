@@ -25,9 +25,9 @@ moneytracker.exe: main\lib\WalletLib.a main\src\WalletMain.o
 	$(CPP) -o moneytracker.exe main\src\WalletMain.o main\lib\WalletLib.a
 
 	
-clean:	
-	rm moneytracker.exe
-	rm test.exe
+clean:
+	-rm moneytracker.exe
+	-rm test.exe
 	$(MAKE) -C main\src clean
 	$(MAKE) -C main\tst clean
 	
