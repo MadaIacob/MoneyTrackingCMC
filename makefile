@@ -11,12 +11,19 @@ app:
 	$(MAKE) -C main\src
 	$(MAKE) -C main\tst
 	$(MAKE) moneytracker.exe
+
+moneytracker: 
+	$(MAKE) -C main\src
+	$(MAKE) moneytracker.exe
+
+test:		
+	$(MAKE) -C main\src
+	$(MAKE) -C main\tst
+	test.exe
 	
 moneytracker.exe: main\lib\WalletLib.a main\src\WalletMain.o
 	$(CPP) -o moneytracker.exe main\src\WalletMain.o main\lib\WalletLib.a
 
-test.exe: $(LIB_OBJ) $(LIB_TST) $(GTEST_LIB)
-	$(CPP) -o test.exe $(LIB_TST) $(LIB_OBJ) $(GTEST_LIB)
 	
 clean:	
 	rm moneytracker.exe
