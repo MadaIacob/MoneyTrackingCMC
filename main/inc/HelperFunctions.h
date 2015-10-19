@@ -11,9 +11,14 @@ Date				15.10.2015
 #include <string>
 
 std::string cutSign(std::string validAmount);
-
-bool existsConfigTag(std::string configTag, std::string configFileName = "moneytracker.config");
-
-std::string readConfig(std::string configTag , std::string configFileName = "moneytracker.config");
+bool existsConfigTag(
+	std::string configTag, 
+	std::string configFileName = "moneytracker.config");
+std::string readConfig(
+	std::string configTag , 
+	std::string configFileName = "moneytracker.config");
+bool validateFileName(std::string fileName);
+std::string convertPath(std::string givenPath);
+std::string displayGMT(const time_t myTime);
 
 #endif

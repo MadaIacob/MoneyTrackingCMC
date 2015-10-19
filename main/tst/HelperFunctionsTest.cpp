@@ -6,6 +6,7 @@ Date					14.10.2015
 
 #include "gtest/gtest.h"
 #include "HelperFunctions.h"
+#include "CreateWalletTestHelper.h"
 
 
 TEST(cutSignTest, cutMinus)
@@ -28,4 +29,18 @@ TEST(cutSignTest, cutPlus)
 	EXPECT_EQ("3435", cutSign("+3435"));
 	EXPECT_EQ("0.3435", cutSign("+0.3435"));
 	EXPECT_EQ("0000.3435", cutSign("+0000.3435"));
+}
+
+TEST(validateFileNameTest, existingFileName)
+{
+	//set-up
+	helperCreateWallet("some.wallet","0.23");
+	
+	//test
+	EXPECT_EQ(false, validateFileName("some.wallet"));
+	EXPECT_EQ(true, validateFileName("not.wallet"));
+	
+	//tear-down		
+	remove("some.wallet");
+
 }

@@ -6,6 +6,8 @@ Date					15.10.2015
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <time.h>
+
 #include "HelperFunctions.h"
 #include "PrintMessage.h"
 
@@ -146,3 +148,76 @@ string readConfig(string configTag, string configFileName)
 	}
 	return word;
 }
+
+//converts windows path to c++ accepted path 
+//(replaces all '\' characters with '/')
+string convertPath(string givenPath)
+{
+	for(unsigned int i = 0; i < givenPath.length(); i++)
+	{
+		if(givenPath[i] == '\\')
+		{
+			givenPath[i] = '/';
+		}
+	}
+	
+	return givenPath;
+}
+
+//checks if the file fileName already exists. 
+//Returns true if fileName is not already in use and false otherwise
+bool validateFileName(string fileName)
+{
+	//save first position on which '\' was found in fileName
+	size_t firstFound = fileName.find("\\");
+	//if at least one '\' found
+	if(!firstFound)
+	{
+		//replace all '\' with '/' in fileName
+		fileName = convertPath(fileName);
+	}
+	else
+	{
+		//keep fileName unchanged
+	}
+
+	bool isValidFileName = true;
+	
+	ifstream fileChecking(fileName.c_str());
+	
+	//check if fileName already exists
+	if(fileChecking.good())
+	{
+		fileChecking.close();
+		isValidFileName = false;
+		//print "error: wallet "<< fileName << " already exists!\n"
+		//printMessage(4,fileName);
+	}
+	else
+	{
+		//valid fileName, so keep isValidFileName=true
+	}
+
+	return isValidFileName;
+	
+} 
+
+//gets unix timestamp format 
+//returns a string containing GMT calculated time, formatted like:
+//"Thu, 08 Oct 2015 10:52:40 GMT"
+string displayGMT(const time_t myTime)
+{
+  struct tm * timeinfo;
+  char buffer [100];//buffer for streaming time
+  
+  //calculate GMT format for myTime
+  timeinfo = gmtime (&myTime);
+
+  //stream GMT formatted time to buffer
+  strftime (buffer,100,"%a, %d %b %Y %H:%M:%S GMT",timeinfo);
+
+  return buffer;
+  
+}
+
+

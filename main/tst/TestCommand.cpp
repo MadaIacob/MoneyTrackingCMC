@@ -7,7 +7,6 @@ Date					11.10.2015
 #include "gtest/gtest.h"
 
 #include "CommandInterpreter.h"
-#include "CreateWalletTestHelper.h"
 
 TEST(validateCommand, outOfRangeValues)
 {
@@ -101,16 +100,3 @@ TEST(truncateAmountTest, allowedCharacters)
 
 }
 
-TEST(validateFileNameTest, existingFileName)
-{
-	//set-up
-	helperCreateWallet("some.wallet","0.23");
-	
-	//test
-	EXPECT_EQ(false, validateFileName("some.wallet"));
-	EXPECT_EQ(true, validateFileName("not.wallet"));
-	
-	//tear-down		
-	remove("some.wallet");
-
-}
