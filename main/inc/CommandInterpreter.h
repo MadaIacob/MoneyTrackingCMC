@@ -9,11 +9,11 @@ Date					09.10.2015
 #include <string>
 
 void printHelpMenu();
-void executeCreate(int argc, const char fileName[], const char initialAmount[]);
+bool executeCreate(int argc, const char fileName[], const char initialAmount[]);
 bool validateCommand(int argc, char* argv[]);
 bool validateAmount(const char []);
 std::string truncateAmount(const char []);
-void executeIncomeSpend(
+bool executeIncomeSpend(
 	const int argc, 
 	const std::string command, 
 	const char amount[],

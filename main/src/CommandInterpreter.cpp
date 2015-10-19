@@ -47,11 +47,13 @@ bool validateCommand(int argc, char* argv[])
 }
 
 //validates arguments for "create" command and executes it according to them
-void executeCreate(
+bool executeCreate(
 	const int argc, //number of arguments from command line
 	const char fileName[], //new wallet name
 	const char initialAmount[]) //initial amount for new wallet
 {
+	bool validArguments = false;
+	
 	//number of arguments for "create" command
 	switch (argc)
 	{
@@ -69,6 +71,7 @@ void executeCreate(
 				WalletEntity wallet;
 				//create fileName wallet with "+0.00" initialAmount
 				wallet.createWallet(fileName);
+				validArguments = true;
 			}
 			else
 			{
@@ -89,6 +92,7 @@ void executeCreate(
 					WalletEntity wallet;
 					//create fileName wallet with given initialAmount
 					wallet.createWallet(fileName, truncateAmount(initialAmount));
+					validArguments = true;
 				}
 				else
 				{					
@@ -104,16 +108,18 @@ void executeCreate(
 			break;
 		}
 	}
+	return validArguments;
 }
 
 //validates arguments for "income" or "spend" command and executes it 
 //according to them
-void executeIncomeSpend(
+bool executeIncomeSpend(
 	const int argc, //number of arguments from command line
 	const string command, //"income" or "spend"
 	const char amount[], //amount for new operation
 	const char fileName[]) //wallet name
 {
+	bool validArguments = false;
 	//number of arguments for "income" or "spend" command
 	switch (argc)
 	{
@@ -202,7 +208,8 @@ void executeIncomeSpend(
 								printMessage(
 									10, 
 									//convert transactionTime to string
-									displayGMT(transactionTime));				
+									displayGMT(transactionTime));	
+								validArguments = true;		
 								
 							} 
 							else
@@ -228,6 +235,7 @@ void executeIncomeSpend(
 		break;
 		}
 	}
+	return validArguments;
 }
 
 
