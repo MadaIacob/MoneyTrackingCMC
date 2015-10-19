@@ -19,7 +19,8 @@ TESTS = \
 	CreateWalletTest.o \
 	TestCommand.o \
 	CreateWalletTestHelper.o \
-	HelperFunctionsTest.o
+	HelperFunctionsTest.o \
+	ConfigurationFileTest.o
 
 LIB_OBJ = ..\lib\WalletLib.a
 	
@@ -43,6 +44,8 @@ TestCommand.o: TestCommand.cpp $(TEST_HELPER_H)
 HelperFunctionsTest.o: HelperFunctionsTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o HelperFunctionsTest.o -c HelperFunctionsTest.cpp
 
+ConfigurationFileTest.o: ConfigurationFileTest.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o ConfigurationFileTest.o -c ConfigurationFileTest.cpp
 	
 ..\..\test.exe: $(LIB_OBJ) $(TESTS) $(GTEST_LIB)
 	$(CPP) -o ..\..\test.exe $(TESTS) $(LIB_OBJ) $(GTEST_LIB)

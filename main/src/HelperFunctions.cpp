@@ -24,11 +24,11 @@ string cutSign(string validAmount)
 
 // searches for default_wallet in config file and returns true if found
 // and '=' found and some text after '=' is found
-bool existsConfigTag(string configTag)
+bool existsConfigTag(string configTag,string configFileName)
 {
 	// open config file
 	ifstream fileToOpen ;
-	fileToOpen.open ("moneytracker.config") ;
+	fileToOpen.open (configFileName.c_str()) ;
 	// value to return
 	bool valid = false ;
 	// while below reads each line in the file and puts it in string lineRead
@@ -42,8 +42,18 @@ bool existsConfigTag(string configTag)
 		std::size_t foundDef = lineRead.find("default_wallet");
 		if (foundDef!=std::string::npos)
 		{
+			size_t pos = foundDef;
+			while(pos > 0)
+			{
+				if(lineRead[pos -1] != ' ' && lineRead[pos - 1] != '\t')
+				{
+					return false;
+				}
+				pos--;
+			}
+			
 			//position of the first char after "default_wallet"
-			int pos = foundDef + 14 ;
+			pos = foundDef + 14 ;
 			//check if after default_wallet there is an '=', if a char
 			//different than space or tab enter else
 			while (lineRead[pos] != '=')
@@ -58,17 +68,25 @@ bool existsConfigTag(string configTag)
 				}
 			}
 			//check if after the '=' some char is found
-			while(!valid && lineRead[pos] != '\n')
+			pos = pos + 1;
+			//cout << "valid " << valid << endl;
+			while(!valid && pos < lineRead.size())
 			{
-				if(lineRead[pos] != ' ' && lineRead[pos] != '\t')
-				{
-					pos++ ;
+				//cout << lineRead[pos] << " " << pos << endl;
+				if(lineRead[pos] == ' ' || lineRead[pos] == '\t')
+				{	//cout << "in if" << endl;
+					pos++;
 				}
 				else
 				{
-					valid = true ;
+					//cout << "in else" << endl;
+					valid = true;					
 				}
 			}
+		}
+		else
+		{
+			valid = false;
 		}
 	}
 	
@@ -77,26 +95,30 @@ bool existsConfigTag(string configTag)
 	return valid;
 }
 
-string readConfig(string configTag)
+string readConfig(string configTag, string configFileName)
 {
-	ifstream configFile("moneytracker.config");
+	ifstream configFile(configFileName.c_str());
 	string line;
 	string word = "";
 	
-	
 	while(getline(configFile, line))
 	{
+		//if configTag wa found start storing default wallet name
 		size_t foundTag = line.find(configTag);
 		if(foundTag != std::string::npos)
 		{
 			foundTag = line.find("=");
-			unsigned int pos = foundTag +1;
+			size_t pos = foundTag +1;
 			while(pos < line.size())
 			{
 				if(line[pos] != ' ' && line[pos] != '\t')
 				{
-					word = word + line[pos];
-					pos++;
+					while(pos < line.size() && line[pos] != ' ' && line[pos] != '\t')
+					{
+						word = word + line[pos];
+						pos++;
+					}
+					break;
 				}
 				else
 				{

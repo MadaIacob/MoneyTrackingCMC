@@ -104,5 +104,7 @@ string readLastLine(const string fileName)
 //creates a new file with given name and containt
 void createFile(const string fileName,const string containt)
 {
+	ofstream testFileConfig(fileName.c_str());
 	
+	testFileConfig << containt << '\n';
 }

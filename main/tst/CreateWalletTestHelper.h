@@ -21,5 +21,5 @@ bool helperAddWalletEntity(
 	const std::string currency,
 	const std::string walletName);
 	std::string readLastLine(const std::string fileName);
-void createFile(const string fileName,const string containt);
+void createFile(const std::string fileName,const std::string containt);
 #endif
