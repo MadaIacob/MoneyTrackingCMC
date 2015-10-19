@@ -10,19 +10,6 @@ Date					15.10.2015
 
 using namespace std;
 
-// function that checks if the first character of a string is a '-'
-bool isFirstMinus (string amount)
-{
-	if (amount[0] == '-')
-	{
-		return true ;
-	}
-	else
-	{
-		return false ;
-	}
-}
-
 // this cut the first char if '-'; this function is called after truncateAmount
 string cutSign(string validAmount)
 {
