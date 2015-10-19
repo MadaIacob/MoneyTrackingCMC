@@ -17,7 +17,7 @@ HEADERS = \
 
 TESTS = \
 	CreateWalletTest.o \
-	TestCommand.o \
+	CommandInterpreterTest.o \
 	CreateWalletTestHelper.o \
 	HelperFunctionsTest.o \
 	ConfigurationFileTest.o
@@ -38,8 +38,8 @@ CreateWalletTest.o: CreateWalletTest.cpp $(TEST_HELPER_H)
 CreateWalletTestHelper.o: CreateWalletTestHelper.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o CreateWalletTestHelper.o -c CreateWalletTestHelper.cpp
 	
-TestCommand.o: TestCommand.cpp $(TEST_HELPER_H)
-	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o TestCommand.o -c TestCommand.cpp
+CommandInterpreterTest.o: CommandInterpreterTest.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o CommandInterpreterTest.o -c CommandInterpreterTest.cpp
 
 HelperFunctionsTest.o: HelperFunctionsTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o HelperFunctionsTest.o -c HelperFunctionsTest.cpp

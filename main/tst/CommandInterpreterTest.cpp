@@ -7,6 +7,10 @@ Date					11.10.2015
 #include "gtest/gtest.h"
 
 #include "CommandInterpreter.h"
+#include "CreateWalletTestHelper.h"
+
+#include <string>
+#include <stdio.h>
 
 TEST(validateCommand, outOfRangeValues)
 {
@@ -100,3 +104,129 @@ TEST(truncateAmountTest, allowedCharacters)
 
 }
 
+TEST(executeCreateTest, validParameters)
+{
+	//set-up
+	int noOfArguments1 = 3;
+	char fileName1[] = "validParametersFileTest1";
+	
+	int noOfArguments2 = 4;
+	char fileName2[] = "validParametersFileTest2";
+	char initialAmount2[] = "36.459";
+	
+	int noOfArguments3 = 2;
+	char fileName3[] = "validParametersFileTest1";
+	
+	//test
+	EXPECT_EQ(true,executeCreate(noOfArguments1, fileName1));
+	EXPECT_EQ(true,executeCreate(noOfArguments2, fileName2, initialAmount2));
+	EXPECT_EQ(false,executeCreate(noOfArguments3, fileName3));
+	
+	//tear-down
+	remove(fileName1);
+	remove(fileName2);
+}
+
+TEST(executeCreateTest, invalidParameters)
+{
+	//set-up
+	int noOfArguments1 = 3;
+	char fileName1[] = "invalidParametersFileTest1";
+	
+	int noOfArguments2 = 4;
+	char fileName2[] = "invalidParametersFileTest2";
+	char initialAmount2[] = "36,459";
+	
+	int noOfArguments3 = 4;
+	char fileName3[] = "invalidParametersFileTest3";
+	char initialAmount3[] = "36.45sd9";
+	
+	int noOfArguments4 = 2;
+	char fileName4[] = "invalidParametersFileTest4";
+	
+	//test
+	EXPECT_EQ(true,executeCreate(noOfArguments1, fileName1));
+	EXPECT_EQ(false,executeCreate(noOfArguments1, fileName1));
+	EXPECT_EQ(false,executeCreate(noOfArguments2, fileName2,initialAmount2));
+	EXPECT_EQ(false,executeCreate(noOfArguments3, fileName3,initialAmount3));
+	EXPECT_EQ(false,executeCreate(noOfArguments4, fileName4));
+	
+	//tear-down
+	remove(fileName1);
+	remove(fileName2);
+	remove(fileName3);
+	remove(fileName4);
+}
+
+TEST(executeIncomeSpendTest, validParameters)
+{
+	//set-up
+	std::string command1 = "income";
+	char amount1[] = "10.23";
+
+	std::string command2 = "spend";
+	char amount2[] = "10.23";
+	
+	char fileName[] = "executeIncomeSpendTest";
+	helperCreateWallet(fileName);
+	int noOfArguments = 3;
+	
+	//test
+	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
+						command1,
+						amount1,
+						fileName));
+	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
+						command2,
+						amount2,
+						fileName));
+						
+	//tear-down
+	remove(fileName);	
+}
+
+TEST(executeIncomeSpendTest, invalidParameters)
+{
+	//set-up
+	
+	int noOfArguments1 = 2;
+	char amount1[] = "10.23";
+
+	char amount2[] = "10,23";
+
+	char amount3[] = "10.23ds464";
+	
+	char amount4[] = "-10.23464";
+	
+	char fileName[] = "executeIncomeSpendTest";
+	char nonExistentFileName[] = "nonExistent";
+	helperCreateWallet(fileName);
+	std::string command = "income";
+	int noOfArguments = 3;
+	
+	//test
+	EXPECT_EQ(false, executeIncomeSpend(noOfArguments1,
+						command,
+						amount1,
+						fileName));
+	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
+						command,
+						amount2,
+						fileName));
+	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
+						command,
+						amount3,
+						fileName));
+	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
+						command,
+						amount4,
+						fileName));
+	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
+						command,
+						amount4,
+						nonExistentFileName));
+						
+	//tear-down
+	remove(fileName);	
+	remove(nonExistentFileName);
+}
