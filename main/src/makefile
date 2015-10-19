@@ -50,4 +50,5 @@ HelperFunctions.o: HelperFunctions.cpp $(HEADERS)
 # clean up
 clean:
 	rm $(OBJECTS)
-	rm $(WALLET_LIB)
+	rm ../lib/WalletLib.a
+	rm WalletMain.o

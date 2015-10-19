@@ -53,5 +53,6 @@ ConfigurationFileTest.o: ConfigurationFileTest.cpp $(TEST_HELPER_H)
 # clean up
 clean:
 	rm $(TESTS)
-	rm ..\lib\TestLib.a
+	rm ../lib/TestLib.a
+	
 

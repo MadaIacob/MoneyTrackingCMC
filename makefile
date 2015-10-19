@@ -17,11 +17,10 @@ moneytracker.exe: main\lib\WalletLib.a main\src\WalletMain.o
 
 test.exe: $(LIB_OBJ) $(LIB_TST) $(GTEST_LIB)
 	$(CPP) -o test.exe $(LIB_TST) $(LIB_OBJ) $(GTEST_LIB)
-
 	
-cleanAll:
-	$(MAKE) -C main\src clean
-	$(MAKE) -C main\tst clean
 clean:	
 	rm moneytracker.exe
 	rm test.exe
+	$(MAKE) -C main\src clean
+	$(MAKE) -C main\tst clean
+	
