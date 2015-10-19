@@ -8,6 +8,8 @@ Date					14.10.2015
 #include "HelperFunctions.h"
 #include "CreateWalletTestHelper.h"
 
+#include <string>
+#include <time.h>
 
 TEST(cutSignTest, cutMinus)
 {
@@ -43,4 +45,34 @@ TEST(validateFileNameTest, existingFileName)
 	//tear-down		
 	remove("some.wallet");
 
+}
+
+TEST(displayGMTTest, inRangeTime)
+{
+	//set-up
+	time_t epochTime1 = 1445244094;
+	time_t epochTime2 = 0;
+	
+	std::string expectedTime1 = "Mon, 19 Oct 2015 08:41:34 GMT";
+	std::string expectedTime2 = "Thu, 01 Jan 1970 00:00:00 GMT";
+	
+	std::string actualTime1 = displayGMT(epochTime1);
+	std::string actualTime2 = displayGMT(epochTime2);
+	
+	//test
+	EXPECT_EQ(expectedTime1, actualTime1);
+	EXPECT_EQ(expectedTime2, actualTime2);
+		
+}
+
+TEST(displayGMTTest, outOfRangeTime)
+{
+	//set-up
+	time_t epochTime = -1445244094;
+	std::string expectedTime = "";
+	std::string actualTime = displayGMT(epochTime);
+	
+	//test
+	EXPECT_EQ(expectedTime, actualTime);
+		
 }
