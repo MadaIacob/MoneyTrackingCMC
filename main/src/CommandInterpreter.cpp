@@ -39,6 +39,12 @@ bool validateCommand(int argc, char* argv[])
 		executeIncomeSpend(argc, argv[1], argv[2], argv[3]);
 		validCommand = true;
 	}
+	else if(strcmp(argv[1], "balance") == 0) 
+	{
+		//execute "balance" command
+		//executeBalance(argc, argv[2], argv[3]);
+		validCommand = true;
+	}
 	else
 	{
 		// no valid command provided, keep validCommand = false
@@ -245,9 +251,16 @@ bool executeIncomeSpend(
 void printHelpMenu()
 {
 	cout << endl << "Accepted commands and arguments:" << endl;
-	cout << " moneytracker[.exe] create  <file_name> <initial_amount>" << endl;
-	cout << " moneytracker[.exe] income  <initial_amount>" << endl;
-	cout << " moneytracker[.exe] spend   <initial_amount>" << endl;
+	cout << " ---------------------------------------------------------------------" << endl;
+	cout << " moneytracker[.exe] create <file_name> <initial_amount>" << endl;
+	cout << " ---------------------------------------------------------------------" << endl;
+	cout << " moneytracker[.exe] income [-c/--category] <category> <initial_amount> " << endl;
+	cout << " moneytracker[.exe] income <initial_amount> [-c/--category] <category>" << endl;
+	cout << " ---------------------------------------------------------------------" << endl;
+	cout << " moneytracker[.exe] spend [-c/--category] <category> <initial_amount> " << endl;
+	cout << " moneytracker[.exe] spend <initial_amount> [-c/--category] <category>" << endl;
+	cout << " ---------------------------------------------------------------------" << endl;
+	cout << " moneytracker[.exe] balance" << endl;
 }
 
 
