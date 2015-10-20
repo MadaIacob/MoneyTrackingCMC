@@ -7,6 +7,7 @@ Date					15.10.2015
 #include <string>
 #include <fstream>
 #include <time.h>
+#include <algorithm>
 
 #include "HelperFunctions.h"
 #include "PrintMessage.h"
@@ -32,6 +33,7 @@ bool existsConfigTag(string configTag,string configFileName)
 	// open config file
 	ifstream fileToOpen ;
 	fileToOpen.open (configFileName.c_str()) ;
+	
 	if(!fileToOpen.is_open())
 	{
 		//print message like 
@@ -40,76 +42,40 @@ bool existsConfigTag(string configTag,string configFileName)
 		return false;
 	}
 	else {}
+
 	// value to return
 	bool valid = false ;
 	// while below reads each line in the file and puts it in string lineRead
 	string lineRead = "";
-	//n counts lines that are read
-	int n = 0; 
-	while (getline(fileToOpen, lineRead))
+	//position of default_wallet, if found
+	std::size_t foundDef;
+	while (getline(fileToOpen, lineRead) && !valid)
 	{
-		n++ ;
-		//position of default_wallet, if found
-		std::size_t foundDef = lineRead.find("default_wallet");
+		foundDef = lineRead.find(configTag);
 		if (foundDef!=std::string::npos)
 		{
-			size_t pos = foundDef;
-			while(pos > 0)
-			{
-				if(lineRead[pos -1] != ' ' && lineRead[pos - 1] != '\t')
-				{
-					//print message like
-					//error: no default wallet configured in 'moneytracker.config'
-					printMessage(14, configFileName);
-					return false;
-				}
-				pos--;
-			}
+			//remove spaces and tags from current line
+			lineRead.erase(remove(lineRead.begin(), lineRead.end(), ' '), lineRead.end());
+			lineRead.erase(remove(lineRead.begin(), lineRead.end(), '\t'), lineRead.end());
 			
-			//position of the first char after "default_wallet"
-			pos = foundDef + 14 ;
-			//check if after default_wallet there is an '=', if a char
-			//different than space or tab enter else
-			while (lineRead[pos] != '=')
+			//check if the configTag is correct
+			foundDef = lineRead.find(configTag);
+			
+			if(lineRead[lineRead.size() -1] != '=' &&
+			   foundDef == 0 &&
+			   lineRead[foundDef + configTag.size()] == '=')
 			{
-				if(lineRead[pos] == ' ' || lineRead[pos] == '\t' )
-				{
-					pos++ ;
-				}
-				else
-				{
-					//print message like
-					//error: no default wallet configured in 'moneytracker.config'
-					printMessage(14, configFileName);
-					return false ;
-				}
+				valid = true;
 			}
-			//check if after the '=' some char is found
-			pos = pos + 1;
-			while(!valid && pos < lineRead.size())
-			{
-				
-				if(lineRead[pos] == ' ' || lineRead[pos] == '\t')
-				{	
-					pos++;
-				}
-				else
-				{
-					valid = true;					
-				}
-			}
-		}
-		else
-		{
-			//print message like
-			//error: no default wallet configured in 'moneytracker.config'
-			printMessage(14, configFileName);
-			valid = false;
 		}
 	}
 	
 	fileToOpen.close() ;
-	
+	if(valid == false)
+	{
+		//error: no default wallet configured in 'moneytracker.config'
+		printMessage(14, configFileName);
+	}
 	return valid;
 }
 
@@ -118,32 +84,33 @@ string readConfig(string configTag, string configFileName)
 	ifstream configFile(configFileName.c_str());
 	string line;
 	string word = "";
-	
+	size_t foundTag;
+	size_t foundEqual;
 	while(getline(configFile, line))
 	{
-		//if configTag wa found start storing default wallet name
-		size_t foundTag = line.find(configTag);
+		//remove spaces and tags from current line
+		line.erase(remove(line.begin(), line.end(), ' '), line.end());
+		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
+			
+		//if configTag was found start storing default wallet name
+		foundTag = line.find(configTag);
 		if(foundTag != std::string::npos)
-		{
-			foundTag = line.find("=");
-			size_t pos = foundTag +1;
-			while(pos < line.size())
+		{	
+			foundEqual = line.find("=");
+			size_t pos = foundEqual +1;
+			
+			//check if the configTag is correct and save the file name
+			if(foundTag == 0 &&
+			   line[foundTag + configTag.size()] == '=')
 			{
-				if(line[pos] != ' ' && line[pos] != '\t')
+				while(pos < line.size())
 				{
-					while(pos < line.size() && line[pos] != ' ' && line[pos] != '\t')
-					{
-						word = word + line[pos];
-						pos++;
-					}
-					break;
+					word = word + line[pos];
+					pos++;				
 				}
-				else
-				{
-					pos++;
-				}					
+				
+				break;
 			}
-			break;
 		}
 	}
 	return word;

@@ -12,10 +12,10 @@ Date				15.10.2015
 
 std::string cutSign(std::string validAmount);
 bool existsConfigTag(
-	std::string configTag, 
+	std::string configTag = "default_wallet", 
 	std::string configFileName = "moneytracker.config");
 std::string readConfig(
-	std::string configTag , 
+	std::string configTag = "default_wallet" , 
 	std::string configFileName = "moneytracker.config");
 bool validateFileName(std::string fileName);
 std::string convertPath(std::string givenPath);

@@ -8,6 +8,7 @@ Date					15.10.2015
 
 #include <string>
 #include <stdio.h>
+#include <iostream>
 
 #include "CreateWalletTestHelper.h"
 #include "HelperFunctions.h"
@@ -88,33 +89,28 @@ TEST(ReadConfigTagTest, configTagContent)
 	
 	string testOkConfigFile2("okConfig2");
 	string containtOkConfig2("		default_wallet 	=  my.wallet");
+
 	
 	string testOkConfigFile3("okConfig3");
-	string containtOkConfig3("default_wallet = my.wallet and something \n ");
+	string containtOkConfig3("default_wallet 		=			 my.wallet		");
 	
 	string testOkConfigFile4("okConfig4");
-	string containtOkConfig4("default_wallet 		=			 my.wallet		");
-	
-	string testOkConfigFile5("okConfig5");
-	string containtOkConfig5("something_wallet = my.wallet \n default_wallet = my.wallet");
+	string containtOkConfig4("something_wallet = my.wallet \n default_wallet = my.wallet");
 	
 	createFile(testOkConfigFile1 , containtOkConfig1);
 	createFile(testOkConfigFile2 , containtOkConfig2);
 	createFile(testOkConfigFile3 , containtOkConfig3);
 	createFile(testOkConfigFile4 , containtOkConfig4);
-	createFile(testOkConfigFile5 , containtOkConfig5);
 	
 	//test
 	EXPECT_EQ("my.wallet", readConfig("default_wallet", "okConfig1"));
 	EXPECT_EQ("my.wallet", readConfig("default_wallet", "okConfig2"));
 	EXPECT_EQ("my.wallet", readConfig("default_wallet", "okConfig3"));
 	EXPECT_EQ("my.wallet", readConfig("default_wallet", "okConfig4"));
-	EXPECT_EQ("my.wallet", readConfig("default_wallet", "okConfig5"));	
 	
 	//tear-down
 	remove("okConfig1");
 	remove("okConfig2");
 	remove("okConfig3");
 	remove("okConfig4");
-	remove("okConfig5");
 }
