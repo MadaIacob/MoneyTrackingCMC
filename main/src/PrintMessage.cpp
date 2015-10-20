@@ -86,6 +86,10 @@ void printMessage( const char messageCode,
 		};
 		case 11: //error: income should be higher than 0.
 		{
+			if(parameter1 == "spend")
+			{
+				parameter1 = "spending";
+			}
 			cout << "error: " << parameter1
 			<< " should be higher than 0." << endl;
 			break;
@@ -98,7 +102,7 @@ void printMessage( const char messageCode,
 		};
 		case 13: //error: could not open 'moneytracker.config'
 		{
-			cout << "error: could not open '" << parameter1	<< "'" << endl;
+			cout << "error: could not open configuration '" << parameter1	<< "'" << endl;
 			break;
 		};
 		case 14: //error: no default wallet configured in 'moneytracker.config'
