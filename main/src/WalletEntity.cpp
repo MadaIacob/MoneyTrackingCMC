@@ -43,24 +43,18 @@ void WalletEntity::createWallet(
 	const string walletName,
 	const string initialAmount )
 {
-	//stream's state
-	bool checkStream = false; 
-	
 	//create walletName file  
 	ofstream outFile(walletName.c_str());
 	
 	//check if walletName file was created
-	//will be true if none of the stream's error state flag is set
-	checkStream = outFile.good();
-
-	if(checkStream)
-	{
+	if(outFile.good())
+	{//true if none of the stream's error state flag is set - wallet created
+		
 		//write initialAmount into walletName file
 		outFile << initialAmount << " " << "RON\n";
 		
 		//check if the writing was ok
-		checkStream = outFile.good();
-		if(!checkStream)
+		if(!outFile.good())
 		{
 			//if writing was not ok, print " writing file error! "
 			printMessage(5);
@@ -72,7 +66,8 @@ void WalletEntity::createWallet(
 		}		
 	} 
 	else 
-	{
+	{//false if none of the stream's error state flag is set - wallet not created
+
 		//print "error: characters  < > : \" / \\ | ? *  are not allowed for naming files!"
 		printMessage(3);
 	}		
@@ -97,33 +92,33 @@ bool WalletEntity::addWalletEntity(const string walletName)
 	//open walletName for reading
 	ofstream wallet(walletName.c_str(),ios::app);
 	
-	//check if file was opened
+	//check if file/wallet was open
 	if(wallet.good())
-	{
+	{// file open ok
+
+		//compose new line for the file/wallet
 		newLine = timeEntityString + ";" +
 			  signEntity + ";" +
 			  amountEntity + ";" +
 			  categoryEntity + ";" +
 			  currencyEntity + "\n";
 	
-		//append the wallet
+		//add the new line to the file/wallet
 		wallet << newLine;
 		
-		//check if file was appended
+		//check if new line was added
 		if(wallet.good())
-		{
+		{//append ok
 			isAdded = true;
 		}
 		else
-		{
-			isAdded = false;
+		{//append not ok
 		}
 		
 		wallet.close();
 	}
 	else
-	{
-		isAdded = false;
+	{// file open not ok
 	}
 	
 	return isAdded;
