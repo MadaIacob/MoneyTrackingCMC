@@ -158,7 +158,7 @@ TEST(executeCreateTest, invalidParameters)
 	remove(fileName4);
 }
 
-TEST(executeIncomeSpendTest, validParameters)
+ /* TEST(executeIncomeSpendTest, validParameters)
 {
 	//set-up
 	std::string command1 = "income";
@@ -167,9 +167,15 @@ TEST(executeIncomeSpendTest, validParameters)
 	std::string command2 = "spend";
 	char amount2[] = "10.23";
 	
-	char fileName[] = "executeIncomeSpendTest";
+	char fileName[] = "executeIncomeSpendTest.txt";
 	helperCreateWallet(fileName);
+	
 	int noOfArguments = 3;
+	
+	
+	std::string configName("configFile");
+	std::string configContaint("default_wallet = executeIncomeSpendTest.txt");
+	createFile(configName, configContaint);
 	
 	//test
 	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
@@ -182,8 +188,8 @@ TEST(executeIncomeSpendTest, validParameters)
 						fileName));
 						
 	//tear-down
-	remove(fileName);	
-}
+	//remove(fileName);	
+} 
 
 TEST(executeIncomeSpendTest, invalidParameters)
 {
@@ -201,6 +207,7 @@ TEST(executeIncomeSpendTest, invalidParameters)
 	char fileName[] = "executeIncomeSpendTest";
 	char nonExistentFileName[] = "nonExistent";
 	helperCreateWallet(fileName);
+	helperCreateWallet(nonExistentFileName);
 	std::string command = "income";
 	int noOfArguments = 3;
 	
@@ -229,4 +236,4 @@ TEST(executeIncomeSpendTest, invalidParameters)
 	//tear-down
 	remove(fileName);	
 	remove(nonExistentFileName);
-}
+} */
