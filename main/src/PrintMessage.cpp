@@ -33,7 +33,7 @@ void printMessage( const char messageCode,
 		case 2:
 		{
 			cout << "error: " << parameter2 
-			<< " is not a valid initial ammount.\nCreating "
+			<< " is not a valid initial amount.\nCreating "
 			<< parameter1 <<" aborted."
 			<< endl;
 			break;
@@ -60,9 +60,9 @@ void printMessage( const char messageCode,
 			<< parameter2 << " RON" << endl;
 			break;
 		};
-		case 7://error: no ammount specified for 'spend'.
+		case 7://error: no amount specified for 'spend'.
 		{
-			cout << "error: no ammount specified for '" << parameter1 << "'." 
+			cout << "error: no amount specified for '" << parameter1 << "'." 
 			<< endl;
 			break;
 		};
@@ -102,7 +102,8 @@ void printMessage( const char messageCode,
 		};
 		case 13: //error: could not open 'moneytracker.config'
 		{
-			cout << "error: could not open configuration '" << parameter1	<< "'" << endl;
+			cout << "error: could not open configuration '" << parameter1 
+			<< "'" << endl;
 			break;
 		};
 		case 14: //error: no default wallet configured in 'moneytracker.config'
