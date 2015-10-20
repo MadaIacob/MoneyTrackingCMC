@@ -40,7 +40,7 @@ void printMessage( const char messageCode,
 		};
 		case 3:
 		{
-			cout << "error: characters  < > : \" | ? *  are not allowed for naming files!"
+			cout << "error: could not create " << parameter1
 			<< endl;
 			break;
 		};

@@ -68,8 +68,8 @@ void WalletEntity::createWallet(
 	else 
 	{//false if none of the stream's error state flag is set - wallet not created
 
-		//print "error: characters  < > : \" / \\ | ? *  are not allowed for naming files!"
-		printMessage(3);
+		//print "error: could not create C:\path\mywallet"
+		printMessage(3, walletName);
 	}		
 	
 	//closes the file
