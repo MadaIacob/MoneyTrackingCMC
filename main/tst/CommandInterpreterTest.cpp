@@ -17,7 +17,7 @@ TEST(validateCommand, outOfRangeValues)
 	//set-up
 	char* argv1[2]={(char*) "unknown", (char*) "unknown"};
 	char* argv2[2]={(char*) "moneytracker.exe", (char*) "unknown"};
-			
+	
 	//test
 	EXPECT_FALSE(validateCommand(0,&argv1[0]));
 	EXPECT_FALSE(validateCommand(1,&argv1[0]));
@@ -27,9 +27,32 @@ TEST(validateCommand, outOfRangeValues)
 	EXPECT_FALSE(validateCommand(1,&argv2[0]));
 	EXPECT_FALSE(validateCommand(2,&argv2[0]));
 	EXPECT_FALSE(validateCommand(3,&argv2[0]));
-	
 	//tear-down		
 
+}
+
+TEST(validateCommand, boundaryValues)
+{
+	char* argv1[2]={(char*) "moneytracker.exe", (char*) "reate"};
+	char* argv2[2]={(char*) "moneytracker.exe", (char*) "creat"};
+	char* argv3[2]={(char*) "moneytracker.exe", (char*) "cr eate"};
+	char* argv4[2]={(char*) "moneytracker.exe", (char*) "incom"};
+	char* argv5[2]={(char*) "moneytracker.exe", (char*) "ncome"};
+	char* argv6[2]={(char*) "moneytracker.exe", (char*) "spen"};
+	char* argv7[2]={(char*) "moneytracker.exe", (char*) "pend"};
+	char* argv8[2]={(char*) "moneytracker.exe", (char*) "balanc"};
+	char* argv9[2]={(char*) "moneytracker.exe", (char*) "alance"};
+	
+	EXPECT_FALSE(validateCommand(2,&argv1[0]));
+	EXPECT_FALSE(validateCommand(2,&argv2[0]));
+	EXPECT_FALSE(validateCommand(2,&argv3[0]));
+	EXPECT_FALSE(validateCommand(2,&argv4[0]));
+	EXPECT_FALSE(validateCommand(2,&argv5[0]));	
+	EXPECT_FALSE(validateCommand(2,&argv6[0]));
+	EXPECT_FALSE(validateCommand(2,&argv7[0]));
+	EXPECT_FALSE(validateCommand(2,&argv8[0]));
+	EXPECT_FALSE(validateCommand(2,&argv9[0]));	
+	
 }
 
 TEST(validateCommand, inRangeValues)
@@ -38,15 +61,18 @@ TEST(validateCommand, inRangeValues)
 	char* argv1[3]={(char*) "moneytracker.exe",(char*) "create"};
 	char* argv2[3]={(char*) "moneytracker.exe",(char*) "income"};
 	char* argv3[3]={(char*) "moneytracker.exe",(char*) "spend"};
+	char* argv4[3]={(char*) "moneytracker.exe",(char*) "balance"};
 			
 	//test
 	EXPECT_TRUE(validateCommand(2,&argv1[0]));
 	EXPECT_TRUE(validateCommand(2,&argv2[0]));
 	EXPECT_TRUE(validateCommand(2,&argv3[0]));
+	EXPECT_TRUE(validateCommand(2,&argv4[0]));
 	
 	//tear-down		
 
 }
+
 TEST(validateAmountTest, notAllowedCharacters)
 {
 	//test
