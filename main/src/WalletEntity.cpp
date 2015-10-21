@@ -8,10 +8,8 @@ Date					8.10.2015
 #include <string>
 #include <fstream>
 #include <iostream>
-#include <iomanip>
-#include <ctime>
 #include <sstream>
-#include <vector>
+#include <ctime>
 #include <stdlib.h>
 
 #include "WalletEntity.h"
@@ -127,79 +125,4 @@ bool WalletEntity::addWalletEntity(const string walletName)
 	return isAdded;
 }
 
-double WalletEntity::getAmount(const string line)
-{
-	
-	vector <string> data;
-	double amount;
-	
-	istringstream ss(line);
-	
-	while(ss)
-	{
-		string parameter;
-		if(!getline(ss,parameter,';')) break;
-		data.push_back(parameter);
-	}	
-
-	if(data.at(1) == "-")
-	{
-		amount = 0 - atof(data.at(2).c_str()); 
-	}
-	else
-	{
-		amount = atof(data.at(2).c_str());
-	}
-	
-	return amount;
-	
-}
-
-string WalletEntity::getBalance(const string walletName)
-{
-	
-	ifstream wallet(walletName.c_str());
-	string line;
-	vector <string> data;
-	double balance = 0;
-	//read from the given file
-	//getline(wallet,walletContent);
-	if(getline(wallet,line)) 
-	{
-		string sign = "";
-		string result = "" ;
-		sign = line[0];
-		int len = line.length();
-		double firstAmount = 0;
-		for(int i = 1; i < len; i++)
-			{
-				if (line[i]!=' ')
-				{
-					result += line[i];
-				}
-				else 
-				{
-					if(sign == "-")
-					{
-						firstAmount = 0 - atof(result.c_str()); 
-					}
-					else
-					{
-						firstAmount = atof(result.c_str());
-					}
-				}
-			}
-			balance += firstAmount;
-		while(getline(wallet,line))
-		{
-			balance += getAmount(line);
-		}
-	}
-	string amountConverted;
-	ostringstream sstream;
-	sstream << fixed << setprecision(2) << balance;
-	amountConverted = sstream.str();
-	if (balance >= 0) amountConverted = '+' + amountConverted;
-	return amountConverted;
-}
 

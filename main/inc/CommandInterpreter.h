@@ -19,5 +19,9 @@ bool executeIncomeSpend(
 	const char amount[],
 	const std::string configFileName = "moneytracker.config",
 	const char fileName[] = "");
+bool executeBalance(
+	const int argc,
+	const std::string configFileName = "moneytracker.config", 
+	const char fileName[] = "");
 
 #endif // COMMANDINTREPRETER_H

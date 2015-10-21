@@ -97,7 +97,7 @@ void printMessage( const char messageCode,
 		case 12: //error: could not open 'C:\path\some.wallet' to register transaction
 		{
 			cout << "error: could not open '" << parameter1
-			<< "' to register transaction" << endl;
+			<< "'" << parameter2 << endl;
 			break;
 		};
 		case 13: //error: could not open 'moneytracker.config'
@@ -110,6 +110,12 @@ void printMessage( const char messageCode,
 		{
 			cout << "error: no default wallet configured in '" 
 			<< parameter1 << "'" << endl;
+			break;
+		};
+		case 15: //Balance for my.wallet is +900.00 RON
+		{
+			cout << "Balance for " 	<< parameter1 << " is " 
+			<< parameter2 << " " << parameter3 << endl;
 			break;
 		};
 		

@@ -42,7 +42,7 @@ bool validateCommand(int argc, char* argv[])
 	else if(strcmp(argv[1], "balance") == 0) 
 	{
 		//execute "balance" command
-		//executeBalance(argc, argv[2], argv[3]);
+		executeBalance(argc, "moneytracker.config", argv[3]);
 		validCommand = true;
 	}
 	else
@@ -236,7 +236,8 @@ bool executeIncomeSpend(
 							//print error: could not open 'C:\path\some.wallet' to register transaction
 							printMessage(12, readConfig(
 								"default_wallet", 
-								configFileName));
+								configFileName), 
+								" to register transaction");
 						}
 					}	
 					else
@@ -426,6 +427,58 @@ string truncateAmount(const char word[])
 	if(validValue >=0 ) amountConverted = '+' + amountConverted;
 
 	return amountConverted;
+}
+
+//executes "balance" command for a file
+//returns true if balance was successfully calculated
+bool executeBalance(
+	const int argc, //number of arguments from command line
+	const string configFileName, //config file for default values
+	const char fileName[]) //wallet name
+{
+	bool isBalanceDisplayed = false;
+	
+	//number of arguments for "balance" command
+	switch (argc)
+	{
+		default: //"balance" command with or without arguments
+		{
+			//check for "default_wallet" tag in config file
+			if(existsConfigTag("default_wallet", configFileName))
+			{// tag "default_wallet" exists in config file	
+		
+				//read content of "default_wallet" tag
+				string defaultWallet = readConfig("default_wallet", configFileName);
+				//check if the file specified in "default_wallet" tag exists
+				if(!validateFileName(defaultWallet))
+				{	//the file specified in "default_wallet" tag exists
+					
+					//calculate balance for default wallet and 
+					//print a success message
+					// like "Balance for my.wallet is +900.00 RON"
+					printMessage(15, defaultWallet, getBalance(defaultWallet), "RON");
+					isBalanceDisplayed = true;	
+				} 
+				else 
+				{
+					//file specified in "default_wallet" tag doesn't exist
+					//print error: could not open 'C:\path\some.wallet' to calculate balance
+					printMessage(
+						12, 
+						readConfig("default_wallet", configFileName), 
+						" to calculate balance");
+				}
+			}	
+			else
+			{
+				// could not open moneytracker.config or
+				// tag "default_wallet" is incorrect or 
+				// tag "default_wallet" is not implemented at all 
+			}			
+			break;
+		}
+	}
+	return isBalanceDisplayed;
 }
 
 

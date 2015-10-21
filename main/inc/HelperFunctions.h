@@ -20,5 +20,7 @@ std::string readConfig(
 bool validateFileName(std::string fileName);
 std::string convertPath(std::string givenPath);
 std::string displayGMT(const time_t myTime);
+std::string getBalance(const std::string walletName);
+double getAmount(const std::string line);
 
 #endif
