@@ -184,7 +184,7 @@ TEST(executeCreateTest, invalidParameters)
 	remove(fileName4);
 }
 
- /* TEST(executeIncomeSpendTest, validParameters)
+TEST(executeIncomeSpendTest, validParameters)
 {
 	//set-up
 	std::string command1 = "income";
@@ -207,14 +207,17 @@ TEST(executeCreateTest, invalidParameters)
 	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
 						command1,
 						amount1,
+						configName,
 						fileName));
 	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
 						command2,
 						amount2,
+						configName,
 						fileName));
 						
 	//tear-down
-	//remove(fileName);	
+	remove(fileName);	
+	remove(configName.c_str());
 } 
 
 TEST(executeIncomeSpendTest, invalidParameters)
@@ -262,4 +265,4 @@ TEST(executeIncomeSpendTest, invalidParameters)
 	//tear-down
 	remove(fileName);	
 	remove(nonExistentFileName);
-} */
+}

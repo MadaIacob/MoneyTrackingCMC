@@ -17,6 +17,7 @@ bool executeIncomeSpend(
 	const int argc, 
 	const std::string command, 
 	const char amount[],
-	const char fileName[]);
+	const std::string configFileName = "moneytracker.config",
+	const char fileName[] = "");
 
 #endif // COMMANDINTREPRETER_H
