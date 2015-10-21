@@ -36,7 +36,7 @@ bool validateCommand(int argc, char* argv[])
 			(strcmp(argv[1], "spend") == 0))
 	{
 		//execute "income" or "spend" command
-		executeIncomeSpend(argc, argv[1], argv[2], argv[3]);
+		executeIncomeSpend(argc, argv[1], argv[2],"moneytracker.config", argv[3]);
 		validCommand = true;
 	}
 	else if(strcmp(argv[1], "balance") == 0) 
@@ -234,7 +234,9 @@ bool executeIncomeSpend(
 						{
 							//file specified in "default_wallet" tag doesn't exist
 							//print error: could not open 'C:\path\some.wallet' to register transaction
-							printMessage(12, readConfig("default_wallet"));
+							printMessage(12, readConfig(
+								"default_wallet", 
+								configFileName));
 						}
 					}	
 					else
