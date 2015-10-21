@@ -8,6 +8,7 @@ Date					8.10.2015
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <ctime>
 #include <sstream>
 #include <vector>
@@ -154,7 +155,7 @@ double WalletEntity::getAmount(const string line)
 	
 }
 
-double WalletEntity::getBalance(const string walletName)
+string WalletEntity::getBalance(const string walletName)
 {
 	
 	ifstream wallet(walletName.c_str());
@@ -166,8 +167,8 @@ double WalletEntity::getBalance(const string walletName)
 	if(getline(wallet,line)) 
 	{
 		string sign = "";
-		sign = line[0];
 		string result = "" ;
+		sign = line[0];
 		int len = line.length();
 		double firstAmount = 0;
 		for(int i = 1; i < len; i++)
@@ -186,7 +187,6 @@ double WalletEntity::getBalance(const string walletName)
 					{
 						firstAmount = atof(result.c_str());
 					}
-					
 				}
 			}
 			balance += firstAmount;
@@ -195,5 +195,11 @@ double WalletEntity::getBalance(const string walletName)
 			balance += getAmount(line);
 		}
 	}
-	return balance;
+	string amountConverted;
+	ostringstream sstream;
+	sstream << fixed << setprecision(2) << balance;
+	amountConverted = sstream.str();
+	if (balance >= 0) amountConverted = '+' + amountConverted;
+	return amountConverted;
 }
+
