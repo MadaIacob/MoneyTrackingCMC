@@ -124,3 +124,19 @@ bool WalletEntity::addWalletEntity(const string walletName)
 	return isAdded;
 	
 }
+
+double WalletEntity::getBalance(const string walletName)
+{
+	
+	ifstream wallet(walletName.c_str());
+	string line;
+	double balance = 0;
+	//read from the given file
+	//getline(wallet,walletContent);
+	
+	while(getline(wallet,line))
+	{
+		balance += getAmount(line);
+	}
+	return balance;
+}
