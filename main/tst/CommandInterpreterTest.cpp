@@ -198,45 +198,19 @@ TEST(executeIncomeSpendTest, validParameters)
 	std::string configContaint("sdrsrfs\n\trfsdrf\ndefault_wallet\t = \t \t\texecuteIncomeSpendTest\t\n default_wallet = some.wallet");
 	createFile(configName1, configContaint);
 	
-	std::string configName2("configFile2");
-	configContaint = "default_wallet=executeIncomeSpendTest";
-	createFile(configName2, configContaint);
-
-	std::string configName3("configFile3");
-	configContaint = "sdrsrfs\n\trfsdrf\n default_w allet\t = \t\t\tsome.wallet\n default_wallet = executeIncomeSpendTest";
-	createFile(configName3, configContaint);
-	
 	//test
 	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
 						command1,
 						amount1,
 						configName1));
 	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
-						command1,
-						amount2,
-						configName2));
-	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
-						command1,
-						amount1,
-						configName3));
-	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
 						command2,
 						amount2,
 						configName1));
-	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
-						command2,
-						amount1,
-						configName2));
-	EXPECT_EQ(true, executeIncomeSpend(noOfArguments,
-						command2,
-						amount2,
-						configName3));
 						
 	//tear-down
 	remove(fileName);	
 	remove(configName1.c_str());
-	remove(configName2.c_str());
-	remove(configName3.c_str());
 } 
 
 TEST(executeIncomeSpendTest, amountNotValid)
@@ -303,43 +277,11 @@ TEST(executeIncomeSpendTest, defaultWalletTagDoesNotExistInConfigFile)
 	std::string command = "income";
 	int noOfArguments = 3;
 	
-	std::string configName1("configFile1");
-	std::string configContaint("dssdefault_wallet = executeIncomeSpendTest");
-	createFile(configName1, configContaint);
-	
-	std::string configName2("configFile2");
-	configContaint = "default_wallet = ";
-	createFile(configName2, configContaint);
-	
-	std::string configName3("configFile3");
-	configContaint = "default_walet = executeIncomeSpendTest";
-	createFile(configName3, configContaint);
-	
-	std::string configName4("configFile4");
-	configContaint = "default_wallet executeIncomeSpendTest";
-	createFile(configName4, configContaint);
-	
 	std::string configName5("configFile5");
-	configContaint = "sdrsrfs\n\trfsdrf\n default_w allet\t = \t\t\texecuteIncomeSpendTest\ndfgdfgd";
+	std::string configContaint("sdrsrfs\n\trfsdrf\n default_w allet\t = \t\t\texecuteIncomeSpendTest\ndfgdfgd");
 	createFile(configName5, configContaint);
 
 	//test
-	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
-						command,
-						amount,
-						configName1));
-	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
-						command,
-						amount,
-						configName2));
-	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
-						command,
-						amount,
-						configName3));
-	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
-						command,
-						amount,
-						configName4));
 	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
 						command,
 						amount,
@@ -347,10 +289,6 @@ TEST(executeIncomeSpendTest, defaultWalletTagDoesNotExistInConfigFile)
 						
 	//tear-down
 	remove(fileName);	
-	remove(configName1.c_str());
-	remove(configName2.c_str());
-	remove(configName3.c_str());
-	remove(configName4.c_str());
 	remove(configName5.c_str());
 
 }
@@ -394,3 +332,22 @@ TEST(executeIncomeSpendTest, amountNotSpecified)
 	remove(fileName);	
 	remove(configName.c_str());
 }
+
+TEST(executeBalance, defaultWallet_TagOK_WalletExists)
+{
+	//set-up
+	int noOfArguments = 2;
+	std::string configName1("configFile1");
+	std::string configContent("sdrsrfs\n\trfsdrf\ndefault_wallet\t = \t \t\texecuteBalance1\t\n default_wallet = some.wallet");
+	createFile(configName1, configContent);
+	std::string fileName1("executeBalance1");
+	std::string fileContent("+1000.00");
+	createFile(fileName1, fileContent);
+	
+	//test
+	EXPECT_EQ(true, executeBalance(noOfArguments, configName1));
+						
+	//tear-down
+	remove(fileName1.c_str());	
+	remove(configName1.c_str());
+} 
