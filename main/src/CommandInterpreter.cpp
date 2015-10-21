@@ -234,7 +234,9 @@ bool executeIncomeSpend(
 						{
 							//file specified in "default_wallet" tag doesn't exist
 							//print error: could not open 'C:\path\some.wallet' to register transaction
-							printMessage(12, readConfig("default_wallet"));
+							printMessage(12, readConfig(
+								"default_wallet", 
+								configFileName));
 						}
 					}	
 					else
