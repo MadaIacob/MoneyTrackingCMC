@@ -10,6 +10,8 @@ Date					8.10.2015
 #include <iostream>
 #include <ctime>
 #include <sstream>
+#include <vector>
+#include <stdlib.h>
 
 #include "WalletEntity.h"
 #include "PrintMessage.h"
@@ -122,5 +124,32 @@ bool WalletEntity::addWalletEntity(const string walletName)
 	}
 	
 	return isAdded;
+}
+
+double WalletEntity::getAmount(const string line)
+{
+	
+	vector <string> data;
+	double amount;
+	
+	istringstream ss(line);
+	
+	while(ss)
+	{
+		string parameter;
+		if(!getline(ss,parameter,';')) break;
+		data.push_back(parameter);
+	}	
+
+	if(data.at(1) == "-")
+	{
+		amount = 0 - atof(data.at(2).c_str()); 
+	}
+	else
+	{
+		amount = atof(data.at(2).c_str());
+	}
+	
+	return amount;
 	
 }
