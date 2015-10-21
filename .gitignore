@@ -9,5 +9,6 @@ yetother
 *.actual
 *.expected
 *.bat
+*.doc
 
 
