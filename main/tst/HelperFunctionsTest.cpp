@@ -76,3 +76,11 @@ TEST(displayGMTTest, outOfRangeTime)
 	EXPECT_EQ(expectedTime, actualTime);
 		
 }
+
+TEST(GetAmountTest, validAmount)
+{
+	EXPECT_EQ(-0.01, getAmount("1445286465;-;0.01;other;RON"));
+	EXPECT_EQ(-999.00, getAmount("1445324005;-;999.00;salary;RON"));
+	EXPECT_EQ(0.01, getAmount("1445286465;+;0.01;other;RON"));
+	EXPECT_EQ(9999.00, getAmount("1445324005;+;9999.00;salary;RON"));
+}
