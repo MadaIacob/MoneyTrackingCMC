@@ -14,7 +14,7 @@ Date					15.10.2015
 
 using namespace std;
 
-// this cut the first char if '-'; this function is called after truncateAmount
+// this cut the first char; this function is called after truncateAmount
 string cutSign(string validAmount)
 {
 	string cutAmount = "" ;
@@ -88,31 +88,31 @@ string readConfig(string configTag, string configFileName)
 	size_t foundEqual;
 	while(getline(configFile, line))
 	{
-		//remove spaces and tags from current line
-		line.erase(remove(line.begin(), line.end(), ' '), line.end());
-		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
-			
+				
 		//if configTag was found start storing default wallet name
 		foundTag = line.find(configTag);
 		if(foundTag != std::string::npos)
 		{	
+			//remove spaces and tags from current line
+			line.erase(remove(line.begin(), line.end(), ' '), line.end());
+			line.erase(remove(line.begin(), line.end(), '\t'), line.end());
+			
+			
 			foundEqual = line.find("=");
 			size_t pos = foundEqual +1;
 			
-			//check if the configTag is correct and save the file name
-			if(foundTag == 0 &&
-			   line[foundTag + configTag.size()] == '=')
+			//save the file name to word string 
+			while(pos < line.size())
 			{
-				while(pos < line.size())
-				{
-					word = word + line[pos];
-					pos++;				
-				}
-				
-				break;
+				word = word + line[pos];
+				pos++;				
 			}
+				
+			break;
+			
 		}
 	}
+
 	return word;
 }
 
