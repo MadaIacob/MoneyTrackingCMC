@@ -125,6 +125,7 @@ bool executeIncomeSpend(
 	const int argc, //number of arguments from command line
 	const string command, //"income" or "spend"
 	const char amount[], //amount for new operation
+	const string configFileName, //config file for default values
 	const char fileName[]) //wallet name
 {
 	bool validArguments = false;
@@ -168,10 +169,12 @@ bool executeIncomeSpend(
 					//in default wallet
 					
 					//check for "default_wallet" tag in config file
-					if(existsConfigTag("default_wallet"))
+					if(existsConfigTag("default_wallet", configFileName))
 					{				
 						//check if the file specified in "default_wallet" tag exists
-						if(!validateFileName(readConfig("default_wallet")))
+						if(!validateFileName(
+							readConfig("default_wallet", 
+							configFileName)))
 						{	//the file specified in "default_wallet" tag exists
 							
 							//prepare values for WalletEntity
@@ -202,7 +205,9 @@ bool executeIncomeSpend(
 								"RON");
 								
 							//if writing to file successful
-							if(walletEntity.addWalletEntity(readConfig("default_wallet")))
+							if(walletEntity.addWalletEntity(readConfig(
+								"default_wallet", 
+								configFileName)))
 							{
 								//print a success message
 								// like "Spending 'other' in an amount of 145.12 RON was registered."
@@ -251,15 +256,23 @@ bool executeIncomeSpend(
 void printHelpMenu()
 {
 	cout << endl << "Accepted commands and arguments:" << endl;
-	cout << " ---------------------------------------------------------------------" << endl;
+	cout << " ------------------------------------" 
+	<< "---------------------------------" << endl;
 	cout << " moneytracker[.exe] create <file_name> <initial_amount>" << endl;
-	cout << " ---------------------------------------------------------------------" << endl;
-	cout << " moneytracker[.exe] income [-c/--category] <category> <initial_amount> " << endl;
-	cout << " moneytracker[.exe] income <initial_amount> [-c/--category] <category>" << endl;
-	cout << " ---------------------------------------------------------------------" << endl;
-	cout << " moneytracker[.exe] spend [-c/--category] <category> <initial_amount> " << endl;
-	cout << " moneytracker[.exe] spend <initial_amount> [-c/--category] <category>" << endl;
-	cout << " ---------------------------------------------------------------------" << endl;
+	cout << " ------------------------------------" 
+	<< "---------------------------------" << endl;
+	cout << " moneytracker[.exe] income [-c/--category]" 
+	<< " <category> <initial_amount> " << endl;
+	cout << " moneytracker[.exe] income <initial_amount>" 
+	<< " [-c/--category] <category>" << endl;
+	cout << " ------------------------------------" 
+	<< "---------------------------------" << endl;
+	cout << " moneytracker[.exe] spend [-c/--category]" 
+	<< " <category> <initial_amount> " << endl;
+	cout << " moneytracker[.exe] spend <initial_amount>" 
+	<< " [-c/--category] <category>" << endl;
+	cout << " ------------------------------------" 
+	<< "---------------------------------" << endl;
 	cout << " moneytracker[.exe] balance" << endl;
 }
 

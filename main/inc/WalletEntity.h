@@ -40,6 +40,7 @@ class WalletEntity
 		//adds new wallet entity
 		bool addWalletEntity(const std::string walletName);
 		double getBalance(const std::string walletName);
+		double getAmount(const std::string line);
 };
 
 #endif // WALLETENTITY_H
