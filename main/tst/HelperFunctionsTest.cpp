@@ -129,6 +129,7 @@ TEST(GetBalanceTest, ZeroBalance)
 	
 	//tear-down		
 	remove("wallet");
+}
 
 TEST(GetAmountTest, validAmount)
 {
