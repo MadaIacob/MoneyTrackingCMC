@@ -15,7 +15,7 @@ Date					15.10.2015
 
 using namespace std;
 
-TEST(ExistsConfigTagTest, okFileContent)
+TEST(ExistsConfigTagTest, defaultWalletTagOK)
 {
 	//set-up	
 	string testOkConfigFile1("okConfig1");
@@ -48,7 +48,7 @@ TEST(ExistsConfigTagTest, okFileContent)
 	remove("okConfig4");
 }
 
-TEST(ExistsConfigTagTest, wrongFileContent)
+TEST(ExistsConfigTagTest, defaultWalletTagNotOK)
 {
 	//set-up	
 	string testOkConfigFile1("okConfig1");
@@ -63,6 +63,9 @@ TEST(ExistsConfigTagTest, wrongFileContent)
 	string testOkConfigFile4("okConfig4");
 	string containtOkConfig4("somethig_default_wallet = my.wallet");
 	
+	string testOkConfigFile5("okConfig5");
+	string containtOkConfig5("def ault_walle t = my.wallet");
+
 	createFile(testOkConfigFile1 , containtOkConfig1);
 	createFile(testOkConfigFile2 , containtOkConfig2);
 	createFile(testOkConfigFile3 , containtOkConfig3);
@@ -73,15 +76,17 @@ TEST(ExistsConfigTagTest, wrongFileContent)
 	EXPECT_EQ(false, existsConfigTag("default_wallet", "okConfig2"));
 	EXPECT_EQ(false, existsConfigTag("default_wallet", "okConfig3"));
 	EXPECT_EQ(false, existsConfigTag("default_wallet", "okConfig4"));
+	EXPECT_EQ(false, existsConfigTag("default_wallet", "okConfig5"));
 	
 	//tear-down
 	remove("okConfig1");
 	remove("okConfig2");
 	remove("okConfig3");
 	remove("okConfig4");
+	remove("okConfig5");
 }
 
-TEST(ReadConfigTagTest, configTagContent)
+TEST(ReadConfigTagTest, defaultWalletTagOK)
 {
 	//set-up	
 	string testOkConfigFile1("okConfig1");
@@ -92,10 +97,10 @@ TEST(ReadConfigTagTest, configTagContent)
 
 	
 	string testOkConfigFile3("okConfig3");
-	string containtOkConfig3("default_wallet 		=			 my.wallet		");
+	string containtOkConfig3("default_wallet 		=			 my.wallet	\t");
 	
 	string testOkConfigFile4("okConfig4");
-	string containtOkConfig4("something_wallet = my.wallet \n default_wallet = my.wallet");
+	string containtOkConfig4("def ault_w allet = your.wallet \n default_wallet = my.wallet");
 	
 	createFile(testOkConfigFile1 , containtOkConfig1);
 	createFile(testOkConfigFile2 , containtOkConfig2);
