@@ -344,10 +344,75 @@ TEST(executeBalance, defaultWallet_TagOK_WalletExists)
 	std::string fileContent("+1000.00");
 	createFile(fileName1, fileContent);
 	
+	std::string configName2("configFile2");
+	configContent = "default_wallet\t =executeBalance2\t\n";
+	createFile(configName2, configContent);
+	std::string fileName2("executeBalance2");
+	fileContent = "+1000.00 RON\n1445429653;-;200.00;other;RON\n1445429660;-;200.00;other;RON\n1445429679;+;100.00;salary;RON\n1445430767;-;300.00;other;RON";
+	createFile(fileName2, fileContent);
 	//test
 	EXPECT_EQ(true, executeBalance(noOfArguments, configName1));
+	EXPECT_EQ(true, executeBalance(noOfArguments, configName2));
 						
 	//tear-down
 	remove(fileName1.c_str());	
 	remove(configName1.c_str());
+	remove(fileName2.c_str());	
+	remove(configName2.c_str());
 } 
+
+TEST(executeBalance, defaultWallet_TagNotOK)
+{
+	//set-up
+	int noOfArguments = 2;
+	std::string configName1("configFile1");
+	std::string configContent("sdrsrfs\n\trfsdrf\nde fault_wallet\t = \t \t\texecuteBalance1\t\n default_wal let = some.wallet");
+	createFile(configName1, configContent);
+	std::string fileName1("executeBalance1");
+	std::string fileContent("+1000.00");
+	createFile(fileName1, fileContent);
+	
+	std::string configName2("configFile2");
+	configContent = "default_wallett =executeBalance2\t\n";
+	createFile(configName2, configContent);
+	std::string fileName2("executeBalance2");
+	fileContent = "+1000.00 RON\n1445429653;-;200.00;other;RON\n1445429660;-;200.00;other;RON\n1445429679;+;100.00;salary;RON\n1445430767;-;300.00;other;RON";
+	createFile(fileName2, fileContent);
+
+	//test
+	EXPECT_EQ(false, executeBalance(noOfArguments, configName1));
+	EXPECT_EQ(false, executeBalance(noOfArguments, configName2));
+						
+	//tear-down
+	remove(fileName1.c_str());	
+	remove(configName1.c_str());
+	remove(fileName2.c_str());	
+	remove(configName2.c_str());
+}
+
+TEST(executeBalance, defaultWallet_WalletDoesNotExists)
+{
+	//set-up
+	int noOfArguments = 2;
+	std::string configName1("configFile1");
+	std::string configContent("default_wallet= executeBalance1");
+	createFile(configName1, configContent);
+	
+	//test
+	EXPECT_EQ(false, executeBalance(noOfArguments, configName1));
+						
+	//tear-down
+	remove(configName1.c_str());
+} 
+
+TEST(executeBalance, defaultWallet_ConfigFileDoesNotExists)
+{
+	//set-up
+	int noOfArguments = 2;
+	std::string configName1("configFile1");
+	
+	//test
+	EXPECT_EQ(false, executeBalance(noOfArguments, configName1));
+						
+	//tear-down
+}
