@@ -8,7 +8,6 @@ yetother
 *.diff
 *.actual
 *.expected
-*.bat
 *.doc
 
 
