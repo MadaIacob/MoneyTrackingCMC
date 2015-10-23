@@ -87,21 +87,32 @@ string readConfig(string configTag, string configFileName)
 	ifstream configFile(configFileName.c_str());
 	string line;
 	string word = "";
-	size_t foundTag;
+	//size_t foundTag;
 	size_t foundEqual;
 	while(getline(configFile, line))
-	{
-				
+	{	
 		//if configTag was found start storing default wallet name
-		foundTag = line.find(configTag);
+		std::size_t foundTag = line.find(configTag);
 		if(foundTag != std::string::npos)
 		{	
 			//remove spaces and tags from current line
 			line.erase(remove(line.begin(), line.end(), ' '), line.end());
 			line.erase(remove(line.begin(), line.end(), '\t'), line.end());
 			
-			
-			foundEqual = line.find("=");
+			std::size_t foundDef = line.find(configTag);
+			if(line[line.size() -1] != '=' && foundDef == 0 &&
+			   line[foundDef + configTag.size()] == '=')
+			{
+				foundEqual = line.find("=");
+				size_t pos = foundEqual +1;
+				while(pos < line.size())
+				{
+					word = word + line[pos];
+					pos++;				
+				}
+			break;
+			}
+			/* foundEqual = line.find("=");
 			size_t pos = foundEqual +1;
 			
 			//save the file name to word string 
@@ -111,11 +122,9 @@ string readConfig(string configTag, string configFileName)
 				pos++;				
 			}
 				
-			break;
-			
+			break; */
 		}
 	}
-
 	return word;
 }
 
@@ -190,6 +199,7 @@ string displayGMT(const time_t myTime)
   
 }
 
+//gets the amount as a double from an entity (line) received as a parameter 
 double getAmount(const string line)
 {
 	
@@ -197,14 +207,15 @@ double getAmount(const string line)
 	double amount;
 	
 	istringstream ss(line);
-	
+	//iterates trough the string and separates it by the character ";" 
+	//	and pushes every element into a vector  
 	while(ss)
 	{
 		string parameter;
 		if(!getline(ss,parameter,';')) break;
 		data.push_back(parameter);
 	}	
-
+	//convert the amount form string to double
 	if(data.at(1) == "-")
 	{
 		amount = 0 - atof(data.at(2).c_str()); 
@@ -213,27 +224,30 @@ double getAmount(const string line)
 	{
 		amount = atof(data.at(2).c_str());
 	}
-	
+	//return the amount as a duble
 	return amount;
 	
 }
-
+//reads the content of the default wallet and returns the sum of all entries
+//	as a string with the sign "+" or "-" included
+//if there is no content in the file it returns the string "+0.00"
 string getBalance(const string walletName)
 {
-	
+	//open the file for reading
 	ifstream wallet(walletName.c_str());
 	string line;
 	vector <string> data;
 	double balance = 0;
-	//read from the given file
-	//getline(wallet,walletContent);
+	//read the first linefrom the given file
 	if(getline(wallet,line)) 
 	{
 		string sign = "";
 		string result = "" ;
+		//get the sign of the first entity
 		sign = line[0];
 		int len = line.length();
 		double firstAmount = 0;
+		//get the amount as a string character by character 
 		for(int i = 1; i < len; i++)
 			{
 				if (line[i]!=' ')
@@ -242,6 +256,7 @@ string getBalance(const string walletName)
 				}
 				else 
 				{
+					//convert the amount form string to double
 					if(sign == "-")
 					{
 						firstAmount = 0 - atof(result.c_str()); 
@@ -252,18 +267,29 @@ string getBalance(const string walletName)
 					}
 				}
 			}
+			//add the first amount to the balance
 			balance += firstAmount;
+		//iterate trough the rest of the entityes from the file
 		while(getline(wallet,line))
 		{
+			//add the amount from each entity to the balance
 			balance += getAmount(line);
 		}
 	}
+	//convert the balance from double to string 
+	//	with the sign "+" or "-" included
 	string amountConverted;
 	ostringstream sstream;
 	sstream << fixed << setprecision(2) << balance;
 	amountConverted = sstream.str();
 	if (balance >= 0) amountConverted = '+' + amountConverted;
+	//return the balance as a string
 	return amountConverted;
 }
+
+/* int main() {
+	
+	return 0;
+} */
 
 
