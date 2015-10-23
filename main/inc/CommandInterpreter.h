@@ -14,11 +14,9 @@ bool validateCommand(int argc, char* argv[]);
 bool validateAmount(const char []);
 std::string truncateAmount(const char []);
 bool executeIncomeSpend(
-	const int argc, 
-	const std::string command, 
-	const char amount[],
-	const std::string configFileName = "moneytracker.config",
-	const char fileName[] = "");
+	const int argc, //number of arguments from command line
+	char* argv[], //arguments from the command line
+	const std::string configFileName = "moneytracker.config");
 bool executeBalance(
 	const int argc,
 	const std::string configFileName = "moneytracker.config", 

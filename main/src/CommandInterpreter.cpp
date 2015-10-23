@@ -36,7 +36,7 @@ bool validateCommand(int argc, char* argv[])
 			(strcmp(argv[1], "spend") == 0))
 	{
 		//execute "income" or "spend" command
-		executeIncomeSpend(argc, argv[1], argv[2],"moneytracker.config", argv[3]);
+		executeIncomeSpend(argc, &argv[0], "moneytracker.config");
 		validCommand = true;
 	}
 	else if(strcmp(argv[1], "balance") == 0) 
@@ -123,10 +123,8 @@ bool executeCreate(
 //returns true if income/spend was successfully executed
 bool executeIncomeSpend(
 	const int argc, //number of arguments from command line
-	const string command, //"income" or "spend"
-	const char amount[], //amount for new operation
-	const string configFileName, //config file for default values
-	const char fileName[]) //wallet name
+	char* argv[], //arguments from the command line
+	const string configFileName) //config file for default values
 {
 	bool validArguments = false;
 	//number of arguments for "income" or "spend" command
@@ -137,10 +135,121 @@ bool executeIncomeSpend(
 			// print error: no ammount specified for 'income'.
 			//or
 			// print error: no ammount specified for 'spend'.
-			printMessage(7, command);
+			printMessage(7, argv[1]);
 			break;
 		}
-		default: //income/spend command with amount as first argument
+		case 3: //income/spend command with only amount as  argument
+		{
+			if(!validateAmount(argv[2]))
+			{	//amount is not valid
+				//print error: parameter for 'income' should be a positive number
+				//or
+				//print error: parameter for 'spend' should be a positive number
+				printMessage(8, argv[1]);
+			}
+			else 
+			{	//amount is valid
+				//truncate amount to have only two decimals and no leading zeros
+				string truncatedAmount=truncateAmount(argv[2]);
+				//check if validated sum is negative or zero
+				if(atof(truncatedAmount.c_str()) <= 0.00)								
+				{
+					//amount is valid, but negative or zero 
+					//print error: income should be higher than 0.
+					//or
+					//print error: spend should be higher than 0.
+					
+					printMessage(11, argv[1]);
+				}
+				else
+				{
+					//amount is valid and positive, execute "income/spend" command
+					//in default wallet
+					
+					//check for "default_wallet" tag in config file
+					if(existsConfigTag("default_wallet", configFileName))
+					{				
+						//check if the file specified in "default_wallet" tag exists
+						if(!validateFileName(
+							readConfig("default_wallet", 
+							configFileName)))
+						{	//the file specified in "default_wallet" tag exists
+							
+							//prepare values for WalletEntity
+							string sign = "+" ;
+							string category = "salary" ; //default_income_category
+							string messageFlag = "Income";// parameter for printMessage
+							if (strcmp(argv[1],"spend") == 0) 
+							{
+								sign = '-' ;
+								category = "other";//default_spending_category
+								messageFlag = "Spending";
+							}
+							else 
+							{
+								
+							}
+							//cut sign to amount
+							string cutAmount = cutSign(truncatedAmount) ;
+							//get current time
+							time_t transactionTime = time(0) ;
+							
+							//create walletEntity with default values
+							WalletEntity walletEntity(
+								transactionTime, 
+								sign, 
+								cutAmount, 
+								category,
+								"RON");// default_currency
+								
+							//if writing to file successful
+							if(walletEntity.addWalletEntity(readConfig(
+								"default_wallet", 
+								configFileName)))
+							{
+								//print a success message
+								// like "Spending 'other' in an amount of 145.12 RON was registered."
+								printMessage(
+									9, 
+									messageFlag, 
+									category, 
+									cutAmount, 
+									"RON");// default_currency
+								// and one like "Transaction time: Thu, 08 Oct 2015 10:52:40 GMT"
+								printMessage(
+									10, 
+									//convert transactionTime to string
+									displayGMT(transactionTime));	
+								validArguments = true;		
+								
+							} 
+							else
+							{
+								//writing to file not succesfull
+							}
+						}
+						else 
+						{
+							//file specified in "default_wallet" tag doesn't exist
+							//print error: could not open 'C:\path\some.wallet' to register transaction
+							printMessage(12, readConfig(
+								"default_wallet", 
+								configFileName), 
+								" to register transaction");
+						}
+					}	
+					else
+					{
+						// could not open moneytracker.config or
+						// tag "default_wallet" is incorrect or 
+						// tag "default_wallet" is not implemented at all 
+					}
+				}
+			}
+		break;
+		}
+		/*
+		default: //income/spend command with more arguments
 		{
 			if(!validateAmount(amount))
 			{	//amount is not valid
@@ -249,7 +358,9 @@ bool executeIncomeSpend(
 				}
 			}
 		break;
-		}
+		}*/
+		
+		
 	}
 	return validArguments;
 }
