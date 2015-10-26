@@ -332,10 +332,10 @@ TEST(executeIncomeSpendTest, configFileDoesNotExist)
 	noOfArguments = 5;						
 	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
 						&argv2[0],
-						configName5));
+						configName));
 	EXPECT_EQ(false, executeIncomeSpend(noOfArguments,
 						&argv3[0],
-						configName5));
+						configName));
 						
 	//tear-down
 }
