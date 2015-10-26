@@ -139,6 +139,7 @@ bool executeIncomeSpend(
 			break;
 		}
 		case 3: //income/spend command with only amount as  argument
+		case 4: //income/spend command with amount and one more argument
 		{
 			if(!validateAmount(argv[2]))
 			{	//amount is not valid
@@ -248,20 +249,23 @@ bool executeIncomeSpend(
 			}
 		break;
 		}
-		/*
-		default: //income/spend command with more arguments
+		default: //income/spend command with more than two arguments
 		{
-			if(!validateAmount(amount))
+			//ignore first two arguments from command line
+			//and get the amount and category from the remaining ones
+			string* arguments = getArgumentsForIncomeSpend(argc - 2, &argv[2]);
+			
+			if(!validateAmount(arguments[0].c_str()))
 			{	//amount is not valid
 				//print error: parameter for 'income' should be a positive number
 				//or
 				//print error: parameter for 'spend' should be a positive number
-				printMessage(8, command);
+				printMessage(8, argv[1]);
 			}
 			else 
 			{	//amount is valid
 				//truncate amount to have only two decimals and no leading zeros
-				string truncatedAmount=truncateAmount(amount);
+				string truncatedAmount=truncateAmount(arguments[0].c_str());
 				//check if validated sum is negative or zero
 				if(atof(truncatedAmount.c_str()) <= 0.00)								
 				{
@@ -270,12 +274,12 @@ bool executeIncomeSpend(
 					//or
 					//print error: spend should be higher than 0.
 					
-					printMessage(11, command);
+					printMessage(11, argv[1]);
 				}
 				else
 				{
-					//amount is valid and positive, execute "income/spend" command
-					//in default wallet
+					//amount is valid and positive
+					//execute "income/spend" command in default wallet
 					
 					//check for "default_wallet" tag in config file
 					if(existsConfigTag("default_wallet", configFileName))
@@ -285,59 +289,11 @@ bool executeIncomeSpend(
 							readConfig("default_wallet", 
 							configFileName)))
 						{	//the file specified in "default_wallet" tag exists
-							
-							//prepare values for WalletEntity
-							string sign = "+" ;
-							string category = "salary" ;
-							string messageFlag = "Income";// parameter for printMessage
-							if (command == "spend") 
-							{
-								sign = '-' ;
-								category = "other";
-								messageFlag = "Spending";
-							}
-							else 
-							{
-								
-							}
-							//cut sign to amount
-							string cutAmount = cutSign(truncatedAmount) ;
-							//get current time
-							time_t transactionTime = time(0) ;
-							
-							//create walletEntity with default values
-							WalletEntity walletEntity(
-								transactionTime, 
-								sign, 
-								cutAmount, 
-								category,
-								"RON");
-								
-							//if writing to file successful
-							if(walletEntity.addWalletEntity(readConfig(
-								"default_wallet", 
-								configFileName)))
-							{
-								//print a success message
-								// like "Spending 'other' in an amount of 145.12 RON was registered."
-								printMessage(
-									9, 
-									messageFlag, 
-									category, 
-									cutAmount, 
-									"RON");
-								// and one like "Transaction time: Thu, 08 Oct 2015 10:52:40 GMT"
-								printMessage(
-									10, 
-									//convert transactionTime to string
-									displayGMT(transactionTime));	
-								validArguments = true;		
-								
-							} 
-							else
-							{
-								//writing to file not succesfull
-							}
+							validArguments = incomeSpend(
+								argv[1],
+								truncatedAmount,
+								readConfig("default_wallet", configFileName), 
+								arguments[1]);
 						}
 						else 
 						{
@@ -356,11 +312,10 @@ bool executeIncomeSpend(
 						// tag "default_wallet" is not implemented at all 
 					}
 				}
+			delete[] arguments;
 			}
 		break;
-		}*/
-		
-		
+		}
 	}
 	return validArguments;
 }
@@ -591,5 +546,72 @@ bool executeBalance(
 	}
 	return isBalanceDisplayed;
 }
+
+// executes an income/spend without any validations
+bool incomeSpend(
+	const string command, 
+	const string truncatedAmount, // amount with sign, no leading zeros and two digits after (.)
+	const string walletFile, // wallet file name
+	const string category, 
+	const string currency)
+{
+	bool wasCommandExecuted = false;
+	string sign = "+" ;
+	string cat = "salary";//default value for income
+	string messageFlag = "Income";// parameter for printMessage
+	if (command == "spend") 
+	{
+		sign = '-' ;
+		messageFlag = "Spending";
+		cat = "other";// default value for spend
+	}
+	else 
+	{
+	}
+	
+	//check if category was specified
+	if(category != "") 
+	{
+		cat = category;
+	}
+	else
+	{}
+	//cut sign to amount
+	string cutAmount = cutSign(truncatedAmount) ;
+	//get current time
+	time_t transactionTime = time(0) ;
+	
+	//create walletEntity with default values
+	WalletEntity walletEntity(
+		transactionTime, 
+		sign, 
+		cutAmount, 
+		cat,
+		currency);
+		
+	//if writing to file successful
+	if(walletEntity.addWalletEntity(walletFile))
+	{
+		//print a success message
+		// like "Spending 'other' in an amount of 145.12 RON was registered."
+		printMessage(
+			9, 
+			messageFlag, 
+			cat, 
+			cutAmount, 
+			currency);
+		// and one like "Transaction time: Thu, 08 Oct 2015 10:52:40 GMT"
+		printMessage(
+			10, 
+			//convert transactionTime to string
+			displayGMT(transactionTime));
+		wasCommandExecuted = true;
+	} 
+	else
+	{
+		//writing to file not succesfull
+	}
+	return wasCommandExecuted;
+}		
 
 

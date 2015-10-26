@@ -1,6 +1,6 @@
 /*
 File Description		Smaller functions used accross the application 
-Author					cosmin.farcau, madalina.iacob
+Author					cosmin.farcau, madalina.iacob, calin-ciprian.popita
 Date					15.10.2015
 */
 #include <iostream>
@@ -11,6 +11,8 @@ Date					15.10.2015
 #include <iomanip>
 #include <sstream>
 #include <vector>
+#include <cstring>
+
 
 #include "HelperFunctions.h"
 #include "PrintMessage.h"
@@ -287,9 +289,65 @@ string getBalance(const string walletName)
 	return amountConverted;
 }
 
-/* int main() {
+//searches the amount within command line arguments
+//returns a string formatted like
+//"amount -c category "
+//first two arguments(application name and command) are ignored 
+string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
+{
 	
-	return 0;
-} */
+	// returned pointer that contains:
+	// arguments[0] amount
+	// arguments[1] category
+	string* arguments = new string[2];
+	
+	// a string containing the remaining arguments after taking out the first category found and its tag
+	string remainingArguments = "";
+	
+	//at least 3 arguments are mandatory to interpret arguments
+	if (argNumber >= 3) 
+	{
+		//signalises the first category flag found;
+		bool categoryFound = false;
+		int i = 0;
+		//go through command line arguments
+		for(; i < argNumber - 1 ; i++)
+		{
+			//check for the first "-c" or "--category" flag among command line arguments
+			if(((strcmp(argv[i], "-c") == 0) || 
+			    (strcmp(argv[i], "--category") == 0)) &&
+			     categoryFound == false)
+			{
+				//first category flag found
+				categoryFound = true;
+				//jump over "-c" or "--category" flag
+				i++;
+				//put the next command line argument into returned pointer
+				arguments[1] = argv[i]; 				
+			}
+			else
+			{
+				//put command line argument into remainingArguments string
+				remainingArguments = remainingArguments + argv[i] + " ";
+			}
+		}
+		// check if there's one more argument left after flags search
+		if(i == (argNumber - 1))
+		{
+			//put last command line argument into remainingArguments string
+			remainingArguments = remainingArguments + argv[i];
+		}
+		else
+		{}
+		
+		//amount should be the first word into remainingArguments string
+		//put the first word into returned pointer 
+		arguments[0] = remainingArguments.substr(0, remainingArguments.find_first_of(" "));
+	}
+	else
+	{}
+
+	return arguments;
+}
 
 

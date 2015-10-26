@@ -14,12 +14,18 @@ bool validateCommand(int argc, char* argv[]);
 bool validateAmount(const char []);
 std::string truncateAmount(const char []);
 bool executeIncomeSpend(
-	const int argc, //number of arguments from command line
-	char* argv[], //arguments from the command line
+	const int argc, 
+	char* argv[], 
 	const std::string configFileName = "moneytracker.config");
 bool executeBalance(
 	const int argc,
 	const std::string configFileName = "moneytracker.config", 
 	const char fileName[] = "");
+bool incomeSpend(
+	const std::string command = "", 
+	const std::string truncatedAmount = "", 
+	const std::string walletFile = "", 
+	const std::string category = "", 
+	const std::string currency = "RON");
 
 #endif // COMMANDINTREPRETER_H
