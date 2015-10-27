@@ -289,10 +289,11 @@ string getBalance(const string walletName)
 	return amountConverted;
 }
 
-//searches the amount within command line arguments
-//returns a string formatted like
-//"amount -c category "
-//first two arguments(application name and command) are ignored 
+//searches the amount and optional flags within command line arguments
+//returns a pointer (arguments) to an array of strings containing:
+// arguments[0]=amount
+// arguments[1]=category
+//first two command line arguments(application name and command) are ignored 
 string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 {
 	
@@ -304,8 +305,8 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 	// a string containing the remaining arguments after taking out the first category found and its tag
 	string remainingArguments = "";
 	
-	//at least 3 arguments are mandatory to interpret arguments
-	if (argNumber >= 2) 
+	//at least one argument provided for income/spend command
+	if (argNumber >= 1) 
 	{
 		//signalises the first category flag found;
 		bool categoryFound = false;
@@ -332,6 +333,7 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 			}
 		}
 		// check if there's one more argument left after flags search
+		// this is the case where the last but one argument is not a flag
 		if(i == (argNumber - 1))
 		{
 			//put last command line argument into remainingArguments string
@@ -346,6 +348,7 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 	}
 	else
 	{}
+	//return only relevant arguments
 	return arguments;
 }
 

@@ -5,7 +5,7 @@
 ### Structuring folders
 - to be completed later
 
-### Naming files
+### Naming source files
 - File names should begin with Uppercase and be suggestive for the file's content
 (e.g. a file containing a class implementation should have that class name);
 - No spaces in the file names are allowed.
@@ -22,7 +22,7 @@ information, as follows: File Description, Author, Creation Date
 ### General rules
 
 - Indents are tabs.
-- Each line must be at most 80 characters long.
+- Each line should be at most 80 characters long.
 - Comments should be // and should precede commented code.
 - Every new declared item should begin on a new line and should be commented.
 - Code blocks should be between braces that are indented the same with the 

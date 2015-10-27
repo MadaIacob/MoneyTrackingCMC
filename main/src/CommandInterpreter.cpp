@@ -25,8 +25,15 @@ using namespace std;
 bool validateCommand(int argc, char* argv[])
 {
 	bool validCommand = false;
+	//if command is "help"
+	if(strcmp(argv[1], "help") == 0) 
+	{
+		//display help menu (possible command syntaxes)
+		printHelpMenu();
+		validCommand = true;
+	}
 	//if command is "create"
-	if(strcmp(argv[1], "create") == 0) 
+	else if(strcmp(argv[1], "create") == 0) 
 	{
 		//execute "create" command
 		executeCreate(argc, argv[2], argv[3]);
@@ -122,212 +129,83 @@ bool executeCreate(
 //according to them
 //returns true if income/spend was successfully executed
 bool executeIncomeSpend(
-	const int argc, //number of arguments from command line
+	int argc, //number of arguments from the command line
 	char* argv[], //arguments from the command line
 	const string configFileName) //config file for default values
 {
+	//returned value -> true if arguments valid and command executed
 	bool validArguments = false;
-	//number of arguments for "income" or "spend" command
-	switch (argc)
-	{
-		case 2:// "income/spend" command with no arguments
-		{
+
+	//ignore first two arguments from command line
+	//and get the amount and category from the remaining ones
+	string* arguments = getArgumentsForIncomeSpend(argc - 2, &argv[2]);
+	
+	//check if arguments[0](the amount) is valid
+	if(!validateAmount(arguments[0].c_str()))
+	{//amount is not valid
+		//check if no amount at all
+		if (arguments[0].length() == 0)
+		{//no amount specified
 			// print error: no amount specified for 'income'.
 			//or
 			// print error: no amount specified for 'spend'.
-			printMessage(7, argv[1]);
-			break;
+			printMessage(7, argv[1]);	
 		}
-		case 3: //income/spend command with only amount as  argument
-		{
-			if(!validateAmount(argv[2]))
-			{	//amount is not valid
-				//print error: parameter for 'income' should be a positive number
-				//or
-				//print error: parameter for 'spend' should be a positive number
-				printMessage(8, argv[1]);
-			}
-			else 
-			{	//amount is valid
-				//truncate amount to have only two decimals and no leading zeros
-				string truncatedAmount=truncateAmount(argv[2]);
-				//check if validated sum is negative or zero
-				if(atof(truncatedAmount.c_str()) <= 0.00)								
-				{
-					//amount is valid, but negative or zero 
-					//print error: income should be higher than 0.
-					//or
-					//print error: spend should be higher than 0.
-					
-					printMessage(11, argv[1]);
-				}
-				else
-				{
-					//amount is valid and positive, execute "income/spend" command
-					//in default wallet
-					
-					//check for "default_wallet" tag in config file
-					if(existsConfigTag("default_wallet", configFileName))
-					{				
-						//check if the file specified in "default_wallet" tag exists
-						if(!validateFileName(
-							readConfig("default_wallet", 
-							configFileName)))
-						{	//the file specified in "default_wallet" tag exists
-							
-							//prepare values for WalletEntity
-							string sign = "+" ;
-							string category = "salary" ; //default_income_category
-							string messageFlag = "Income";// parameter for printMessage
-							if (strcmp(argv[1],"spend") == 0) 
-							{
-								sign = '-' ;
-								category = "other";//default_spending_category
-								messageFlag = "Spending";
-							}
-							else 
-							{
-								
-							}
-							//cut sign to amount
-							string cutAmount = cutSign(truncatedAmount) ;
-							//get current time
-							time_t transactionTime = time(0) ;
-							
-							//create walletEntity with default values
-							WalletEntity walletEntity(
-								transactionTime, 
-								sign, 
-								cutAmount, 
-								category,
-								"RON");// default_currency
-								
-							//if writing to file successful
-							if(walletEntity.addWalletEntity(readConfig(
-								"default_wallet", 
-								configFileName)))
-							{
-								//print a success message
-								// like "Spending 'other' in an amount of 145.12 RON was registered."
-								printMessage(
-									9, 
-									messageFlag, 
-									category, 
-									cutAmount, 
-									"RON");// default_currency
-								// and one like "Transaction time: Thu, 08 Oct 2015 10:52:40 GMT"
-								printMessage(
-									10, 
-									//convert transactionTime to string
-									displayGMT(transactionTime));	
-								validArguments = true;		
-								
-							} 
-							else
-							{
-								//writing to file not succesfull
-							}
-						}
-						else 
-						{
-							//file specified in "default_wallet" tag doesn't exist
-							//print error: could not open 'C:\path\some.wallet' to register transaction
-							printMessage(12, readConfig(
-								"default_wallet", 
-								configFileName), 
-								" to register transaction");
-						}
-					}	
-					else
-					{
-						// could not open moneytracker.config or
-						// tag "default_wallet" is incorrect or 
-						// tag "default_wallet" is not implemented at all 
-					}
-				}
-			}
-		break;
-		}
-		default: //income/spend command with more than two arguments
-		{
-			//ignore first two arguments from command line
-			//and get the amount and category from the remaining ones
-			string* arguments = getArgumentsForIncomeSpend(argc - 2, &argv[2]);
-			
-			if(!validateAmount(arguments[0].c_str()))
-			{	//amount is not valid
-				
-				if (arguments[0].length() == 0)
-				{
-					// print error: no amount specified for 'income'.
-					//or
-					// print error: no amount specified for 'spend'.
-					printMessage(7, argv[1]);	
-				}
-				else
-				{
-					//print error: parameter for 'income' should be a positive number
-					//or
-					//print error: parameter for 'spend' should be a positive number
-					printMessage(8, argv[1]);
-				}
-			}
-			else 
-			{	//amount is valid
-				//truncate amount to have only two decimals and no leading zeros
-				string truncatedAmount=truncateAmount(arguments[0].c_str());
-				//check if validated sum is negative or zero
-				if(atof(truncatedAmount.c_str()) <= 0.00)								
-				{
-					//amount is valid, but negative or zero 
-					//print error: income should be higher than 0.
-					//or
-					//print error: spend should be higher than 0.
-					
-					printMessage(11, argv[1]);
-				}
-				else
-				{
-					//amount is valid and positive
-					//execute "income/spend" command in default wallet
-					
-					//check for "default_wallet" tag in config file
-					if(existsConfigTag("default_wallet", configFileName))
-					{				
-						//check if the file specified in "default_wallet" tag exists
-						if(!validateFileName(
-							readConfig("default_wallet", 
-							configFileName)))
-						{	//the file specified in "default_wallet" tag exists
-							validArguments = incomeSpend(
-								argv[1],
-								truncatedAmount,
-								readConfig("default_wallet", configFileName), 
-								arguments[1]);
-						}
-						else 
-						{
-							//file specified in "default_wallet" tag doesn't exist
-							//print error: could not open 'C:\path\some.wallet' to register transaction
-							printMessage(12, readConfig(
-								"default_wallet", 
-								configFileName), 
-								" to register transaction");
-						}
-					}	
-					else
-					{
-						// could not open moneytracker.config or
-						// tag "default_wallet" is incorrect or 
-						// tag "default_wallet" is not implemented at all 
-					}
-				}
-			//delete memory allocated in "getArgumentsForIncomeSpend" function
-			delete[] arguments;
-			}
-		break;
+		else
+		{// amount specified, but not valid
+			//print error: parameter for 'income' should be a positive number
+			//or
+			//print error: parameter for 'spend' should be a positive number
+			printMessage(8, argv[1]);
 		}
 	}
+	else 
+	{//amount is valid
+		//truncate amount to have only two decimals and no leading zeros
+		string truncatedAmount=truncateAmount(arguments[0].c_str());
+		//check if validated sum is negative or zero
+		if(atof(truncatedAmount.c_str()) <= 0.00)								
+		{//amount is valid, but negative or zero 
+			//print error: income should be higher than 0.
+			//or
+			//print error: spend should be higher than 0.
+			printMessage(11, argv[1]);
+		}
+		else
+		{//amount is valid and positive
+		 //execute "income/spend" command in default wallet
+			//check for "default_wallet" tag in config file
+			if(existsConfigTag("default_wallet", configFileName))
+			{//config file exists, "default_wallet" tag is correctly implemented			
+				//check if the file specified in "default_wallet" tag exists
+				if(!validateFileName(readConfig("default_wallet", configFileName)))
+				{//the file specified in "default_wallet" tag exists
+					//execute an income/spend without any validations
+					validArguments = incomeSpend(
+						argv[1],
+						truncatedAmount,
+						readConfig("default_wallet", configFileName), 
+						arguments[1]);
+				}
+				else 
+				{//file specified in "default_wallet" tag doesn't exist
+					//print error: could not open 'C:\path\some.wallet' to register transaction
+					printMessage(12, 
+						readConfig("default_wallet", configFileName), 
+						" to register transaction");
+				}
+			}	
+			else
+			{
+				// could not open moneytracker.config or
+				// tag "default_wallet" is incorrect or 
+				// tag "default_wallet" is not implemented at all 
+			}
+		}
+		//delete memory allocated in "getArgumentsForIncomeSpend" function
+		delete[] arguments;
+	}
+		
 	return validArguments;
 }
 
@@ -566,7 +444,7 @@ bool executeBalance(
 
 // executes an income/spend without any validations
 bool incomeSpend(
-	const string command, 
+	const string command, // "income" or "spend"
 	const string truncatedAmount, // amount with sign, no leading zeros and two digits after (.)
 	const string walletFile, // wallet file name
 	const string category, 
@@ -599,29 +477,16 @@ bool incomeSpend(
 	time_t transactionTime = time(0) ;
 	
 	//create walletEntity with default values
-	WalletEntity walletEntity(
-		transactionTime, 
-		sign, 
-		cutAmount, 
-		cat,
-		currency);
-		
+	WalletEntity walletEntity(transactionTime, sign, cutAmount, cat, currency);
+	
 	//if writing to file successful
 	if(walletEntity.addWalletEntity(walletFile))
 	{
 		//print a success message
 		// like "Spending 'other' in an amount of 145.12 RON was registered."
-		printMessage(
-			9, 
-			messageFlag, 
-			cat, 
-			cutAmount, 
-			currency);
+		printMessage(9, messageFlag, cat, cutAmount, currency);
 		// and one like "Transaction time: Thu, 08 Oct 2015 10:52:40 GMT"
-		printMessage(
-			10, 
-			//convert transactionTime to string
-			displayGMT(transactionTime));
+		printMessage(10, displayGMT(transactionTime));
 		wasCommandExecuted = true;
 	} 
 	else
