@@ -132,14 +132,13 @@ bool executeIncomeSpend(
 	{
 		case 2:// "income/spend" command with no arguments
 		{
-			// print error: no ammount specified for 'income'.
+			// print error: no amount specified for 'income'.
 			//or
-			// print error: no ammount specified for 'spend'.
+			// print error: no amount specified for 'spend'.
 			printMessage(7, argv[1]);
 			break;
 		}
 		case 3: //income/spend command with only amount as  argument
-		case 4: //income/spend command with amount and one more argument
 		{
 			if(!validateAmount(argv[2]))
 			{	//amount is not valid
@@ -257,10 +256,21 @@ bool executeIncomeSpend(
 			
 			if(!validateAmount(arguments[0].c_str()))
 			{	//amount is not valid
-				//print error: parameter for 'income' should be a positive number
-				//or
-				//print error: parameter for 'spend' should be a positive number
-				printMessage(8, argv[1]);
+				
+				if (arguments[0].length() == 0)
+				{
+					// print error: no amount specified for 'income'.
+					//or
+					// print error: no amount specified for 'spend'.
+					printMessage(7, argv[1]);	
+				}
+				else
+				{
+					//print error: parameter for 'income' should be a positive number
+					//or
+					//print error: parameter for 'spend' should be a positive number
+					printMessage(8, argv[1]);
+				}
 			}
 			else 
 			{	//amount is valid
@@ -312,6 +322,7 @@ bool executeIncomeSpend(
 						// tag "default_wallet" is not implemented at all 
 					}
 				}
+			//delete memory allocated in "getArgumentsForIncomeSpend" function
 			delete[] arguments;
 			}
 		break;
@@ -352,13 +363,19 @@ bool validateAmount(const char word [])
 	// valid = true means the input amount is correctly written by the user
 	// and gets validated; this will be returned by 'validateAmount'
 	bool valid = true;
-
 	// states in which the 'switch' below can get during the 'for': 
 	enum E_ReadState { INIT, EXPECT_NUM, EXPECT_NUM_SEP, EXPECT_DEC };
 	E_ReadState state = INIT;
 	
 	// move through each char of the 'word' (initial amount)
 	int len = strlen(word);
+	// void amount case
+	if(len == 0) 
+	{
+		return false;
+	}
+	else
+	{}
 	for (int pos = 0; pos < len; pos++)
 	{
 		switch (state)

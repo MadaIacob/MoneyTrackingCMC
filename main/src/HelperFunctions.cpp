@@ -305,7 +305,7 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 	string remainingArguments = "";
 	
 	//at least 3 arguments are mandatory to interpret arguments
-	if (argNumber >= 3) 
+	if (argNumber >= 2) 
 	{
 		//signalises the first category flag found;
 		bool categoryFound = false;
@@ -346,7 +346,6 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 	}
 	else
 	{}
-
 	return arguments;
 }
 
