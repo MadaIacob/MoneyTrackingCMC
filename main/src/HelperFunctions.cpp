@@ -293,6 +293,7 @@ string getBalance(const string walletName)
 //returns a pointer (arguments) to an array of strings containing:
 // arguments[0]=amount
 // arguments[1]=category
+// arguments[2]=walletName
 //first two command line arguments(application name and command) are ignored 
 string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 {
@@ -300,7 +301,8 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 	// returned pointer that contains:
 	// arguments[0] amount
 	// arguments[1] category
-	string* arguments = new string[2];
+	// arguments[2] walletName
+	string* arguments = new string[3];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING A NEW TAG!
 	
 	// a string containing the remaining arguments after taking out the first category found and its tag
 	string remainingArguments = "";
@@ -310,6 +312,8 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 	{
 		//signalises the first category flag found;
 		bool categoryFound = false;
+		//signalises the first wallet flag found;
+		bool walletFound = false;
 		int i = 0;
 		//go through command line arguments
 		for(; i < argNumber - 1 ; i++)
@@ -326,10 +330,22 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 				//put the next command line argument into returned pointer
 				arguments[1] = argv[i]; 				
 			}
+			else if(((strcmp(argv[i], "-w") == 0) || 
+			    (strcmp(argv[i], "--wallet") == 0)) &&
+			     walletFound == false)
+			{
+				//first wallet flag found
+				walletFound = true;
+				//jump over "-w" or "--wallet" flag
+				i++;
+				//put the next command line argument into returned pointer
+				arguments[2] = argv[i]; 				
+			}
 			else
 			{
 				//put command line argument into remainingArguments string
 				remainingArguments = remainingArguments + argv[i] + " ";
+				
 			}
 		}
 		// check if there's one more argument left after flags search

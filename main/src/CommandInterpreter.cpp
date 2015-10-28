@@ -173,33 +173,56 @@ bool executeIncomeSpend(
 		}
 		else
 		{//amount is valid and positive
-		 //execute "income/spend" command in default wallet
-			//check for "default_wallet" tag in config file
-			if(existsConfigTag("default_wallet", configFileName))
-			{//config file exists, "default_wallet" tag is correctly implemented			
-				//check if the file specified in "default_wallet" tag exists
-				if(!validateFileName(readConfig("default_wallet", configFileName)))
-				{//the file specified in "default_wallet" tag exists
+		 //execute "income/spend" command 
+			//check if wallet name was specified
+			if (arguments[2].length() == 0)
+			{// no wallet name specified
+				//check for "default_wallet" tag in config file
+				if(existsConfigTag("default_wallet", configFileName))
+				{//config file exists, "default_wallet" tag is correctly implemented			
+					//check if the file specified in "default_wallet" tag exists
+					if(!validateFileName(readConfig("default_wallet", configFileName)))
+					{//the file specified in "default_wallet" tag exists
+						//execute an income/spend without any validations
+						validArguments = incomeSpend(
+							argv[1],
+							truncatedAmount,
+							readConfig("default_wallet", configFileName), 
+							arguments[1]);
+					}
+					else 
+					{//file specified in "default_wallet" tag doesn't exist
+						//print error: could not open 'C:\path\some.wallet' to register transaction
+						printMessage(
+							12, 
+							readConfig("default_wallet", configFileName), 
+							" to register transaction");
+					}
+				}	
+				else
+				{
+					// could not open moneytracker.config or
+					// tag "default_wallet" is incorrect or 
+					// tag "default_wallet" is not implemented at all 
+				}
+			}
+			else
+			{// wallet name specified	
+				//check if the specified wallet exists
+				if(!validateFileName(arguments[2]))
+				{//the specified wallet exists
 					//execute an income/spend without any validations
 					validArguments = incomeSpend(
 						argv[1],
 						truncatedAmount,
-						readConfig("default_wallet", configFileName), 
+						arguments[2], 
 						arguments[1]);
 				}
 				else 
-				{//file specified in "default_wallet" tag doesn't exist
+				{//the specified wallet doesn't exist
 					//print error: could not open 'C:\path\some.wallet' to register transaction
-					printMessage(12, 
-						readConfig("default_wallet", configFileName), 
-						" to register transaction");
+					printMessage(12, arguments[2], " to register transaction");
 				}
-			}	
-			else
-			{
-				// could not open moneytracker.config or
-				// tag "default_wallet" is incorrect or 
-				// tag "default_wallet" is not implemented at all 
 			}
 		}
 		//delete memory allocated in "getArgumentsForIncomeSpend" function
