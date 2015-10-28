@@ -76,64 +76,76 @@ TEST(displayGMTTest, outOfRangeTime)
 	EXPECT_EQ(expectedTime, actualTime);
 		
 }
-/*
-TEST(GetBalanceTest, SingleEntryBalance)
+
+TEST(getBalanceTest, singleEntryBalance_NoCategory)
 {
 	//set-up
-	char* argv[2]={(char*) "test.wallet",(char*) ""};
+	std::string* arguments = new std::string[2];
+	arguments[0] = "test.wallet";
+	arguments[1] = "";
 	helperCreateWallet("test.wallet","+00.00");
 	std::string balance = "+0.00";
 	//test
-	EXPECT_EQ(balance, getBalance(&argv[0]));
+	EXPECT_EQ(balance, getBalance(&arguments[0]));
 	
-	//tear-down		
+	//tear-down	
+	delete[] arguments;
 	remove("test.wallet");
 }
 
-TEST(GetBalanceTest, NegativeBalance)
+TEST(getBalanceTest, negativeBalance_NoCategory)
 {
 	//set-up
-	char* argv[2]={(char*) "wallet",(char*) ""};
+	std::string* arguments = new std::string[2];
+	arguments[0] = "wallet";
+	arguments[1] = "";
 	helperCreateWallet("wallet", "+100.00");
 	helperAddWalletEntity(125467, "+", "500", "salary", "RON", "wallet");
 	helperAddWalletEntity(132457, "-", "700", "other", "RON", "wallet");
 	std::string balance = "-100.00";
 	//test
-	EXPECT_EQ(balance, getBalance(&argv[0]));
+	EXPECT_EQ(balance, getBalance(&arguments[0]));
 	
 	//tear-down		
+	delete[] arguments;
 	remove("wallet");
 }
 
-TEST(GetBalanceTest, PositiveBalance)
+TEST(getBalanceTest, positiveBalance_NoCategory)
 {
 	//set-up
-	char* argv[2]={(char*) "wallet",(char*) ""};
+	std::string* arguments = new std::string[2];
+	arguments[0] = "wallet";
+	arguments[1] = "";
 	helperCreateWallet("wallet", "+100.00");
 	helperAddWalletEntity(125467, "-", "500", "salary", "RON", "wallet");
 	helperAddWalletEntity(132457, "+", "700", "other", "RON", "wallet");
 	std::string balance = "+300.00";
 	//test
-	EXPECT_EQ(balance, getBalance("test.wallet", "");
+	EXPECT_EQ(balance, getBalance(&arguments[0]));
 	
 	//tear-down		
+	delete[] arguments;
 	remove("wallet");
 }
 
-TEST(GetBalanceTest, ZeroBalance)
+TEST(getBalanceTest, zeroBalance_NoCategory)
 {
 	//set-up
-	char* argv[2]={(char*) "wallet",(char*) ""};
+	std::string* arguments = new std::string[2];
+	arguments[0] = "wallet";
+	arguments[1] = "";
 	helperCreateWallet("wallet", "+100.55");
 	helperAddWalletEntity(125467, "-", "200", "salary", "RON", "wallet");
 	helperAddWalletEntity(132457, "+", "99.45", "other", "RON", "wallet");
 	std::string balance = "+0.00";
 	//test
-	EXPECT_EQ(balance, getBalance(&argv[0]));
+	EXPECT_EQ(balance, getBalance(&arguments[0]));
 	
 	//tear-down		
+	delete[] arguments;
 	remove("wallet");
-}*/
+}
 
 TEST(GetAmountTest, validAmount)
 {

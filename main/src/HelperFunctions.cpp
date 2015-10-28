@@ -317,6 +317,9 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 	// arguments[1] category
 	// arguments[2] walletName
 	string* arguments = new string[3];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
+	arguments[0] = "";
+	arguments[1] = "";
+	arguments[2] = "";
 	
 	// a string containing the remaining arguments after taking out 
 	//the first category found and its tag and
@@ -396,7 +399,9 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 	// arguments[0]=walletName
 	// arguments[1]=category
 	string* arguments = new string[2];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
-
+	arguments[0] = "";
+	arguments[1] = "";
+	
 	//at least one argument provided for balance command
 	if (argNumber >= 1) 
 	{
