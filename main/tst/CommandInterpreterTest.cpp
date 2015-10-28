@@ -381,10 +381,11 @@ TEST(executeIncomeSpendTest, amountNotSpecified)
 	remove(configName.c_str());
 }
 
-TEST(executeBalance, defaultWallet_TagOK_WalletExists)
+TEST(executeBalanceTest, defaultWallet_TagOK_WalletExists)
 {
 	//set-up
 	int noOfArguments = 2;
+	char* argv[2]={(char*) "moneytracker.exe", (char*) "balance"};
 	std::string configName1("configFile1");
 	std::string configContent("sdrsrfs\n\trfsdrf\ndefault_wallet\t = \t \t\texecuteBalance1\t\n default_wallet = some.wallet");
 	createFile(configName1, configContent);
@@ -399,8 +400,8 @@ TEST(executeBalance, defaultWallet_TagOK_WalletExists)
 	fileContent = "+1000.00 RON\n1445429653;-;200.00;other;RON\n1445429660;-;200.00;other;RON\n1445429679;+;100.00;salary;RON\n1445430767;-;300.00;other;RON";
 	createFile(fileName2, fileContent);
 	//test
-	EXPECT_EQ(true, executeBalance(noOfArguments, configName1));
-	EXPECT_EQ(true, executeBalance(noOfArguments, configName2));
+	EXPECT_EQ(true, executeBalance(noOfArguments, &argv[0], configName1));
+	EXPECT_EQ(true, executeBalance(noOfArguments, &argv[0], configName2));
 						
 	//tear-down
 	remove(fileName1.c_str());	
@@ -409,10 +410,11 @@ TEST(executeBalance, defaultWallet_TagOK_WalletExists)
 	remove(configName2.c_str());
 } 
 
-TEST(executeBalance, defaultWallet_TagNotOK)
+TEST(executeBalanceTest, defaultWallet_TagNotOK)
 {
 	//set-up
 	int noOfArguments = 2;
+	char* argv[2]={(char*) "moneytracker.exe", (char*) "balance"};
 	std::string configName1("configFile1");
 	std::string configContent("sdrsrfs\n\trfsdrf\nde fault_wallet\t = \t \t\texecuteBalance1\t\n default_wal let = some.wallet");
 	createFile(configName1, configContent);
@@ -428,8 +430,8 @@ TEST(executeBalance, defaultWallet_TagNotOK)
 	createFile(fileName2, fileContent);
 
 	//test
-	EXPECT_EQ(false, executeBalance(noOfArguments, configName1));
-	EXPECT_EQ(false, executeBalance(noOfArguments, configName2));
+	EXPECT_EQ(false, executeBalance(noOfArguments, &argv[0], configName1));
+	EXPECT_EQ(false, executeBalance(noOfArguments, &argv[0], configName2));
 						
 	//tear-down
 	remove(fileName1.c_str());	
@@ -438,29 +440,31 @@ TEST(executeBalance, defaultWallet_TagNotOK)
 	remove(configName2.c_str());
 }
 
-TEST(executeBalance, defaultWallet_WalletDoesNotExists)
+TEST(executeBalanceTest, defaultWallet_WalletDoesNotExists)
 {
 	//set-up
 	int noOfArguments = 2;
+	char* argv[2]={(char*) "moneytracker.exe", (char*) "balance"};
 	std::string configName1("configFile1");
 	std::string configContent("default_wallet= executeBalance1");
 	createFile(configName1, configContent);
 	
 	//test
-	EXPECT_EQ(false, executeBalance(noOfArguments, configName1));
+	EXPECT_EQ(false, executeBalance(noOfArguments, &argv[0], configName1));
 						
 	//tear-down
 	remove(configName1.c_str());
 } 
 
-TEST(executeBalance, defaultWallet_ConfigFileDoesNotExists)
+TEST(executeBalanceTest, defaultWallet_ConfigFileDoesNotExists)
 {
 	//set-up
 	int noOfArguments = 2;
+	char* argv[2]={(char*) "moneytracker.exe", (char*) "balance"};
 	std::string configName1("configFile1");
 	
 	//test
-	EXPECT_EQ(false, executeBalance(noOfArguments, configName1));
+	EXPECT_EQ(false, executeBalance(noOfArguments, &argv[0], configName1));
 						
 	//tear-down
 }

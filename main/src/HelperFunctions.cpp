@@ -230,13 +230,17 @@ double getAmount(const string line)
 	return amount;
 	
 }
-//reads the content of the default wallet and returns the sum of all entries
-//	as a string with the sign "+" or "-" included
-//if there is no content in the file it returns the string "+0.00"
-string getBalance(const string walletName)
+//reads the content of a wallet 
+//arguments is a pointer to an array of strings containing
+// arguments[0]=walletName
+// arguments[1]=category
+//returns balance as a string
+//if category is specified, balance is calculated only for that category
+//if no category specified, balance for all wallet is calculated
+string getBalance(string* arguments)
 {
 	//open the file for reading
-	ifstream wallet(walletName.c_str());
+	ifstream wallet(arguments[0].c_str());
 	string line;
 	vector <string> data;
 	double balance = 0;
@@ -271,7 +275,7 @@ string getBalance(const string walletName)
 			}
 			//add the first amount to the balance
 			balance += firstAmount;
-		//iterate trough the rest of the entityes from the file
+		//iterate trough the rest of the entities from the file
 		while(getline(wallet,line))
 		{
 			//add the amount from each entity to the balance
@@ -302,9 +306,11 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 	// arguments[0] amount
 	// arguments[1] category
 	// arguments[2] walletName
-	string* arguments = new string[3];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING A NEW TAG!
+	string* arguments = new string[3];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
 	
-	// a string containing the remaining arguments after taking out the first category found and its tag
+	// a string containing the remaining arguments after taking out 
+	//the first category found and its tag and
+	//the first wallet name found and its tag
 	string remainingArguments = "";
 	
 	//at least one argument provided for income/spend command
@@ -361,6 +367,63 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 		//amount should be the first word into remainingArguments string
 		//put the first word into returned pointer 
 		arguments[0] = remainingArguments.substr(0, remainingArguments.find_first_of(" "));
+	}
+	else
+	{}
+	//return only relevant arguments
+	return arguments;
+}
+
+//searches for optional flags within command line arguments
+//returns a pointer (arguments) to an array of strings containing:
+// arguments[0]=walletName
+// arguments[1]=category
+//first two command line arguments(application name and command) are ignored 
+string* getArgumentsForBalance(int argNumber, char* argv[])
+{
+	
+	// returned pointer that contains:
+	// arguments[0]=walletName
+	// arguments[1]=category
+	string* arguments = new string[2];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
+
+	//at least one argument provided for balance command
+	if (argNumber >= 1) 
+	{
+		//signalises the first category flag found;
+		bool categoryFound = false;
+		//signalises the first wallet flag found;
+		bool walletFound = false;
+		int i = 0;
+		//go through command line arguments
+		for(; i < argNumber - 1 ; i++)
+		{
+			//check for the first "-c" or "--category" flag among command line arguments
+			if(((strcmp(argv[i], "-c") == 0) || 
+			    (strcmp(argv[i], "--category") == 0)) &&
+			     categoryFound == false)
+			{
+				//first category flag found
+				categoryFound = true;
+				//jump over "-c" or "--category" flag
+				i++;
+				//put the next command line argument into returned pointer
+				arguments[1] = argv[i]; 				
+			}
+			else if(((strcmp(argv[i], "-w") == 0) || 
+			    (strcmp(argv[i], "--wallet") == 0)) &&
+			     walletFound == false)
+			{
+				//first wallet flag found
+				walletFound = true;
+				//jump over "-w" or "--wallet" flag
+				i++;
+				//put the next command line argument into returned pointer
+				arguments[0] = argv[i]; 				
+			}
+			else
+			{}
+		}
 	}
 	else
 	{}

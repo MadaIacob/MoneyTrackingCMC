@@ -49,7 +49,13 @@ bool validateCommand(int argc, char* argv[])
 	else if(strcmp(argv[1], "balance") == 0) 
 	{
 		//execute "balance" command
-		executeBalance(argc, "moneytracker.config", argv[3]);
+		executeBalance(argc, &argv[0], "moneytracker.config");
+		validCommand = true;
+	}
+	else if(strcmp(argv[1], "config") == 0) 
+	{
+		//execute "config" command
+		//executeConfig(argc, &argv[3], "moneytracker.config");
 		validCommand = true;
 	}
 	else
@@ -225,10 +231,10 @@ bool executeIncomeSpend(
 				}
 			}
 		}
-		//delete memory allocated in "getArgumentsForIncomeSpend" function
-		delete[] arguments;
 	}
-		
+	//delete memory allocated in "getArgumentsForIncomeSpend" function
+	delete[] arguments;	
+	
 	return validArguments;
 }
 
@@ -255,6 +261,10 @@ void printHelpMenu()
 	cout << " ------------------------------------" 
 	<< "---------------------------------" << endl;
 	cout << " moneytracker[.exe] balance" << endl;
+	cout << " ------------------------------------" 
+	<< "---------------------------------" << endl;
+	cout << " moneytracker[.exe] config default_wallet[ ]=[ ] <new_tag_value> " 
+	<< endl;
 }
 
 
@@ -416,31 +426,34 @@ string truncateAmount(const char word[])
 //executes "balance" command for a file
 //returns true if balance was successfully calculated
 bool executeBalance(
-	const int argc, //number of arguments from command line
-	const string configFileName, //config file for default values
-	const char fileName[]) //wallet name
+	int argc, //number of arguments from the command line
+	char* argv[], //arguments from the command line
+	const string configFileName) //config file for default values
 {
+	//returned value
 	bool isBalanceDisplayed = false;
+
+	//ignore first two arguments from command line
+	//and get the wallet name and category from the remaining ones
+	string* arguments = getArgumentsForBalance(argc - 2, &argv[2]);
 	
-	//number of arguments for "balance" command
-	switch (argc)
-	{
-		default: //"balance" command with or without arguments
-		{
+	//check if wallet name is not specified
+	if (arguments[0].length() == 0)
+	{//no wallet name specified
 			//check for "default_wallet" tag in config file
 			if(existsConfigTag("default_wallet", configFileName))
 			{// tag "default_wallet" exists in config file	
 		
 				//read content of "default_wallet" tag
-				string defaultWallet = readConfig("default_wallet", configFileName);
+				arguments[0] = readConfig("default_wallet", configFileName);
 				//check if the file specified in "default_wallet" tag exists
-				if(!validateFileName(defaultWallet))
+				if(!validateFileName(arguments[0]))
 				{	//the file specified in "default_wallet" tag exists
 					
 					//calculate balance for default wallet and 
 					//print a success message
 					// like "Balance for my.wallet is +900.00 RON"
-					printMessage(15, defaultWallet, getBalance(defaultWallet), "RON");
+					printMessage(15, arguments[0], getBalance(&arguments[0]), "RON");
 					isBalanceDisplayed = true;	
 				} 
 				else 
@@ -459,9 +472,30 @@ bool executeBalance(
 				// tag "default_wallet" is incorrect or 
 				// tag "default_wallet" is not implemented at all 
 			}			
-			break;
-		}
 	}
+	else
+	{//wallet name specified
+			
+		//check if the wallet file exists
+		if(!validateFileName(arguments[0]))
+		{//specified wallet file exists
+			
+			//calculate balance for wallet and print a success message
+			// like "Balance for my.wallet is +900.00 RON"
+			printMessage(15, arguments[0], getBalance(&arguments[0]), "RON");
+			isBalanceDisplayed = true;	
+		} 
+		else 
+		{
+			//specified wallet doesn't exist
+			//print error: could not open 'C:\path\some.wallet' to calculate balance
+			printMessage(12, arguments[0], " to calculate balance");
+		}
+		
+	}
+	//delete memory allocated in "getArgumentsForBalance" function
+	delete[] arguments;
+	
 	return isBalanceDisplayed;
 }
 

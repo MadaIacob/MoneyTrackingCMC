@@ -76,7 +76,7 @@ TEST(displayGMTTest, outOfRangeTime)
 	EXPECT_EQ(expectedTime, actualTime);
 		
 }
-
+/*
 TEST(GetBalanceTest, SingleEntryBalance)
 {
 	//set-up
@@ -130,7 +130,7 @@ TEST(GetBalanceTest, ZeroBalance)
 	//tear-down		
 	remove("wallet");
 }
-
+*/
 TEST(GetAmountTest, validAmount)
 {
 	EXPECT_EQ(-0.01, getAmount("1445286465;-;0.01;other;RON"));
