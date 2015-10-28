@@ -22,6 +22,7 @@ std::string convertPath(std::string givenPath);
 std::string displayGMT(const time_t myTime);
 std::string getBalance(std::string* arguments);
 double getAmount(const std::string line);
+std::string getCategory(const std::string line);
 std::string* getArgumentsForIncomeSpend(int argNumber, char* argv[]);
 std::string* getArgumentsForBalance(int argNumber, char* argv[]);
 

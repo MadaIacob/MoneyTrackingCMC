@@ -114,17 +114,6 @@ string readConfig(string configTag, string configFileName)
 				}
 			break;
 			}
-			/* foundEqual = line.find("=");
-			size_t pos = foundEqual +1;
-			
-			//save the file name to word string 
-			while(pos < line.size())
-			{
-				word = word + line[pos];
-				pos++;				
-			}
-				
-			break; */
 		}
 	}
 	return word;
@@ -207,29 +196,59 @@ double getAmount(const string line)
 	
 	vector <string> data;
 	double amount;
-	
-	istringstream ss(line);
-	//iterates trough the string and separates it by the character ";" 
-	//	and pushes every element into a vector  
-	while(ss)
-	{
-		string parameter;
-		if(!getline(ss,parameter,';')) break;
-		data.push_back(parameter);
-	}	
-	//convert the amount form string to double
-	if(data.at(1) == "-")
-	{
-		amount = 0 - atof(data.at(2).c_str()); 
+	//if not the first line in wallet file
+	if((line[0] != '-') && (line[0] != '+'))
+	{//a wallet file line different than the first
+		istringstream ss(line);
+		//iterates trough the string and separates it by the character ";" 
+		//	and pushes every element into a vector  
+		while(ss)
+		{
+			string parameter;
+			if(!getline(ss,parameter,';')) break;
+			data.push_back(parameter);
+		}	
+		//convert the amount from string to double
+		if(data.at(1) == "-")
+		{
+			amount = 0 - atof(data.at(2).c_str()); 
+		}
+		else
+		{
+			amount = atof(data.at(2).c_str());
+		}
 	}
 	else
-	{
-		amount = atof(data.at(2).c_str());
+	{//first line in a wallet file (initial amount only)
+		amount = atof(line.c_str());
 	}
 	//return the amount as a duble
 	return amount;
-	
 }
+
+//gets the category as string from an entity (line) received as a parameter 
+string getCategory(const string line)
+{	
+	//returned value
+	string category = "";
+	//if not the first line in wallet file
+	if((line[0] != '-') && (line[0] != '+'))
+	{//a wallet file line different than the first
+		//isolate category information from the line formatted like
+		//"1446029428;+;200.00;other;RON"
+		category = line.substr(line.find_first_of(';') + 
+				   3,line.length() - line.find_first_of(';') - 3);
+		category = category.substr(category.find_first_of(';') + 
+				   1,category.length() - category.find_first_of(';') - 5);
+	}
+	else
+	{
+		//first line in a wallet file (initial amount only)
+	}
+	//return the amount as a duble
+	return category;
+}
+
 //reads the content of a wallet 
 //arguments is a pointer to an array of strings containing
 // arguments[0]=walletName
@@ -239,58 +258,49 @@ double getAmount(const string line)
 //if no category specified, balance for all wallet is calculated
 string getBalance(string* arguments)
 {
-	//open the file for reading
+	//open the wallet file for reading 
 	ifstream wallet(arguments[0].c_str());
+	
 	string line;
-	vector <string> data;
 	double balance = 0;
-	//read the first linefrom the given file
-	if(getline(wallet,line)) 
-	{
-		string sign = "";
-		string result = "" ;
-		//get the sign of the first entity
-		sign = line[0];
-		int len = line.length();
-		double firstAmount = 0;
-		//get the amount as a string character by character 
-		for(int i = 1; i < len; i++)
-			{
-				if (line[i]!=' ')
-				{
-					result += line[i];
-				}
-				else 
-				{
-					//convert the amount form string to double
-					if(sign == "-")
-					{
-						firstAmount = 0 - atof(result.c_str()); 
-					}
-					else
-					{
-						firstAmount = atof(result.c_str());
-					}
-				}
-			}
-			//add the first amount to the balance
-			balance += firstAmount;
-		//iterate trough the rest of the entities from the file
+	//check if category is not specified
+	if(arguments[1].length() == 0)
+	{// category is not specified -> calculate balance for all lines
 		while(getline(wallet,line))
 		{
 			//add the amount from each entity to the balance
 			balance += getAmount(line);
 		}
 	}
+	else
+	{// category is specified -> calculate balance for specified lines
+		while(getline(wallet,line))
+		{
+			//add the amount from each entity to the balance
+			if(arguments[1] == getCategory(line))
+			{
+				balance += getAmount(line);
+			}
+			else
+			{}
+		}
+	}
+	
 	//convert the balance from double to string 
 	//	with the sign "+" or "-" included
-	string amountConverted;
+	string convertedBalance;
 	ostringstream sstream;
 	sstream << fixed << setprecision(2) << balance;
-	amountConverted = sstream.str();
-	if (balance >= 0) amountConverted = '+' + amountConverted;
-	//return the balance as a string
-	return amountConverted;
+	convertedBalance = sstream.str();
+	if (balance >= 0) 
+	{
+		convertedBalance = '+' + convertedBalance;
+	}
+	else
+	{}
+	
+	//return balance as string having +/- sign as first character
+	return convertedBalance;
 }
 
 //searches the amount and optional flags within command line arguments
@@ -393,7 +403,7 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 		//signalises the first category flag found;
 		bool categoryFound = false;
 		//signalises the first wallet flag found;
-		bool walletFound = false;
+		//bool walletFound = false;
 		int i = 0;
 		//go through command line arguments
 		for(; i < argNumber - 1 ; i++)
@@ -409,7 +419,8 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 				i++;
 				//put the next command line argument into returned pointer
 				arguments[1] = argv[i]; 				
-			}
+			}/*
+			//check for the first "-w" or "--wallet" flag among command line arguments
 			else if(((strcmp(argv[i], "-w") == 0) || 
 			    (strcmp(argv[i], "--wallet") == 0)) &&
 			     walletFound == false)
@@ -420,7 +431,7 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 				i++;
 				//put the next command line argument into returned pointer
 				arguments[0] = argv[i]; 				
-			}
+			}*/
 			else
 			{}
 		}

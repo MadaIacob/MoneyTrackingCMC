@@ -80,10 +80,11 @@ TEST(displayGMTTest, outOfRangeTime)
 TEST(GetBalanceTest, SingleEntryBalance)
 {
 	//set-up
+	char* argv[2]={(char*) "test.wallet",(char*) ""};
 	helperCreateWallet("test.wallet","+00.00");
 	std::string balance = "+0.00";
 	//test
-	EXPECT_EQ(balance, getBalance("test.wallet"));
+	EXPECT_EQ(balance, getBalance(&argv[0]));
 	
 	//tear-down		
 	remove("test.wallet");
@@ -92,12 +93,13 @@ TEST(GetBalanceTest, SingleEntryBalance)
 TEST(GetBalanceTest, NegativeBalance)
 {
 	//set-up
+	char* argv[2]={(char*) "wallet",(char*) ""};
 	helperCreateWallet("wallet", "+100.00");
 	helperAddWalletEntity(125467, "+", "500", "salary", "RON", "wallet");
 	helperAddWalletEntity(132457, "-", "700", "other", "RON", "wallet");
 	std::string balance = "-100.00";
 	//test
-	EXPECT_EQ(balance, getBalance("wallet"));
+	EXPECT_EQ(balance, getBalance(&argv[0]));
 	
 	//tear-down		
 	remove("wallet");
@@ -106,12 +108,13 @@ TEST(GetBalanceTest, NegativeBalance)
 TEST(GetBalanceTest, PositiveBalance)
 {
 	//set-up
+	char* argv[2]={(char*) "wallet",(char*) ""};
 	helperCreateWallet("wallet", "+100.00");
 	helperAddWalletEntity(125467, "-", "500", "salary", "RON", "wallet");
 	helperAddWalletEntity(132457, "+", "700", "other", "RON", "wallet");
 	std::string balance = "+300.00";
 	//test
-	EXPECT_EQ(balance, getBalance("wallet"));
+	EXPECT_EQ(balance, getBalance("test.wallet", "");
 	
 	//tear-down		
 	remove("wallet");
@@ -120,17 +123,18 @@ TEST(GetBalanceTest, PositiveBalance)
 TEST(GetBalanceTest, ZeroBalance)
 {
 	//set-up
+	char* argv[2]={(char*) "wallet",(char*) ""};
 	helperCreateWallet("wallet", "+100.55");
 	helperAddWalletEntity(125467, "-", "200", "salary", "RON", "wallet");
 	helperAddWalletEntity(132457, "+", "99.45", "other", "RON", "wallet");
 	std::string balance = "+0.00";
 	//test
-	EXPECT_EQ(balance, getBalance("wallet"));
+	EXPECT_EQ(balance, getBalance(&argv[0]));
 	
 	//tear-down		
 	remove("wallet");
-}
-*/
+}*/
+
 TEST(GetAmountTest, validAmount)
 {
 	EXPECT_EQ(-0.01, getAmount("1445286465;-;0.01;other;RON"));
