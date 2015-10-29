@@ -58,16 +58,18 @@ TEST(validateCommand, boundaryValues)
 TEST(validateCommand, inRangeValues)
 {
 	//set-up
-	char* argv1[3]={(char*) "moneytracker.exe",(char*) "create"};
-	char* argv2[3]={(char*) "moneytracker.exe",(char*) "income"};
-	char* argv3[3]={(char*) "moneytracker.exe",(char*) "spend"};
-	char* argv4[3]={(char*) "moneytracker.exe",(char*) "balance"};
+	char* argv1[2]={(char*) "moneytracker.exe",(char*) "create"};
+	char* argv2[2]={(char*) "moneytracker.exe",(char*) "income"};
+	char* argv3[2]={(char*) "moneytracker.exe",(char*) "spend"};
+	char* argv4[2]={(char*) "moneytracker.exe",(char*) "balance"};
+	char* argv5[2]={(char*) "moneytracker.exe",(char*) "config"};
 			
 	//test
 	EXPECT_TRUE(validateCommand(2,&argv1[0]));
 	EXPECT_TRUE(validateCommand(2,&argv2[0]));
 	EXPECT_TRUE(validateCommand(2,&argv3[0]));
 	EXPECT_TRUE(validateCommand(2,&argv4[0]));
+	EXPECT_TRUE(validateCommand(2,&argv5[0]));
 	
 	//tear-down		
 
