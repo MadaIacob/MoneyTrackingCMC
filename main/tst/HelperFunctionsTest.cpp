@@ -222,10 +222,361 @@ TEST(getBalanceTest, noMatchingCategory)
 	remove("wallet");
 }
 
-TEST(GetAmountTest, validAmount)
+TEST(getAmountTest, validAmount)
 {
 	EXPECT_EQ(-0.01, getAmount("1445286465;-;0.01;other;RON"));
 	EXPECT_EQ(-999.00, getAmount("1445324005;-;999.00;salary;RON"));
 	EXPECT_EQ(0.01, getAmount("1445286465;+;0.01;other;RON"));
 	EXPECT_EQ(9999.00, getAmount("1445324005;+;9999.00;salary;RON"));
+	EXPECT_EQ(999.50, getAmount("+999.50"));
+	EXPECT_EQ(-1453.78, getAmount("-1453.78"));
+	
 }
+
+TEST(getArgumentsForIncomeSpendTest, outOfRangeArguments)
+{
+	//set-up
+	char* arguments[4]={(char*) "--c", (char*) "--w", 
+						 (char*) "-category", (char*) "-wallet"};
+	std::string* result1 = new std::string[3];
+	result1 = getArgumentsForIncomeSpend(0,&arguments[0]);
+	
+	std::string* result2 = new std::string[3];
+	result2 = getArgumentsForIncomeSpend(5,&arguments[2]);
+	
+	std::string* result3 = new std::string[3];
+	result3 = getArgumentsForIncomeSpend(4,&arguments[0]);
+	
+	//test
+	EXPECT_EQ("", result1[0]);
+	EXPECT_EQ("", result1[1]);
+	EXPECT_EQ("", result1[2]);
+
+	EXPECT_EQ("-category", result2[0]);
+	EXPECT_EQ("", result2[1]);
+	EXPECT_EQ("", result2[2]);
+
+	EXPECT_EQ("--c", result3[0]);
+	EXPECT_EQ("", result3[1]);
+	EXPECT_EQ("", result3[2]);
+	
+	//tear-down
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+}
+
+TEST(getArgumentsForIncomeSpendTest, categoryOnly)
+{
+	//set-up
+	char* arguments1[4]={(char*) "-c", (char*) "food", 
+						 (char*) "--category", (char*) "drinks"};
+	std::string* result1 = new std::string[3];
+	result1 = getArgumentsForIncomeSpend(4,&arguments1[0]);
+
+	char* arguments2[4]={(char*) "--category", (char*) "drinks", 
+						 (char*) "-c", (char*) "food"};
+	std::string* result2 = new std::string[3];
+	result2 = getArgumentsForIncomeSpend(4,&arguments2[0]);
+	
+	char* arguments3[4]={(char*) "-c", (char*) "--category",
+						 (char*) "--category", (char*) "-c"};
+	std::string* result3 = new std::string[3];
+	result3 = getArgumentsForIncomeSpend(4,&arguments3[0]);
+
+	char* arguments4[4]={(char*) "-category", (char*) "drinks",
+						 (char*) "-c", (char*) "food"};
+	std::string* result4 = new std::string[3];
+	result4 = getArgumentsForIncomeSpend(4,&arguments4[0]);
+
+	std::string* result5 = new std::string[3];
+	result5 = getArgumentsForIncomeSpend(2,&arguments4[2]);
+
+	//test
+	EXPECT_EQ("--category", result1[0]);
+	EXPECT_EQ("food", result1[1]);
+	EXPECT_EQ("", result1[2]);
+
+	EXPECT_EQ("-c", result2[0]);
+	EXPECT_EQ("drinks", result2[1]);
+	EXPECT_EQ("", result2[2]);
+
+	EXPECT_EQ("--category", result3[0]);
+	EXPECT_EQ("--category", result3[1]);
+	EXPECT_EQ("", result3[2]);
+
+	EXPECT_EQ("-category", result4[0]);
+	EXPECT_EQ("food", result4[1]);
+	EXPECT_EQ("", result4[2]);
+	
+	EXPECT_EQ("", result5[0]);
+	EXPECT_EQ("food", result5[1]);
+	EXPECT_EQ("", result5[2]);
+
+	//tear-down
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+	delete[] result4;
+	delete[] result5;
+}
+
+TEST(getArgumentsForIncomeSpendTest, walletNameOnly)
+{
+	//set-up
+	char* arguments1[4]={(char*) "-w", (char*) "food", 
+						 (char*) "--wallet", (char*) "drinks"};
+	std::string* result1 = new std::string[3];
+	result1 = getArgumentsForIncomeSpend(4,&arguments1[0]);
+
+	char* arguments2[4]={(char*) "--wallet", (char*) "drinks", 
+						 (char*) "-w", (char*) "food"};
+	std::string* result2 = new std::string[3];
+	result2 = getArgumentsForIncomeSpend(4,&arguments2[0]);
+	
+	char* arguments3[4]={(char*) "-w", (char*) "--wallet",
+						 (char*) "--wallet", (char*) "-c"};
+	std::string* result3 = new std::string[3];
+	result3 = getArgumentsForIncomeSpend(4,&arguments3[0]);
+
+	char* arguments4[4]={(char*) "-wallet", (char*) "drinks",
+						 (char*) "-w", (char*) "food"};
+	std::string* result4 = new std::string[3];
+	result4 = getArgumentsForIncomeSpend(4,&arguments4[0]);
+
+	std::string* result5 = new std::string[3];
+	result5 = getArgumentsForIncomeSpend(2,&arguments4[2]);
+
+	//test
+	EXPECT_EQ("--wallet", result1[0]);
+	EXPECT_EQ("", result1[1]);
+	EXPECT_EQ("food", result1[2]);
+
+	EXPECT_EQ("-w", result2[0]);
+	EXPECT_EQ("", result2[1]);
+	EXPECT_EQ("drinks", result2[2]);
+
+	EXPECT_EQ("--wallet", result3[0]);
+	EXPECT_EQ("", result3[1]);
+	EXPECT_EQ("--wallet", result3[2]);
+
+	EXPECT_EQ("-wallet", result4[0]);
+	EXPECT_EQ("", result4[1]);
+	EXPECT_EQ("food", result4[2]);
+	
+	EXPECT_EQ("", result5[0]);
+	EXPECT_EQ("", result5[1]);
+	EXPECT_EQ("food", result5[2]);
+
+	//tear-down
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+	delete[] result4;
+	delete[] result5;
+} 
+
+TEST(getArgumentsForIncomeSpendTest, categoryAndWalletName)
+{
+	//set-up
+	
+	//no amount
+	char* arguments1[4]={(char*) "-w", (char*) "wallet", 
+						 (char*) "--category", (char*) "drinks"};
+	std::string* result1 = new std::string[3];
+	result1 = getArgumentsForIncomeSpend(4,&arguments1[0]);
+
+	char* arguments2[4]={(char*) "--wallet", (char*) "-w", 
+						 (char*) "-c", (char*) "--category"};
+	std::string* result2 = new std::string[3];
+	result2 = getArgumentsForIncomeSpend(4,&arguments2[0]);
+	
+	char* arguments3[4]={(char*) "-c", (char*) "--wallet",
+						 (char*) "--wallet", (char*) "-c"};
+	std::string* result3 = new std::string[3];
+	result3 = getArgumentsForIncomeSpend(4,&arguments3[0]);
+
+	char* arguments4[4]={(char*) "--wallet", (char*) "-c",
+						 (char*) "--category", (char*) "-w"};
+	std::string* result4 = new std::string[3];
+	result4 = getArgumentsForIncomeSpend(4,&arguments4[0]);
+	
+	//amount
+	char* arguments01[6]={(char*) "w", (char*) "category",
+						  (char*) "-w", (char*) "wallet", 
+						  (char*) "--category", (char*) "drinks"};
+	std::string* result01 = new std::string[3];
+	result01 = getArgumentsForIncomeSpend(6,&arguments01[0]);
+
+	char* arguments02[6]={(char*) "w", (char*) "--wallet",
+						  (char*) "-w", (char*) "-w", 
+						  (char*) "-c", (char*) "--category"};
+	std::string* result02 = new std::string[3];
+	result02 = getArgumentsForIncomeSpend(6,&arguments02[0]);
+	
+	char* arguments03[6]={(char*) "-c", (char*) "--wallet",
+						  (char*) "--category", (char*) "wallet",
+						  (char*) "--wallet", (char*) "-c"};
+	std::string* result03 = new std::string[3];
+	result03 = getArgumentsForIncomeSpend(6,&arguments03[0]);
+
+	char* arguments04[6]={(char*) "--wallet", (char*) "-c",
+						  (char*) "--category", (char*) "-w",
+						  (char*) "--wallet", (char*) "--wallet"};
+	std::string* result04 = new std::string[3];
+	result04 = getArgumentsForIncomeSpend(6,&arguments04[0]);
+
+	//test
+	EXPECT_EQ("", result1[0]);
+	EXPECT_EQ("drinks", result1[1]);
+	EXPECT_EQ("wallet", result1[2]);
+
+	EXPECT_EQ("", result2[0]);
+	EXPECT_EQ("--category", result2[1]);
+	EXPECT_EQ("-w", result2[2]);
+
+	EXPECT_EQ("", result3[0]);
+	EXPECT_EQ("--wallet", result3[1]);
+	EXPECT_EQ("-c", result3[2]);
+
+	EXPECT_EQ("", result4[0]);
+	EXPECT_EQ("-w", result4[1]);
+	EXPECT_EQ("-c", result4[2]);
+	
+	EXPECT_EQ("w", result01[0]);
+	EXPECT_EQ("drinks", result01[1]);
+	EXPECT_EQ("wallet", result01[2]);
+
+	EXPECT_EQ("w", result02[0]);
+	EXPECT_EQ("--category", result02[1]);
+	EXPECT_EQ("-w", result02[2]);
+
+	EXPECT_EQ("--category", result03[0]);
+	EXPECT_EQ("--wallet", result03[1]);
+	EXPECT_EQ("-c", result03[2]);
+
+	EXPECT_EQ("--wallet", result04[0]);
+	EXPECT_EQ("-w", result04[1]);
+	EXPECT_EQ("-c", result04[2]);
+	
+	//tear-down
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+	delete[] result4;
+	delete[] result01;
+	delete[] result02;
+	delete[] result03;
+	delete[] result04;
+} 
+
+TEST(getArgumentsForBalanceTest, outOfRangeArguments)
+{
+	//set-up
+	char* arguments[4]={(char*) "--c", (char*) "--w", 
+						 (char*) "-category", (char*) "-wallet"};
+	std::string* result1 = new std::string[2];
+	result1 = getArgumentsForBalance(0,&arguments[0]);
+	
+	std::string* result2 = new std::string[2];
+	result2 = getArgumentsForBalance(1,&arguments[0]);
+	
+	std::string* result3 = new std::string[2];
+	result3 = getArgumentsForBalance(4,&arguments[0]);
+	
+	//test
+	EXPECT_EQ("", result1[0]);
+	EXPECT_EQ("", result1[1]);
+
+	EXPECT_EQ("", result2[0]);
+	EXPECT_EQ("", result2[1]);
+
+	EXPECT_EQ("", result3[0]);
+	EXPECT_EQ("", result3[1]);
+	
+	//tear-down
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+}
+TEST(getArgumentsForBalanceTest, categoryOnly)
+{
+	//set-up
+	char* arguments1[4]={(char*) "-c", (char*) "food", 
+						 (char*) "--category", (char*) "drinks"};
+	std::string* result1 = new std::string[2];
+	result1 = getArgumentsForBalance(4,&arguments1[0]);
+
+	char* arguments2[4]={(char*) "--category", (char*) "drinks", 
+						 (char*) "-c", (char*) "food"};
+	std::string* result2 = new std::string[2];
+	result2 = getArgumentsForBalance(4,&arguments2[0]);
+	
+	char* arguments3[4]={(char*) "-c", (char*) "--category",
+						 (char*) "--category", (char*) "-c"};
+	std::string* result3 = new std::string[2];
+	result3 = getArgumentsForBalance(4,&arguments3[0]);
+
+	char* arguments4[4]={(char*) "-category", (char*) "drinks",
+						 (char*) "-c", (char*) "food"};
+	std::string* result4 = new std::string[2];
+	result4 = getArgumentsForBalance(4,&arguments4[0]);
+
+	//test
+	EXPECT_EQ("", result1[0]);
+	EXPECT_EQ("food", result1[1]);
+
+	EXPECT_EQ("", result2[0]);
+	EXPECT_EQ("drinks", result2[1]);
+
+	EXPECT_EQ("", result3[0]);
+	EXPECT_EQ("--category", result3[1]);
+
+	EXPECT_EQ("", result4[0]);
+	EXPECT_EQ("food", result4[1]);
+	
+	//tear-down
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+	delete[] result4;
+}
+/* do not erase
+TEST(getArgumentsForBalanceTest, walletNameOnly)
+{
+	//set-up
+	char* arguments1[4]={(char*) "-w", (char*) "food", (char*) "--wallet", (char*) "drinks"};
+	std::string* result1 = new std::string[2];
+	result1 = getArgumentsForBalance(4,&arguments1[0]);
+
+	char* arguments2[4]={(char*) "--wallet", (char*) "drinks", (char*) "-w", (char*) "food"};
+	std::string* result2 = new std::string[2];
+	result2 = getArgumentsForBalance(4,&arguments2[0]);
+	
+	char* arguments3[4]={(char*) "-w", (char*) "-c", (char*) "--wallet", (char*) "drinks"};
+	std::string* result3 = new std::string[2];
+	result3 = getArgumentsForBalance(4,&arguments3[0]);
+
+	char* arguments4[4]={(char*) "-wallet", (char*) "drinks", (char*) "-w", (char*) "-w"};
+	std::string* result4 = new std::string[2];
+	result4 = getArgumentsForBalance(4,&arguments4[0]);
+
+	//test
+	EXPECT_EQ("food", result1[0]);
+	EXPECT_EQ("", result1[1]);
+
+	EXPECT_EQ("drinks", result2[0]);
+	EXPECT_EQ("", result2[1]);
+
+	EXPECT_EQ("-c", result3[0]);
+	EXPECT_EQ("", result3[1]);
+
+	EXPECT_EQ("-w", result4[0]);
+	EXPECT_EQ("", result4[1]);
+	
+	//tear-down
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+	delete[] result4;
+}*/
