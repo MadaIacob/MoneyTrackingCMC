@@ -17,6 +17,9 @@ bool existsConfigTag(
 std::string readConfig(
 	std::string configTag = "default_wallet" , 
 	std::string configFileName = "moneytracker.config");
+bool writeConfig(std::string configTag,
+	std::string configValue,
+	std::string configFileName);
 bool validateFileName(std::string fileName);
 std::string convertPath(std::string givenPath);
 std::string displayGMT(const time_t myTime);
