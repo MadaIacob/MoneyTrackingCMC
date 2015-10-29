@@ -147,6 +147,81 @@ TEST(getBalanceTest, zeroBalance_NoCategory)
 	remove("wallet");
 }
 
+TEST(getBalanceTest, singleLineWallet_Category)
+{
+	//set-up
+	std::string* arguments = new std::string[2];
+	arguments[0] = "test.wallet";
+	arguments[1] = "other";
+	helperCreateWallet("test.wallet","+600.00");
+	std::string balance = "+0.00";
+	//test
+	EXPECT_EQ(balance, getBalance(&arguments[0]));
+	
+	//tear-down	
+	delete[] arguments;
+	remove("test.wallet");
+}
+
+TEST(getBalanceTest, negativeBalance_Category)
+{
+	//set-up
+	std::string* arguments = new std::string[2];
+	arguments[0] = "wallet";
+	arguments[1] = "spaga";
+	helperCreateWallet("wallet", "+100.00");
+	helperAddWalletEntity(125467, "+", "500", "salary", "RON", "wallet");
+	helperAddWalletEntity(132457, "-", "100", "spaga", "RON", "wallet");
+	helperAddWalletEntity(132457, "-", "700", "other", "RON", "wallet");
+	helperAddWalletEntity(132457, "-", "200", "spaga", "RON", "wallet");
+	helperAddWalletEntity(132457, "-", "300", "spaga", "RON", "wallet");
+	std::string balance = "-600.00";
+	//test
+	EXPECT_EQ(balance, getBalance(&arguments[0]));
+	
+	//tear-down		
+	delete[] arguments;
+	remove("wallet");
+}
+
+TEST(getBalanceTest, positiveBalance_Category)
+{
+	//set-up
+	std::string* arguments = new std::string[2];
+	arguments[0] = "wallet";
+	arguments[1] = "salary";
+	helperCreateWallet("wallet", "+100.00");
+	helperAddWalletEntity(125467, "+", "500", "salary", "RON", "wallet");
+	helperAddWalletEntity(132457, "+", "700", "other", "RON", "wallet");
+	helperAddWalletEntity(125467, "+", "100", "salary", "RON", "wallet");
+	helperAddWalletEntity(125467, "+", "305.62", "salary", "RON", "wallet");
+	std::string balance = "+905.62";
+	//test
+	EXPECT_EQ(balance, getBalance(&arguments[0]));
+	
+	//tear-down		
+	delete[] arguments;
+	remove("wallet");
+}
+
+TEST(getBalanceTest, noMatchingCategory)
+{
+	//set-up
+	std::string* arguments = new std::string[2];
+	arguments[0] = "wallet";
+	arguments[1] = "food";
+	helperCreateWallet("wallet", "+1000.55");
+	helperAddWalletEntity(125467, "-", "100", "salary", "RON", "wallet");
+	helperAddWalletEntity(132457, "+", "99.45", "other", "RON", "wallet");
+	std::string balance = "+0.00";
+	//test
+	EXPECT_EQ(balance, getBalance(&arguments[0]));
+	
+	//tear-down		
+	delete[] arguments;
+	remove("wallet");
+}
+
 TEST(GetAmountTest, validAmount)
 {
 	EXPECT_EQ(-0.01, getAmount("1445286465;-;0.01;other;RON"));
