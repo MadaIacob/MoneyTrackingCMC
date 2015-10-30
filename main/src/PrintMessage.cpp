@@ -122,7 +122,7 @@ void printMessage( const char messageCode,
 		};
 		case 16: ////print "error: default tag and value should be specified."
 		{
-			cout <<" print error: default tag and value should be specified."
+			cout <<"error: default tag and value should be specified."
 			<< endl;
 			break;
 		}
