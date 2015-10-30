@@ -19,7 +19,7 @@ std::string readConfig(
 	std::string configFileName = "moneytracker.config");
 bool writeConfig(std::string configTag,
 	std::string configValue,
-	std::string configFileName);
+	std::string configFileName = "moneytracker.config");
 bool validateFileName(std::string fileName);
 std::string convertPath(std::string givenPath);
 std::string displayGMT(const time_t myTime);

@@ -43,19 +43,19 @@ bool validateCommand(int argc, char* argv[])
 			(strcmp(argv[1], "spend") == 0))
 	{
 		//execute "income" or "spend" command
-		executeIncomeSpend(argc, &argv[0], "moneytracker.config");
+		executeIncomeSpend(argc, &argv[0]);
 		validCommand = true;
 	}
 	else if(strcmp(argv[1], "balance") == 0) 
 	{
 		//execute "balance" command
-		executeBalance(argc, &argv[0], "moneytracker.config");
+		executeBalance(argc, &argv[0]);
 		validCommand = true;
 	}
 	else if(strcmp(argv[1], "config") == 0) 
 	{
 		//execute "config" command
-		//executeConfig(argc, &argv[3], "moneytracker.config");
+		executeConfig(argc, &argv[0]);
 		validCommand = true;
 	}
 	else
@@ -553,4 +553,41 @@ bool incomeSpend(
 	return wasCommandExecuted;
 }		
 
+bool executeConfig(const int argc, char* argv[], const string configFileName)
+{
+	bool changedDefaultTag = false;
+	string * parameters = getArgumentsForConfig(argc-2, &argv);
+	switch(argc)
+	{
+		case 2:
+		{
+			//print "error: default tag and value should be specified."
+			printMessage(16);
+		}
+		default:
+		{
+			if(parameters[0] == "" || parameters[1] == "")
+			{
+				printMessage(16);
+			}
+			else 
+			{
+				if(writeConfig(parameters[0], parameters[1]) == true)
+				{
+					//print "parameters[1] was configured as default."
+					printMessage(17,parameters[1]);
+				}
+				else
+				{
+					//"parameters[0] is not a valid configuration value.
+					printMessage(18, parameters[0]);
+				}
+			}
+		}
+	}
+}
 
+int main(int argc, char* argv[])
+{
+	executeConfig(argc, &argv);
+}
