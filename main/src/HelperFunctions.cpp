@@ -372,14 +372,22 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 		if(i == (argNumber - 1))
 		{
 			//put last command line argument into remainingArguments string
-			remainingArguments = remainingArguments + argv[i];
+			remainingArguments = remainingArguments + argv[i]+" ";
 		}
 		else
 		{}
 		
-		//amount should be the first word into remainingArguments string
-		//put the first word into returned pointer 
-		arguments[0] = remainingArguments.substr(0, remainingArguments.find_first_of(" "));
+		//check if more than one remaining argument left by
+		//checking if first " " found is the same as last " " found in string
+		if (remainingArguments.find(" ") == remainingArguments.rfind(" "))
+		{//one remaining argument
+			//amount should be the only word into remainingArguments string
+			//put the word into returned pointer 
+			arguments[0] = remainingArguments.substr(0, remainingArguments.find_first_of(" "));
+		}
+		else
+		{//more than one remaining arguments
+		}
 	}
 	else
 	{}
@@ -389,18 +397,21 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 
 //searches for optional flags within command line arguments
 //returns a pointer (arguments) to an array of strings containing:
-// arguments[0]=walletName
-// arguments[1]=category
+// arguments[0]=validation tag
+// arguments[1]=walletName
+// arguments[2]=category
 //first two command line arguments(application name and command) are ignored 
 string* getArgumentsForBalance(int argNumber, char* argv[])
 {
 	
 	// returned pointer that contains:
-	// arguments[0]=walletName
-	// arguments[1]=category
-	string* arguments = new string[2];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
+	// arguments[0]=validation tag -> empty string if all arguments are valid 
+	// arguments[1]=walletName
+	// arguments[2]=category
+	string* arguments = new string[3];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
 	arguments[0] = "";
 	arguments[1] = "";
+	arguments[2] = "";
 	
 	//at least one argument provided for balance command
 	if (argNumber >= 1) 
@@ -423,7 +434,7 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 				//jump over "-c" or "--category" flag
 				i++;
 				//put the next command line argument into returned pointer
-				arguments[1] = argv[i]; 				
+				arguments[2] = argv[i]; 				
 			}/*
 			//check for the first "-w" or "--wallet" flag among command line arguments
 			else if(((strcmp(argv[i], "-w") == 0) || 
@@ -438,8 +449,20 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 				arguments[0] = argv[i]; 				
 			}*/
 			else
-			{}
+			{//there are arguments that invalidate "balance" command
+				//set validation tag to "invalid"
+				arguments[0] = "invalid";
+			}
 		}
+		// check if there's one more argument left after flags search
+		// this is the case where the last but one argument is not a flag
+		if(i == (argNumber - 1))
+		{//one more argument after flags
+			//set validation tag to "invalid"
+			arguments[0] = "invalid";
+		}
+		else
+		{}
 	}
 	else
 	{}

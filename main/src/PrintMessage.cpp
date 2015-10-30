@@ -110,6 +110,7 @@ void printMessage( const char messageCode,
 		{
 			cout << "error: no default wallet configured in '" 
 			<< parameter1 << "'" << endl;
+			cout << "Use \"config\" command to set default values." << endl;
 			break;
 		};
 		case 15: //Balance for my.wallet is +900.00 RON
