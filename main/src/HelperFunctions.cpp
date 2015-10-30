@@ -447,4 +447,50 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 	return arguments;
 }
 
+string* getArgumentsForConfig(int argNumber, char* argv[])
+{
+	
+	// returned pointer that contains:
+	// arguments[0]=defaultWalletName
+	string* arguments = new string[2];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
+	arguments[0] = "";
+	
+	//at least one argument provided for config command
+	if (argNumber >= 1) 
+	{
+		//signalises the first tag found;
+		bool defaultWalletFound = false;
+		int i = 0;
+		//go through command line arguments
+		for(; i < argNumber - 1 ; i++)
+		{
+			//check for the first "default_wallet" flag among command line arguments
+			if((strcmp(argv[i], "default_wallet") == 0) && (defaultWalletFound == false))
+			{
+				//first default_wallet flag found
+				defaultWalletFound = true;
+				
+				
+				//jump over "-c" or "--category" flag
+				i++;
+				//put the next command line argument into returned pointer
+				arguments[0] = argv[i]; 				
+			}
+			else
+			{}
+		}
+	}
+	else
+	{}
+	//return only relevant arguments
+	return arguments;
+}
+
+int main(int argc, char* argv[]) {
+	string* arguments = getArgumentsForConfig(argc - 2, &argv[2]);
+	
+	cout<<"tagName : " << arguments[0] << endl;
+	cout<<"tagValue : " << arguments[1] << endl;
+}
+
 

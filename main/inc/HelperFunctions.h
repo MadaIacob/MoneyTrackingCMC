@@ -25,5 +25,6 @@ double getAmount(const std::string line);
 std::string getCategory(const std::string line);
 std::string* getArgumentsForIncomeSpend(int argNumber, char* argv[]);
 std::string* getArgumentsForBalance(int argNumber, char* argv[]);
+std::string* getArgumentsForConfig(int argNumber, char* argv[]);
 
 #endif

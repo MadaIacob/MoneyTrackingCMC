@@ -55,7 +55,7 @@ bool validateCommand(int argc, char* argv[])
 	else if(strcmp(argv[1], "config") == 0) 
 	{
 		//execute "config" command
-		//executeConfig(argc, &argv[3], "moneytracker.config");
+		//executeConfig(argc-2, &argv[2], "moneytracker.config");
 		validCommand = true;
 	}
 	else
@@ -372,7 +372,7 @@ bool validateAmount(const char word [])
 	return valid;
 }
 
-// get rid of leading zeros, round to second decimal, get rif of extra decimals
+// get rid of leading zeros, round to second decimal, get rid of extra decimals
 // and return the modified string
 string truncateAmount(const char word[])
 {
