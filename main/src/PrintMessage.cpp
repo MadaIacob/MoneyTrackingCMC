@@ -21,17 +21,18 @@ void printMessage( const char messageCode,
 	switch (messageCode)
 	{
 		case 0:
-		{
+		{//error: unknown command !
 			cout << "error: unknown command !" << endl;
 			break;
 		};
 		case 1:
-		{
+		{//error: at least filename should be specified.
 			cout << "error: at least filename should be specified." << endl;
 			break;
 		};
 		case 2:
-		{
+		{//wref563r  is not a valid initial amount.
+		 //Cretaing my.wallet aborted.
 			cout << "error: " << parameter2 
 			<< " is not a valid initial amount.\nCreating "
 			<< parameter1 <<" aborted."
@@ -39,30 +40,30 @@ void printMessage( const char messageCode,
 			break;
 		};
 		case 3:
-		{
+		{//error: could not create my.wallet
 			cout << "error: could not create " << parameter1
 			<< endl;
 			break;
 		};
 		case 4:
-		{
+		{//error: wallet my.wallet already exists!
 			cout << "error: wallet "<< parameter1 << " already exists!\n";
 			break;
 		};
 		case 5:
-		{
+		{// writing file error! 
 			cout <<" writing file error! " << endl;
 			break;
 		};
 		case 6:
-		{
+		{//my.wallet created with the initial amount of +55.00 RON
 			cout << parameter1 << " created with the initial amount of "
 			<< parameter2 << " RON" << endl;
 			break;
 		};
-		case 7://error: no amount specified for 'spend'.
+		case 7://error: invalid parameters for 'spend'.
 		{
-			cout << "error: no amount specified for '" << parameter1 << "'." 
+			cout << "error: invalid parameters for '" << parameter1 << "'." 
 			<< endl;
 			break;
 		};
@@ -110,6 +111,7 @@ void printMessage( const char messageCode,
 		{
 			cout << "error: no default wallet configured in '" 
 			<< parameter1 << "'" << endl;
+			cout << "Use \"config\" command to set default values." << endl;
 			break;
 		};
 		case 15: //Balance for my.wallet is +900.00 RON

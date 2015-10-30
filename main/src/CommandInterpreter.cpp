@@ -435,64 +435,71 @@ bool executeBalance(
 	bool isBalanceDisplayed = false;
 
 	//ignore first two arguments from command line
-	//and get the wallet name and category from the remaining ones
+	//and get validation tag, wallet name and category from the remaining ones
 	string* arguments = getArgumentsForBalance(argc - 2, &argv[2]);
-	
-	//check if wallet name is not specified
+	//check if there aren't any invalid arguments for "balance" command
 	if (arguments[0].length() == 0)
-	{//no wallet name specified
-			//check for "default_wallet" tag in config file
-			if(existsConfigTag("default_wallet", configFileName))
-			{// tag "default_wallet" exists in config file	
-		
-				//read content of "default_wallet" tag
-				arguments[0] = readConfig("default_wallet", configFileName);
-				//check if the file specified in "default_wallet" tag exists
-				if(!validateFileName(arguments[0]))
-				{	//the file specified in "default_wallet" tag exists
-					
-					//calculate balance for default wallet and 
-					//print a success message
-					// like "Balance for my.wallet is +900.00 RON"
-					printMessage(15, arguments[0], getBalance(&arguments[0]), "RON");
-					isBalanceDisplayed = true;	
-				} 
-				else 
+	{//no invlid parameters for "balance" command
+		//check if wallet name is not specified
+		if (arguments[1].length() == 0)
+		{//no wallet name specified
+				//check for "default_wallet" tag in config file
+				if(existsConfigTag("default_wallet", configFileName))
+				{// tag "default_wallet" exists in config file	
+			
+					//read content of "default_wallet" tag
+					arguments[1] = readConfig("default_wallet", configFileName);
+					//check if the file specified in "default_wallet" tag exists
+					if(!validateFileName(arguments[1]))
+					{	//the file specified in "default_wallet" tag exists
+						
+						//calculate balance for default wallet and 
+						//print a success message
+						// like "Balance for my.wallet is +900.00 RON"
+						printMessage(15, arguments[1], getBalance(&arguments[1]), "RON");
+						isBalanceDisplayed = true;	
+					} 
+					else 
+					{
+						//file specified in "default_wallet" tag doesn't exist
+						//print error: could not open 'C:\path\some.wallet' to calculate balance
+						printMessage(
+							12, 
+							readConfig("default_wallet", configFileName), 
+							" to calculate balance");
+					}
+				}	
+				else
 				{
-					//file specified in "default_wallet" tag doesn't exist
-					//print error: could not open 'C:\path\some.wallet' to calculate balance
-					printMessage(
-						12, 
-						readConfig("default_wallet", configFileName), 
-						" to calculate balance");
-				}
-			}	
-			else
+					// could not open moneytracker.config or
+					// tag "default_wallet" is incorrect or 
+					// tag "default_wallet" is not implemented at all 
+				}			
+		}
+		else
+		{//wallet name specified
+				
+			//check if the wallet file exists
+			if(!validateFileName(arguments[1]))
+			{//specified wallet file exists
+				
+				//calculate balance for wallet and print a success message
+				// like "Balance for my.wallet is +900.00 RON"
+				printMessage(15, arguments[1], getBalance(&arguments[1]), "RON");
+				isBalanceDisplayed = true;	
+			} 
+			else 
 			{
-				// could not open moneytracker.config or
-				// tag "default_wallet" is incorrect or 
-				// tag "default_wallet" is not implemented at all 
-			}			
+				//specified wallet doesn't exist
+				//print error: could not open 'C:\path\some.wallet' to calculate balance
+				printMessage(12, arguments[1], " to calculate balance");
+			}
+			
+		}
 	}
 	else
-	{//wallet name specified
-			
-		//check if the wallet file exists
-		if(!validateFileName(arguments[0]))
-		{//specified wallet file exists
-			
-			//calculate balance for wallet and print a success message
-			// like "Balance for my.wallet is +900.00 RON"
-			printMessage(15, arguments[0], getBalance(&arguments[0]), "RON");
-			isBalanceDisplayed = true;	
-		} 
-		else 
-		{
-			//specified wallet doesn't exist
-			//print error: could not open 'C:\path\some.wallet' to calculate balance
-			printMessage(12, arguments[0], " to calculate balance");
-		}
-		
+	{//there are invalid parameters for "balance" command
+		printMessage(7, "balance");
 	}
 	//delete memory allocated in "getArgumentsForBalance" function
 	delete[] arguments;
