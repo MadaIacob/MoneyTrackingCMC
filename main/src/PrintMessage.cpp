@@ -122,20 +122,23 @@ void printMessage( const char messageCode,
 		{
 			cout <<" print error: default tag and value should be specified."
 			<< endl;
+			break;
 		}
 		case 17: //"parameter1 was configured as default.
 		{
 			cout << parameter1 << " was configured as default." << endl;
+			break;
 		}
 		case 18: //"parameter1 is not a valid configuration value."
 		{
 			cout << parameter1 << " is not a valid configuration value."
 			<< endl;
+			break;
 		}
 		default: //unknown messageCode value
 		{
 			cout << "unknown" << endl;
-			
+			break;
 		};
 		
 	};
