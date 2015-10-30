@@ -2,7 +2,8 @@
 *.log
 *.exe
 *.wallet
-
+*.a
+*.txt
 yetother
 *.diff
 *.actual
