@@ -640,15 +640,19 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 							}
 							break;
 						}
-				}		
+				}	
+				else 
+				{
+					for (int i = 0; i < argNumber; i++) {
+					arguments[i] = "";
+					}
+					break;
+				}
 		}
 	}
 	else
 	{}
 	//return only relevant arguments
-	for (int i = 0; i < argNumber; i++) {
-		cout<<" "<<arguments[i]<<endl;
-	}
 	return arguments;
 }
 
