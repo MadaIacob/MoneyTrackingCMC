@@ -447,6 +447,82 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 	return arguments;
 }
 
+string* getArgumentsForConfig(int argNumber, char* argv[])
+{
+	// returned pointer that contains:
+	// arguments[0]=defaultWalletName
+	string* arguments = new string[2];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
+	arguments[0] = "";
+	arguments[1] = "";
+	//at least one argument provided for config command
+	if (argNumber >= 1) 
+	{
+		//signalises the first tag found;
+		bool defaultWalletFound = false;
+		string defaultWallet = "default_wallet";
+		int i = 0;
+		//go through command line arguments
+		for(; i <= argNumber - 1 ; i++)
+		{
+			string aux = argv[i];
+			//check for the first "default_wallet" flag among command line arguments
+			std::size_t foundStr = aux.find(defaultWallet);
+			
+			if((foundStr != string::npos) && (!defaultWalletFound) && (foundStr == 0) && 
+						((aux.length() == defaultWallet.length()) || (aux.find("=") == defaultWallet.length())))
+			{
+				//first default_wallet flag found
+				aux = argv[i];
+				arguments[0] = defaultWallet;
+				foundStr = aux.find("=");
+				if(foundStr != std::string::npos) 
+				{
+					defaultWalletFound = true;	
+					if (!(foundStr>=aux.length()-1))  
+					{
+						arguments[1] = aux.substr(foundStr+1);
+					} 
+					else 
+					{
+						i++;
+						if (i <= argNumber-1) 
+						{
+							arguments[1] = argv[i];
+						}
+					}
+				} 
+				else if ((i+1 <= argNumber-1) && (strcmp(argv[i+1], "=") == 0))
+				{
+					i+=2;
+					if (i <= argNumber-1) 
+					{
+						arguments[1] = argv[i];
+					}
+				} 
+				else  
+				{
+					i++;
+					if (i <= argNumber-1) 
+					{
+						aux = argv[i];
+						if (aux.find("=") != string::npos) 
+						{
+							arguments[1] = aux.substr(1);
+						}
+						
+					}
+				}		
+			}
+			else
+			{}
+		}
+	}
+	else
+	{}
+	//return only relevant arguments
+	return arguments;
+}
+
 bool writeConfig(string configTag,
 	string configValue,
 	string configFileName)
@@ -481,7 +557,7 @@ bool writeConfig(string configTag,
 			
 			newLine.replace(foundTag+1, end, configValue);
 			foundTag = foundTag + configValue.length();
-			newLine = newLine + "\n";
+			newLine = newLine ;
 			
 			changed = true;
 		}
@@ -499,4 +575,5 @@ bool writeConfig(string configTag,
 	
 	return changed;
 }
+
 

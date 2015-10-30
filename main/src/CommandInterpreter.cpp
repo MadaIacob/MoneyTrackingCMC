@@ -56,6 +56,7 @@ bool validateCommand(int argc, char* argv[])
 	{
 		//execute "config" command
 		executeConfig(argc, &argv[0]);
+		//executeConfig(argc-2, &argv[2], "moneytracker.config");
 		validCommand = true;
 	}
 	else
@@ -372,7 +373,7 @@ bool validateAmount(const char word [])
 	return valid;
 }
 
-// get rid of leading zeros, round to second decimal, get rif of extra decimals
+// get rid of leading zeros, round to second decimal, get rid of extra decimals
 // and return the modified string
 string truncateAmount(const char word[])
 {
@@ -556,7 +557,7 @@ bool incomeSpend(
 bool executeConfig(const int argc, char* argv[], const string configFileName)
 {
 	bool changedDefaultTag = false;
-	string * parameters = getArgumentsForConfig(argc-2, &argv);
+	string * parameters = getArgumentsForConfig(argc-2, &argv[2]);
 	switch(argc)
 	{
 		case 2:
@@ -572,22 +573,25 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 			}
 			else 
 			{
-				if(writeConfig(parameters[0], parameters[1]) == true)
+				
+				if((writeConfig(parameters[0], parameters[1]) == true) && 
+					!changedDefaultTag)
 				{
 					//print "parameters[1] was configured as default."
 					printMessage(17,parameters[1]);
+					changedDefaultTag = true;
 				}
 				else
 				{
+					cout << "sunt aici!!" << endl;
 					//"parameters[0] is not a valid configuration value.
 					printMessage(18, parameters[0]);
 				}
 			}
 		}
 	}
+	
+	return changedDefaultTag;
 }
 
-int main(int argc, char* argv[])
-{
-	executeConfig(argc, &argv);
-}
+
