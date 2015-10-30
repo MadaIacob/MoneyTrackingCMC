@@ -447,6 +447,7 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 	return arguments;
 }
 
+
 string* getArgumentsForConfig(int argNumber, char* argv[])
 {
 	
@@ -486,11 +487,57 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 	return arguments;
 }
 
-int main(int argc, char* argv[]) {
-	string* arguments = getArgumentsForConfig(argc - 2, &argv[2]);
+bool writeConfig(string configTag,
+	string configValue,
+	string configFileName)
+{
+	string line;
+	string newLine;
+	string containt;
 	
-	cout<<"tagName : " << arguments[0] << endl;
-	cout<<"tagValue : " << arguments[1] << endl;
+	bool changed = false;
+	size_t foundTag;
+	
+	fstream configFile;
+	configFile.open(configFileName.c_str(), std::fstream::in | std::fstream::out |std::fstream::app);
+	
+	while(getline(configFile,line))
+	{
+		//remove spaces and tags from current line
+		line.erase(remove(line.begin(), line.end(), ' '), line.end());
+		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
+		newLine = line + "\n";		
+		
+		//check if the configTag is correct
+		foundTag = line.find(configTag);
+		if(line[line.size() -1] != '=' &&
+		   foundTag == 0 &&
+		   line[foundTag + configTag.size()] == '=' &&
+		   !changed)
+		{
+			foundTag = line.find("=");
+			
+			size_t end = foundTag + line.size();
+			
+			newLine.replace(foundTag+1, end, configValue);
+			foundTag = foundTag + configValue.length();
+			newLine = newLine + "\n";
+			
+			changed = true;
+		}
+		containt = containt+newLine;
+		
+	}
+	
+	configFile.close();
+	
+	//move the containt to config file
+	cout << containt << endl;
+	ofstream myNewConfig(configFileName.c_str());
+	myNewConfig << containt << endl;
+	myNewConfig.close();
+	
+	return changed;
 }
 
 
