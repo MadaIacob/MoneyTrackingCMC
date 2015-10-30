@@ -372,14 +372,22 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 		if(i == (argNumber - 1))
 		{
 			//put last command line argument into remainingArguments string
-			remainingArguments = remainingArguments + argv[i];
+			remainingArguments = remainingArguments + argv[i]+" ";
 		}
 		else
 		{}
 		
-		//amount should be the first word into remainingArguments string
-		//put the first word into returned pointer 
-		arguments[0] = remainingArguments.substr(0, remainingArguments.find_first_of(" "));
+		//check if more than one remaining argument left by
+		//checking if first " " found is the same as last " " found in string
+		if (remainingArguments.find(" ") == remainingArguments.rfind(" "))
+		{//one remaining argument
+			//amount should be the only word into remainingArguments string
+			//put the word into returned pointer 
+			arguments[0] = remainingArguments.substr(0, remainingArguments.find_first_of(" "));
+		}
+		else
+		{//more than one remaining arguments
+		}
 	}
 	else
 	{}
@@ -389,18 +397,21 @@ string* getArgumentsForIncomeSpend(int argNumber, char* argv[])
 
 //searches for optional flags within command line arguments
 //returns a pointer (arguments) to an array of strings containing:
-// arguments[0]=walletName
-// arguments[1]=category
+// arguments[0]=validation tag
+// arguments[1]=walletName
+// arguments[2]=category
 //first two command line arguments(application name and command) are ignored 
 string* getArgumentsForBalance(int argNumber, char* argv[])
 {
 	
 	// returned pointer that contains:
-	// arguments[0]=walletName
-	// arguments[1]=category
-	string* arguments = new string[2];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
+	// arguments[0]=validation tag -> empty string if all arguments are valid 
+	// arguments[1]=walletName
+	// arguments[2]=category
+	string* arguments = new string[3];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
 	arguments[0] = "";
 	arguments[1] = "";
+	arguments[2] = "";
 	
 	//at least one argument provided for balance command
 	if (argNumber >= 1) 
@@ -423,7 +434,7 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 				//jump over "-c" or "--category" flag
 				i++;
 				//put the next command line argument into returned pointer
-				arguments[1] = argv[i]; 				
+				arguments[2] = argv[i]; 				
 			}/*
 			//check for the first "-w" or "--wallet" flag among command line arguments
 			else if(((strcmp(argv[i], "-w") == 0) || 
@@ -438,22 +449,36 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 				arguments[0] = argv[i]; 				
 			}*/
 			else
-			{}
+			{//there are arguments that invalidate "balance" command
+				//set validation tag to "invalid"
+				arguments[0] = "invalid";
+			}
 		}
+		// check if there's one more argument left after flags search
+		// this is the case where the last but one argument is not a flag
+		if(i == (argNumber - 1))
+		{//one more argument after flags
+			//set validation tag to "invalid"
+			arguments[0] = "invalid";
+		}
+		else
+		{}
 	}
 	else
 	{}
+	
 	//return only relevant arguments
 	return arguments;
 }
 
-string* getArgumentsForConfig(int argNumber, char* argv[])
+/*string* getArgumentsForConfig(int argNumber, char* argv[])
 {
 	// returned pointer that contains:
 	// arguments[0]=defaultWalletName
 	string* arguments = new string[2];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
 	arguments[0] = "";
 	arguments[1] = "";
+
 	//at least one argument provided for config command
 	if (argNumber >= 1) 
 	{
@@ -468,111 +493,214 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 			//check for the first "default_wallet" flag among command line arguments
 			std::size_t foundStr = aux.find(defaultWallet);
 			
-			if((foundStr != string::npos) && (!defaultWalletFound) && (foundStr == 0) && 
-						((aux.length() == defaultWallet.length()) || (aux.find("=") == defaultWallet.length())))
-			{
-				//first default_wallet flag found
+			//if((foundStr != string::npos) && (!defaultWalletFound))
+				
 				aux = argv[i];
-				arguments[0] = defaultWallet;
+				//first "=" flag found
 				foundStr = aux.find("=");
+				defaultWalletFound = true;
 				if(foundStr != std::string::npos) 
 				{
-					defaultWalletFound = true;	
 					if (!(foundStr>=aux.length()-1))  
 					{
+						//cazul in care "=" este in mijlocul primului argument
+						//exemplu "default_wallet=mywallet"
+						arguments[0] = aux.substr(0, foundStr);
 						arguments[1] = aux.substr(foundStr+1);
 					} 
 					else 
 					{
+						//cazul in care "=" este in capatul primului argument
+						//exemplu "default_wallet= mywallet"
 						i++;
 						if (i <= argNumber-1) 
 						{
+							arguments[0] = aux.substr(0, foundStr);
 							arguments[1] = argv[i];
 						}
 					}
 				} 
 				else if ((i+1 <= argNumber-1) && (strcmp(argv[i+1], "=") == 0))
 				{
+					//cazul in care "=" este un argument separat
+					//exemplu "default_wallet = mywallet"
 					i+=2;
 					if (i <= argNumber-1) 
 					{
+						arguments[0] = argv[i-2];
 						arguments[1] = argv[i];
 					}
 				} 
 				else  
 				{
+					//cazul in care "=" este la inceputul argumentului doi
+					//exemplu "default_wallet =mywallet"
 					i++;
 					if (i <= argNumber-1) 
 					{
 						aux = argv[i];
 						if (aux.find("=") != string::npos) 
 						{
+							arguments[0] = argv[i-1];
 							arguments[1] = aux.substr(1);
 						}
 						
 					}
 				}		
-			}
-			else
-			{}
+			
 		}
 	}
 	else
 	{}
 	//return only relevant arguments
 	return arguments;
+}*/
+
+string* getArgumentsForConfig(int argNumber, char* argv[])
+{
+   // returned pointer that contains:
+   // arguments[0]=defaultWalletName
+   string* arguments = new string[argNumber];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
+   for (int i = 0; i < argNumber; i++) {
+				  arguments[i] = "";
+   }
+   int k = 0;
+   //at least one argument provided for config command
+   if (argNumber >= 1) 
+   {
+	  //signalises the first tag found;
+	  //bool defaultWalletFound = false;
+	  //string defaultWallet = "default_wallet";
+	  int i = 0;
+	  //go through command line arguments
+	  for(; i <= argNumber - 1 ; i++)
+	  {
+	 string aux = argv[i];
+	 //check for the first "default_wallet" flag among command line arguments
+	 //std::size_t foundStr = aux.find(defaultWallet);
+	 
+	 //if((foundStr != string::npos) && (!defaultWalletFound))
+									
+		aux = argv[i];
+		//first "=" flag found
+		size_t foundStr = aux.find("=");
+		//defaultWalletFound = true;
+		if(foundStr != std::string::npos) 
+		{
+		   if (!(foundStr>=aux.length()-1))  
+		   {
+			  //cazul in care "=" este in mijlocul primului argument
+			  //exemplu "default_wallet=mywallet"
+			  arguments[k] = aux.substr(0, foundStr);
+			  arguments[k+1] = aux.substr(foundStr+1);
+			  k += 2;
+		   } 
+		   else 
+		   {
+			  //cazul in care "=" este in capatul primului argument
+			  //exemplu "default_wallet= mywallet"
+			  i++;
+			  if (i <= argNumber-1) 
+			  {
+				 arguments[k] = aux.substr(0, foundStr);
+				 arguments[k+1] = argv[i];
+				 k += 2;
+			  }
+		   }
+		} 
+		else if ((i+1 <= argNumber-1) && (strcmp(argv[i+1], "=") == 0))
+		{
+		   //cazul in care "=" este un argument separat
+		   //exemplu "default_wallet = mywallet"
+		   i+=2;
+		   if (i <= argNumber-1) 
+		   {
+			  arguments[k] = argv[i-2];
+			  arguments[k+1] = argv[i];
+			  k += 2;
+		   }
+		} 
+		else  if (i <= argNumber-2) 
+		{
+		   //cazul in care "=" este la inceputul argumentului doi
+		   //exemplu "default_wallet =mywallet"
+		   i++;
+		   
+		  aux = argv[i];
+		  if (aux.find("=") != string::npos) 
+		  {
+			 arguments[k] = argv[i-1];
+			 arguments[k+1] = aux.substr(1);
+			 k += 2;
+		  }
+		  else 
+		  {
+			 for (int i = 0; i < argNumber; i++) {
+			 arguments[i] = "";
+			 }
+			 break;
+		  }
+		}                             
+	  }
+   }
+   else
+   {}
+   //return only relevant arguments
+   for (int i = 0; i < argNumber; i++) {
+		cout<<" "<<arguments[i]<<endl;
+   }
+   return arguments;
 }
 
 bool writeConfig(string configTag,
-	string configValue,
-	string configFileName)
+   string configValue,
+   string configFileName)
 {
-	string line;
-	string newLine;
-	string containt;
-	
-	bool changed = false;
-	size_t foundTag;
-	
-	fstream configFile;
-	configFile.open(configFileName.c_str(), std::fstream::in | std::fstream::out |std::fstream::app);
-	
-	while(getline(configFile,line))
-	{
-		//remove spaces and tags from current line
-		line.erase(remove(line.begin(), line.end(), ' '), line.end());
-		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
-		newLine = line;		
-		
-		//check if the configTag is correct
-		foundTag = line.find(configTag);
-		if(line[line.size() -1] != '=' &&
-		   foundTag == 0 &&
-		   line[foundTag + configTag.size()] == '=' &&
-		   !changed)
-		{
-			foundTag = line.find("=");
-			
-			size_t end = foundTag + line.size();
-			
-			newLine.replace(foundTag+1, end, configValue);
-			foundTag = foundTag + configValue.length();
-			newLine = newLine;
-			
-			changed = true;
-		}
-		containt = containt+newLine + "\n";
-	}
-	
-	configFile.close();
-	
-	//move the containt to config file
-	ofstream myNewConfig(configFileName.c_str());
-	myNewConfig << containt;
-	myNewConfig.close();
-	
-	return changed;
+   string line;
+   string newLine;
+   string containt;
+   
+   bool changed = false;
+   size_t foundTag;
+   
+   fstream configFile;
+   configFile.open(configFileName.c_str(), std::fstream::in | std::fstream::out |std::fstream::app);
+   
+   while(getline(configFile,line))
+   {
+	  //remove spaces and tags from current line
+	  line.erase(remove(line.begin(), line.end(), ' '), line.end());
+	  line.erase(remove(line.begin(), line.end(), '\t'), line.end());
+	  newLine = line;                  
+	  
+	  //check if the configTag is correct
+	  foundTag = line.find(configTag);
+	  if(line[line.size() -1] != '=' &&
+		 foundTag == 0 &&
+		 line[foundTag + configTag.size()] == '=' &&
+		 !changed)
+	  {
+					 foundTag = line.find("=");
+					 
+					 size_t end = foundTag + line.size();
+					 
+					 newLine.replace(foundTag+1, end, configValue);
+					 foundTag = foundTag + configValue.length();
+					 newLine = newLine;
+					 
+					 changed = true;
+	  }
+	  containt = containt+newLine + "\n";
+   }
+   
+   configFile.close();
+   
+   //move the containt to config file
+   ofstream myNewConfig(configFileName.c_str());
+   myNewConfig << containt;
+   myNewConfig.close();
+   
+   return changed;
 }
-
 
 
