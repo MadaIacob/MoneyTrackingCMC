@@ -60,9 +60,9 @@ void printMessage( const char messageCode,
 			<< parameter2 << " RON" << endl;
 			break;
 		};
-		case 7://error: no amount specified for 'spend'.
+		case 7://error: invalid parameters for 'spend'.
 		{
-			cout << "error: no amount specified for '" << parameter1 << "'." 
+			cout << "error: invalid parameters for '" << parameter1 << "'." 
 			<< endl;
 			break;
 		};

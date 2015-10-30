@@ -438,7 +438,7 @@ bool executeBalance(
 	//and get validation tag, wallet name and category from the remaining ones
 	string* arguments = getArgumentsForBalance(argc - 2, &argv[2]);
 	//check if there aren't any invalid arguments for "balance" command
-	if (arguments[0].length() != 0)
+	if (arguments[0].length() == 0)
 	{//no invlid parameters for "balance" command
 		//check if wallet name is not specified
 		if (arguments[1].length() == 0)
@@ -499,6 +499,7 @@ bool executeBalance(
 	}
 	else
 	{//there are invalid parameters for "balance" command
+		printMessage(7, "balance");
 	}
 	//delete memory allocated in "getArgumentsForBalance" function
 	delete[] arguments;

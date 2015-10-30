@@ -466,6 +466,7 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 	}
 	else
 	{}
+	
 	//return only relevant arguments
 	return arguments;
 }
