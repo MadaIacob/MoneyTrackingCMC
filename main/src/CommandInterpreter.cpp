@@ -564,35 +564,35 @@ bool incomeSpend(
 bool executeConfig(const int argc, char* argv[], const string configFileName)
 {
 	bool changedDefaultTag = false;
-	int i =0;
-	
 	string * parameters = getArgumentsForConfig(argc-2, &argv[2]);
 	switch(argc)
 	{
 		case 2:
 		{
 			//print "error: default tag and value should be specified."
-			printMessage(16);
+			if (!readFile()) {
+				printMessage(13, "moneytracker.config");
+			}
 			break;
 		}
 		default:
 		{
-			for(; i<argc -2; i+=2)
+			for (int i = 0; i < argc-2; i+=2)
 			{
 				if(parameters[i] == "" || parameters[i+1] == "")
 				{
-					//print "error: default tag and value should be specified."
 					printMessage(16);
 					break;
 				}
 				else 
 				{
 					
-					if((writeConfig(parameters[i], parameters[i+1]) == true))
+					if((writeConfig(parameters[i], parameters[i+1]) == true) && 
+						!changedDefaultTag)
 					{
 						//print "parameters[1] was configured as default."
 						printMessage(17,parameters[i+1]);
-						//changedDefaultTag = true;
+						changedDefaultTag = true;
 					}
 					else
 					{
@@ -600,9 +600,8 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 						printMessage(18, parameters[i]);
 					}
 				}
+				break;
 			}
-			//changedDefaultTag = false;
-			break;
 		}
 	}
 	

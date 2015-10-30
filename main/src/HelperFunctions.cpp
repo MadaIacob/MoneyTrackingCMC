@@ -471,6 +471,91 @@ string* getArgumentsForBalance(int argNumber, char* argv[])
 	return arguments;
 }
 
+/*string* getArgumentsForConfig(int argNumber, char* argv[])
+{
+	// returned pointer that contains:
+	// arguments[0]=defaultWalletName
+	string* arguments = new string[2];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
+	arguments[0] = "";
+	arguments[1] = "";
+
+	//at least one argument provided for config command
+	if (argNumber >= 1) 
+	{
+		//signalises the first tag found;
+		bool defaultWalletFound = false;
+		string defaultWallet = "default_wallet";
+		int i = 0;
+		//go through command line arguments
+		for(; i <= argNumber - 1 ; i++)
+		{
+			string aux = argv[i];
+			//check for the first "default_wallet" flag among command line arguments
+			std::size_t foundStr = aux.find(defaultWallet);
+			
+			//if((foundStr != string::npos) && (!defaultWalletFound))
+				
+				aux = argv[i];
+				//first "=" flag found
+				foundStr = aux.find("=");
+				defaultWalletFound = true;
+				if(foundStr != std::string::npos) 
+				{
+					if (!(foundStr>=aux.length()-1))  
+					{
+						//cazul in care "=" este in mijlocul primului argument
+						//exemplu "default_wallet=mywallet"
+						arguments[0] = aux.substr(0, foundStr);
+						arguments[1] = aux.substr(foundStr+1);
+					} 
+					else 
+					{
+						//cazul in care "=" este in capatul primului argument
+						//exemplu "default_wallet= mywallet"
+						i++;
+						if (i <= argNumber-1) 
+						{
+							arguments[0] = aux.substr(0, foundStr);
+							arguments[1] = argv[i];
+						}
+					}
+				} 
+				else if ((i+1 <= argNumber-1) && (strcmp(argv[i+1], "=") == 0))
+				{
+					//cazul in care "=" este un argument separat
+					//exemplu "default_wallet = mywallet"
+					i+=2;
+					if (i <= argNumber-1) 
+					{
+						arguments[0] = argv[i-2];
+						arguments[1] = argv[i];
+					}
+				} 
+				else  
+				{
+					//cazul in care "=" este la inceputul argumentului doi
+					//exemplu "default_wallet =mywallet"
+					i++;
+					if (i <= argNumber-1) 
+					{
+						aux = argv[i];
+						if (aux.find("=") != string::npos) 
+						{
+							arguments[0] = argv[i-1];
+							arguments[1] = aux.substr(1);
+						}
+						
+					}
+				}		
+			
+		}
+	}
+	else
+	{}
+	//return only relevant arguments
+	return arguments;
+}*/
+
 string* getArgumentsForConfig(int argNumber, char* argv[])
 {
 	// returned pointer that contains:
@@ -622,6 +707,27 @@ bool writeConfig(string configTag,
    myNewConfig.close();
    
    return changed;
+}
+
+bool readFile(const string fileName)
+{
+	
+	ifstream file(fileName.c_str());
+	bool flag = false;
+	string content = "";
+	string line;
+	//read from the given file
+	//getline(wallet,walletContent);
+	
+	while(getline(file,line))
+	{
+		flag = true;
+		content += line + "\n";
+	}
+	file.close();
+	
+	cout<<content;
+	return flag;
 }
 
 

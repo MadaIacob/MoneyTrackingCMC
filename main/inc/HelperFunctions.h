@@ -29,5 +29,6 @@ std::string getCategory(const std::string line);
 std::string* getArgumentsForIncomeSpend(int argNumber, char* argv[]);
 std::string* getArgumentsForBalance(int argNumber, char* argv[]);
 std::string* getArgumentsForConfig(int argNumber, char* argv[]);
+bool readFile(const std::string fileName = "moneytracker.config");
 
 #endif
