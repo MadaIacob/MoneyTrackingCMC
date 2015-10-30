@@ -588,12 +588,11 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 				else 
 				{
 					
-					if((writeConfig(parameters[i], parameters[i+1]) == true) && 
-						!changedDefaultTag)
+					if((writeConfig(parameters[i], parameters[i+1]) == true))
 					{
 						//print "parameters[1] was configured as default."
 						printMessage(17,parameters[i+1]);
-						changedDefaultTag = true;
+						//changedDefaultTag = true;
 					}
 					else
 					{
@@ -601,8 +600,9 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 						printMessage(18, parameters[i]);
 					}
 				}
-				break;
 			}
+			//changedDefaultTag = false;
+			break;
 		}
 	}
 	
