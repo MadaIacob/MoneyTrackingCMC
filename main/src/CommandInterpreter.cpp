@@ -557,6 +557,8 @@ bool incomeSpend(
 bool executeConfig(const int argc, char* argv[], const string configFileName)
 {
 	bool changedDefaultTag = false;
+	int i =0;
+	
 	string * parameters = getArgumentsForConfig(argc-2, &argv[2]);
 	switch(argc)
 	{
@@ -568,27 +570,32 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 		}
 		default:
 		{
-			if(parameters[0] == "" || parameters[1] == "")
+			for(; i<argc -2; i+=2)
 			{
-				printMessage(16);
-			}
-			else 
-			{
-				
-				if((writeConfig(parameters[0], parameters[1]) == true) && 
-					!changedDefaultTag)
+				if(parameters[i] == "" || parameters[i+1] == "")
 				{
-					//print "parameters[1] was configured as default."
-					printMessage(17,parameters[1]);
-					changedDefaultTag = true;
+					//print "error: default tag and value should be specified."
+					printMessage(16);
+					break;
 				}
-				else
+				else 
 				{
-					//"parameters[0] is not a valid configuration value.
-					printMessage(18, parameters[0]);
+					
+					if((writeConfig(parameters[i], parameters[i+1]) == true) && 
+						!changedDefaultTag)
+					{
+						//print "parameters[1] was configured as default."
+						printMessage(17,parameters[i+1]);
+						changedDefaultTag = true;
+					}
+					else
+					{
+						//"parameters[0] is not a valid configuration value.
+						printMessage(18, parameters[i]);
+					}
 				}
+				break;
 			}
-			break;
 		}
 	}
 	

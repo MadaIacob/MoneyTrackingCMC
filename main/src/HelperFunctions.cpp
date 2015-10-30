@@ -542,7 +542,7 @@ bool writeConfig(string configTag,
 		//remove spaces and tags from current line
 		line.erase(remove(line.begin(), line.end(), ' '), line.end());
 		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
-		newLine = line + "\n";		
+		newLine = line;		
 		
 		//check if the configTag is correct
 		foundTag = line.find(configTag);
@@ -557,22 +557,22 @@ bool writeConfig(string configTag,
 			
 			newLine.replace(foundTag+1, end, configValue);
 			foundTag = foundTag + configValue.length();
-			newLine = newLine ;
+			newLine = newLine;
 			
 			changed = true;
 		}
-		containt = containt+newLine;
-		
+		containt = containt+newLine + "\n";
 	}
 	
 	configFile.close();
 	
 	//move the containt to config file
 	ofstream myNewConfig(configFileName.c_str());
-	myNewConfig << containt << endl;
+	myNewConfig << containt;
 	myNewConfig.close();
 	
 	return changed;
 }
+
 
 
