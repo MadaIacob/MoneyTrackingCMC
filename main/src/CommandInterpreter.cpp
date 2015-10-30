@@ -579,10 +579,14 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 		{
 			for (int i = 0; i < argc-2; i+=2)
 			{
-				if(parameters[i] == "" || parameters[i+1] == "")
+				if((parameters[i] == "" || parameters[i+1] == "") && i == 0)
 				{
 					printMessage(16);
 					changedDefaultTag = false;
+					break;
+				}
+				else if(parameters[i] == "" || parameters[i+1] == "")
+				{
 					break;
 				}
 				else 
