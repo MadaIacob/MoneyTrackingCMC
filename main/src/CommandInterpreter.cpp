@@ -564,6 +564,7 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 		{
 			//print "error: default tag and value should be specified."
 			printMessage(16);
+			break;
 		}
 		default:
 		{
@@ -583,11 +584,11 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 				}
 				else
 				{
-					cout << "sunt aici!!" << endl;
 					//"parameters[0] is not a valid configuration value.
 					printMessage(18, parameters[0]);
 				}
 			}
+			break;
 		}
 	}
 	

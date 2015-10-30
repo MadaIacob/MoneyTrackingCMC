@@ -568,7 +568,6 @@ bool writeConfig(string configTag,
 	configFile.close();
 	
 	//move the containt to config file
-	cout << containt << endl;
 	ofstream myNewConfig(configFileName.c_str());
 	myNewConfig << containt << endl;
 	myNewConfig.close();
