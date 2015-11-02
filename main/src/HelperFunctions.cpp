@@ -690,7 +690,11 @@ void formatConfigFile(const string fileName)
 		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
 		
 		foundEqual = line.find("=");
-		line = line.substr(0, foundEqual) + " = " + line.substr(foundEqual+1) + "\n";
+		if(foundEqual != std::string::npos)
+		{
+			line = line.substr(0, foundEqual) + " = " + line.substr(foundEqual+1) + "\n";
+		}
+		
 		foundComma = line.find(",");
 		if (foundComma != string::npos) 
 		{

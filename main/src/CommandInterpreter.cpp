@@ -156,7 +156,7 @@ bool executeIncomeSpend(
 			// print error: no amount specified for 'income'.
 			//or
 			// print error: no amount specified for 'spend'.
-			printMessage(7, argv[1]);	
+			printMessage(8, argv[1]);	
 		}
 		else
 		{// amount specified, but not valid
