@@ -664,7 +664,13 @@ void formatConfigFile(const string fileName)
 		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
 		
 		found = line.find("=");
-		content = content + line.substr(0,found) + " = " + line.substr(found+1) + "\n";
+		if(found != std::string::npos)
+		{
+			content = content + line.substr(0,found) + " = " + line.substr(found+1) + "\n";
+		}
+		else 
+			content = content + line + "\n";
+		
 	}
 	file.close();
 	

@@ -549,7 +549,7 @@ bool incomeSpend(
 	{
 		//print a success message
 		// like "Spending 'other' in an amount of 145.12 RON was registered."
-		printMessage(9, messageFlag, cat, cutAmount, currency);
+		printMessage(9, messageFlag, cat, cutAmount, currency, walletFile);
 		// and one like "Transaction time: Thu, 08 Oct 2015 10:52:40 GMT"
 		printMessage(10, displayGMT(transactionTime));
 		wasCommandExecuted = true;

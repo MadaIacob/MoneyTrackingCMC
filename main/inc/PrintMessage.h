@@ -12,6 +12,8 @@ void printMessage( const char errorCode = -1,
 	std::string parameter1 = "",
 	std::string parameter2 = "",
 	std::string parameter3 = "",
-	std::string parameter4 = "");
+	std::string parameter4 = "",
+	std::string parameter5 = ""
+	);
 
 #endif //PRINTMESSAGE_H
