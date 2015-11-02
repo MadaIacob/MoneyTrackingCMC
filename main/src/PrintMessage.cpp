@@ -23,7 +23,7 @@ void printMessage( const char messageCode,
 	{
 		case 0:
 		{//error: unknown command !
-			cout << "error: unknown command !" << endl;
+			cout << "error: invalid command !" << endl;
 			break;
 		};
 		case 1:
@@ -33,10 +33,10 @@ void printMessage( const char messageCode,
 		};
 		case 2:
 		{//wref563r  is not a valid initial amount.
-		 //Cretaing my.wallet aborted.
-			cout << "error: " << parameter2 
-			<< " is not a valid initial amount.\nCreating "
-			<< parameter1 <<" aborted."
+		 //Creating my.wallet aborted.
+			cout << "error: '" << parameter2 
+			<< "' is not a valid initial amount.\nCreating '"
+			<< parameter1 <<"' aborted."
 			<< endl;
 			break;
 		};
@@ -78,7 +78,7 @@ void printMessage( const char messageCode,
 		{
 			cout << parameter1 << " '" << parameter2
 			<< "' in an amount of "<< parameter3 <<" "<<parameter4
-			<<" was registered."<< endl;
+			<<" was registered to '"<< parameter5<<"'."<<endl;
 			break;
 		};
 		case 10://Transaction time: Thu, 08 Oct 2015 10:52:40 GMT

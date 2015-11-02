@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 		//print error message "error: unknown command !"
 		printMessage(0);
 		//display help menu (possible command syntaxes)
-		printHelpMenu();
+		//printHelpMenu();
 	}
 
 	return 0;

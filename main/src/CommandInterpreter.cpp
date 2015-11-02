@@ -577,34 +577,30 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 		}
 		default:
 		{
-			for (int i = 0; i < argc-2; i+=2)
-			{
-				if((parameters[i] == "" || parameters[i+1] == "") && i == 0)
+			//for (int i = 0; i < argc-2; i+=2)
+			//{
+				if(parameters[0] == "" || parameters[1] == "") 
 				{
 					printMessage(19);
 					changedDefaultTag = false;
 					break;
 				}
-				else if(parameters[i] == "" || parameters[i+1] == "")
-				{
-					break;
-				}
 				else 
 				{
-					if((writeConfig(parameters[i], parameters[i+1]) == true))
+					if((writeConfig(parameters[0], parameters[1]) == true))
 					{
 						//print "parameters[1] was configured as default."
-						printMessage(17,parameters[i+1]);
+						printMessage(17,parameters[1]);
 						changedDefaultTag = true;
 					}
 					else
 					{
 						//"parameters[0] is not a valid configuration value.
-						printMessage(18, parameters[i]);
+						printMessage(18, parameters[0]);
 						changedDefaultTag = false;
 					}
 				}				
-			}
+			//}
 			break;
 		}
 	}
