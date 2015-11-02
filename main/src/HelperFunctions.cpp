@@ -84,6 +84,31 @@ bool existsConfigTag(string configTag,string configFileName)
 	return valid;
 }
 
+
+bool categoryExists(string category,string fileName)
+{
+	// open config file
+	ifstream fileToOpen ;
+	fileToOpen.open (fileName.c_str()) ;
+
+	// value to return
+	bool valid = false ;
+	// while below reads each line in the file and puts it in string lineRead
+	string lineRead = "";
+	//position of default_wallet, if found
+	std::size_t foundDef;
+	while (getline(fileToOpen, lineRead) && !valid)
+	{
+		foundDef = lineRead.find(category);
+		if (foundDef!=std::string::npos)
+		{
+		valid = true;
+		}
+	}
+	fileToOpen.close();
+	return valid;
+}
+
 string readConfig(string configTag, string configFileName)
 {
 	ifstream configFile(configFileName.c_str());

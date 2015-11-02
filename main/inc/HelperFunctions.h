@@ -31,4 +31,5 @@ std::string* getArgumentsForBalance(int argNumber, char* argv[]);
 std::string* getArgumentsForConfig(int argNumber, char* argv[]);
 bool readFile(const std::string fileName = "moneytracker.config");
 void formatConfigFile(const std::string fileName = "moneytracker.config");
+bool categoryExists(std::string category, std::string fileName);
 #endif

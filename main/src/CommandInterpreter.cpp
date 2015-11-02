@@ -439,7 +439,7 @@ bool executeBalance(
 	string* arguments = getArgumentsForBalance(argc - 2, &argv[2]);
 	//check if there aren't any invalid arguments for "balance" command
 	if (arguments[0].length() == 0)
-	{//no invlid parameters for "balance" command
+	{//no invalid parameters for "balance" command
 		//check if wallet name is not specified
 		if (arguments[1].length() == 0)
 		{//no wallet name specified
@@ -456,8 +456,15 @@ bool executeBalance(
 						//calculate balance for default wallet and 
 						//print a success message
 						// like "Balance for my.wallet is +900.00 RON"
-						printMessage(15, arguments[1], getBalance(&arguments[1]), "RON");
-						isBalanceDisplayed = true;	
+						if (categoryExists(arguments[2],arguments[1])) {
+							printMessage(15, arguments[2], arguments[1], getBalance(&arguments[1]), "RON");
+							isBalanceDisplayed = true;	
+						} 
+						else 
+						{
+							printMessage(20, arguments[2], arguments[1]);
+						}
+						
 					} 
 					else 
 					{

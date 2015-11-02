@@ -42,13 +42,13 @@ void printMessage( const char messageCode,
 		};
 		case 3:
 		{//error: could not create my.wallet
-			cout << "error: could not create " << parameter1 << "."
+			cout << "error: could not create '" << parameter1 << "'."
 			<< endl;
 			break;
 		};
 		case 4:
 		{//error: wallet my.wallet already exists!
-			cout << "error: wallet "<< parameter1 << " already exists!\n";
+			cout << "error: wallet '"<< parameter1 << "' already exists!\n";
 			break;
 		};
 		case 5:
@@ -58,7 +58,7 @@ void printMessage( const char messageCode,
 		};
 		case 6:
 		{//my.wallet created with the initial amount of +55.00 RON
-			cout << parameter1 << " created with the initial amount of "
+			cout << "'" << parameter1 << "' created with the initial amount of "
 			<< parameter2 << " RON." << endl;
 			break;
 		};
@@ -115,10 +115,19 @@ void printMessage( const char messageCode,
 			<< parameter1 << "'." << endl;
 			break;
 		};
-		case 15: //Balance for my.wallet is +900.00 RON
+		case 15: //Balance for clothes in my.wallet is +900.00 RON
 		{
-			cout << "Balance for " 	<< parameter1 << " is " 
-			<< parameter2 << " " << parameter3 << "." << endl;
+			if(parameter1 == "")
+			{
+				cout << "Balance for '"	<< parameter2 << "' is " << parameter3 
+				<< " " << parameter4 << "." << endl;	
+			}
+			else
+			{
+				cout << "Balance for '"	<< parameter1 << "' in '"
+				<< parameter2 << "' is " << parameter3 << " " << parameter4 << "." 
+				<< endl;
+			}			
 			break;
 		};
 		case 16: ////print "error: default tag and value should be specified."
@@ -140,7 +149,13 @@ void printMessage( const char messageCode,
 		}
 		case 19: //error: invalid parameter for config.
 		{
-			cout << "error: invalid parameters for 'config'. " << endl;
+			cout << "error: invalid parameters for 'config'." << endl;
+			break;
+		}
+		case 20: // No transaction with category salary is registered in wallet
+		{
+			cout << "No transaction with category '" << parameter1 
+			<< "' is registered in '" << parameter2 << "'." << endl;
 			break;
 		}
 		default: //unknown messageCode value
