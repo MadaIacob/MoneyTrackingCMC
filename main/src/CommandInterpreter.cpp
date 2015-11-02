@@ -499,7 +499,7 @@ bool executeBalance(
 	}
 	else
 	{//there are invalid parameters for "balance" command
-		printMessage(8, "balance");
+		printMessage(7, "balance");
 	}
 	//delete memory allocated in "getArgumentsForBalance" function
 	delete[] arguments;
