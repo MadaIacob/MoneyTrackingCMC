@@ -141,7 +141,7 @@ void printMessage( const char messageCode,
 		}
 		case 19: //error: invalid parameter for config.
 		{
-			cout << "error: invalid parameters for 'config'. " << endl;
+			cout << "error: invalid parameters for 'config'." << endl;
 			break;
 		}
 		case 20: // No transaction with category salary is registered in wallet
