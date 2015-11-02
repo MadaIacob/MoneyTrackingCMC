@@ -127,8 +127,8 @@ string readConfig(string configTag, string configFileName)
 			line.erase(remove(line.begin(), line.end(), '\t'), line.end());
 			
 			std::size_t foundDef = line.find(configTag);
-			if(line[line.size() -1] != '=' && foundDef == 0 &&
-			   line[foundDef + configTag.size()] == '=')
+
+			if(foundDef == 0 && line[foundDef + configTag.size()] == '=')
 			{
 				foundEqual = line.find("=");
 				size_t pos = foundEqual +1;
