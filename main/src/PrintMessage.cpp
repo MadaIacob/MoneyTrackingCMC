@@ -83,7 +83,7 @@ void printMessage( const char messageCode,
 		};
 		case 10://Transaction time: Thu, 08 Oct 2015 10:52:40 GMT
 		{
-			cout << "Transaction time: " << parameter1 << "." << endl;
+			cout << "Transaction time: " << parameter1 << endl;
 			break;
 		};
 		case 11: //error: income should be higher than 0.
@@ -93,7 +93,8 @@ void printMessage( const char messageCode,
 				parameter1 = "spending";
 			}
 			cout << "error: " << parameter1
-			<< " should be higher than 0." << endl;
+			<< " should be higher than 0." << endl; 
+			
 			break;
 		};
 		case 12: //error: could not open 'C:\path\some.wallet' to register transaction
@@ -139,7 +140,7 @@ void printMessage( const char messageCode,
 		}
 		case 19: //error: invalid parameter for config.
 		{
-			cout << "error: invalid parameter for config. " << endl;
+			cout << "error: invalid parameters for 'config'. " << endl;
 			break;
 		}
 		default: //unknown messageCode value
