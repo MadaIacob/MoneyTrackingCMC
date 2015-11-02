@@ -656,21 +656,33 @@ void formatConfigFile(const string fileName)
 	ifstream file(fileName.c_str());
 	string content = "";
 	string line = "";
-	size_t found;
-	
+	string auxLine = "";
+	size_t foundEqual;
+	size_t foundComma;
 	while(getline(file,line))
 	{
 		line.erase(remove(line.begin(), line.end(), ' '), line.end());
 		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
 		
-		found = line.find("=");
-		content = content + line.substr(0,found) + " = " + line.substr(found+1) + "\n";
+		foundEqual = line.find("=");
+		line = line.substr(0, foundEqual) + " = " + line.substr(foundEqual+1) + "\n";
+		foundComma = line.find(",");
+		if (foundComma != string::npos) 
+		{
+			for( size_t pos = 0; pos < line.length(); pos += 2) 
+				{
+					pos = line.find( ",", pos );
+					if( pos == string::npos ) break;
+
+					line.erase( pos, 1 );
+					line.insert( pos, ", " );
+				}
+		}
+		content = content + line;
 	}
 	file.close();
-	
 	ofstream myNewConfig(fileName.c_str());
 	myNewConfig << content;
-   
 	myNewConfig.close();
 }
 
