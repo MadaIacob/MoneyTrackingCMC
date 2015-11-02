@@ -117,9 +117,17 @@ void printMessage( const char messageCode,
 		};
 		case 15: //Balance for clothes in my.wallet is +900.00 RON
 		{
-			cout << "Balance for '"	<< parameter1 << "' in '"
-			<< parameter2 << "' is " << parameter3 << " " << parameter4 << "." 
-			<< endl;
+			if(parameter1 == "")
+			{
+				cout << "Balance for '"	<< parameter2 << "' is " << parameter3 
+				<< " " << parameter4 << "." << endl;	
+			}
+			else
+			{
+				cout << "Balance for '"	<< parameter1 << "' in '"
+				<< parameter2 << "' is " << parameter3 << " " << parameter4 << "." 
+				<< endl;
+			}			
 			break;
 		};
 		case 16: ////print "error: default tag and value should be specified."
