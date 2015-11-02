@@ -581,7 +581,7 @@ bool writeConfig(string configTag,
 {
    string line;
    string newLine;
-   string containt;
+   string content;
    
    bool changed = false;
    size_t foundTag;
@@ -600,32 +600,30 @@ bool writeConfig(string configTag,
 				  
 				  //check if the configTag is correct
 				  foundTag = line.find(configTag);
-				  if(line[line.size() -1] != '=' &&
+				  if(
 					 foundTag == 0 &&
 					 line[foundTag + configTag.size()] == '=' &&
 					 !changed)
 				  {
 								 foundTag = line.find("=");
 								 
-								 size_t end = foundTag + line.size();
-								 
-								 newLine.replace(foundTag+1, end, configValue);
-								 foundTag = foundTag + configValue.length();
-								 newLine = newLine;
-								 
+								 newLine = line.substr(0,foundTag+1) + configValue;
+								
 								 changed = true;
 				  }
-				  containt = containt+newLine + "\n";
+				  content = content+newLine + "\n";
    }
    
    configFile.close();
    
    //move the containt to config file
    ofstream myNewConfig(configFileName.c_str());
-   myNewConfig << containt;
+   myNewConfig << content;
+   
    myNewConfig.close();
    
-
+	formatConfigFile(configFileName);
+	
    return changed;
 }
 
@@ -666,9 +664,14 @@ void formatConfigFile(const string fileName)
 		line.erase(remove(line.begin(), line.end(), '\t'), line.end());
 		
 		found = line.find("=");
-		content = content + line.substr(0,found-1) + " = " + line.substr(found+1) + "\n";
+		content = content + line.substr(0,found) + " = " + line.substr(found+1) + "\n";
 	}
 	file.close();
+	
+	ofstream myNewConfig(fileName.c_str());
+	myNewConfig << content;
+   
+	myNewConfig.close();
 }
 
 
