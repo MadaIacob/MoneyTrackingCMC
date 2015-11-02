@@ -15,7 +15,8 @@ void printMessage( const char messageCode,
 	string parameter1,
 	string parameter2,
 	string parameter3,
-	string parameter4
+	string parameter4,
+	string parameter5	
 	)
 {
 	switch (messageCode)
@@ -41,7 +42,7 @@ void printMessage( const char messageCode,
 		};
 		case 3:
 		{//error: could not create my.wallet
-			cout << "error: could not create " << parameter1
+			cout << "error: could not create " << parameter1 << "."
 			<< endl;
 			break;
 		};
@@ -58,7 +59,7 @@ void printMessage( const char messageCode,
 		case 6:
 		{//my.wallet created with the initial amount of +55.00 RON
 			cout << parameter1 << " created with the initial amount of "
-			<< parameter2 << " RON" << endl;
+			<< parameter2 << " RON." << endl;
 			break;
 		};
 		case 7://error: invalid parameters for 'spend'.
@@ -69,20 +70,20 @@ void printMessage( const char messageCode,
 		};
 		case 8://error: parameter for 'income' should be a positive number
 		{
-			cout << "error: parameter for '" << parameter1 
-			<< "' should be a positive number" 	<< endl;
+			cout << "error: invalid parameters for '" << parameter1 
+			<< "'." << endl;
 			break;
 		};
 		case 9://Spending 'other' in an amount of 145.12 RON was registered.
 		{
 			cout << parameter1 << " '" << parameter2
 			<< "' in an amount of "<< parameter3 <<" "<<parameter4
-			<<" was registered." << endl;
+			<<" was registered."<< endl;
 			break;
 		};
 		case 10://Transaction time: Thu, 08 Oct 2015 10:52:40 GMT
 		{
-			cout << "Transaction time: " << parameter1 << endl;
+			cout << "Transaction time: " << parameter1 << "." << endl;
 			break;
 		};
 		case 11: //error: income should be higher than 0.
@@ -98,26 +99,25 @@ void printMessage( const char messageCode,
 		case 12: //error: could not open 'C:\path\some.wallet' to register transaction
 		{
 			cout << "error: could not open '" << parameter1
-			<< "'" << parameter2 << endl;
+			<< "'" << parameter2 << "." << endl;
 			break;
 		};
 		case 13: //error: could not open 'moneytracker.config'
 		{
 			cout << "error: could not open configuration '" << parameter1 
-			<< "'" << endl;
+			<< "'." << endl;
 			break;
 		};
 		case 14: //error: no default wallet configured in 'moneytracker.config'
 		{
 			cout << "error: no default wallet configured in '" 
-			<< parameter1 << "'" << endl;
-			cout << "Use \"config\" command to set default values." << endl;
+			<< parameter1 << "'." << endl;
 			break;
 		};
 		case 15: //Balance for my.wallet is +900.00 RON
 		{
 			cout << "Balance for " 	<< parameter1 << " is " 
-			<< parameter2 << " " << parameter3 << endl;
+			<< parameter2 << " " << parameter3 << "." << endl;
 			break;
 		};
 		case 16: ////print "error: default tag and value should be specified."
