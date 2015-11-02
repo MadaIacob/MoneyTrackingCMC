@@ -190,17 +190,17 @@ TEST(executeIncomeSpendTest, validParameters)
 {
 	//set-up
 	char* argv1[5]={(char*) "moneytracker.exe", (char*) "spend", (char*) "80",
-					(char*) "-c", (char*) "pizzaParty"} ;
+					(char*) "-c", (char*) "-c"} ;
 	char* argv1b[5]={(char*) "moneytracker.exe", (char*) "income", (char*) "800",
-					(char*) "-c", (char*) "ticketsPizzaParty"} ;
+					(char*) "-c", (char*) "--category"} ;
 	char* argv2[5]={(char*) "moneytracker.exe", (char*) "income", (char*) "-c",
-					(char*) "loteryWin", (char*) "123"} ;
+					(char*) "-w", (char*) "123"} ;
 	char* argv2b[5]={(char*) "moneytracker.exe", (char*) "spend", (char*) "-c",
-					(char*) "loteryTicket", (char*) "55"} ;
+					(char*) "--category", (char*) "55"} ;
 	char* argv3[5]={(char*) "moneytracker.exe", (char*) "spend", (char*) "--category",
-					(char*) "beerParty", (char*) "999.99"} ;
+					(char*) "--wallet", (char*) "999.99"} ;
 	char* argv4[5]={(char*) "moneytracker.exe", (char*) "income", (char*) "--category",
-					(char*) "rent", (char*) "100"} ;
+					(char*) "--category", (char*) "100"} ;
 	char fileName[] = "executeIncomeSpendTest" ;
 	helperCreateWallet(fileName) ;
 	std::string configName1("configFile1") ;
@@ -216,47 +216,6 @@ TEST(executeIncomeSpendTest, validParameters)
 	EXPECT_EQ(true, executeIncomeSpend(5, &argv2b[0], configName1)) ;
 	EXPECT_EQ(true, executeIncomeSpend(5, &argv3[0], configName1)) ;
 	EXPECT_EQ(true, executeIncomeSpend(5, &argv4[0], configName1)) ;
-	
-	//tear-down
-	remove(fileName);	
-	remove(configName1.c_str());
-}
-
-TEST(executeIncomeSpendTest, validProblematicParameters)
-{
-	//set-up
-	char* argv1[6]={(char*) "moneytracker.exe", (char*) "spend", (char*) "80",
-					(char*) "-c", (char*) "--category", (char*) "blabla"} ;
-	char* argv2[7]={(char*) "moneytracker.exe", (char*) "spend", (char*) "800",
-					(char*) "--category", (char*) "-c", (char*) "--category", (char*) "-c"} ;
-	char* argv3[7]={(char*) "moneytracker.exe", (char*) "spend", (char*) "-c",
-					(char*) "--category", (char*) "123", (char*) "-c", (char*) "--category"} ;
-	char* argv4[6]={(char*) "moneytracker.exe", (char*) "spend", (char*) "-c",
-					(char*) "--category", (char*) "55", (char*) "--category"} ;
-	char* argv5[6]={(char*) "moneytracker.exe", (char*) "income", (char*) "80.35",
-					(char*) "-c", (char*) "--category", (char*) "blabla"} ;
-	char* argv6[7]={(char*) "moneytracker.exe", (char*) "income", (char*) "800.08",
-					(char*) "--category", (char*) "-c", (char*) "--category", (char*) "-c"} ;
-	char* argv7[7]={(char*) "moneytracker.exe", (char*) "income", (char*) "-c",
-					(char*) "--category", (char*) "123", (char*) "-c", (char*) "--category"} ;
-	char* argv8[6]={(char*) "moneytracker.exe", (char*) "income", (char*) "-c",
-					(char*) "--category", (char*) "55", (char*) "--category"} ;
-	
-	char fileName[] = "executeIncomeSpendTest" ;
-	helperCreateWallet(fileName) ;
-	std::string configName1("configFile1") ;
-	std::string configContaint("sdrsrfs\n\trfsdrf\ndefault_wallet\t = \t \t\texecuteIncomeSpendTest\t\n default_wallet = some.wallet");
-	createFile(configName1, configContaint) ;
-	
-	//test
-	EXPECT_EQ(true, executeIncomeSpend(6, &argv1[0], configName1)) ;
-	EXPECT_EQ(true, executeIncomeSpend(7, &argv2[0], configName1)) ;
-	EXPECT_EQ(true, executeIncomeSpend(7, &argv3[0], configName1)) ;
-	EXPECT_EQ(true, executeIncomeSpend(6, &argv4[0], configName1)) ;
-	EXPECT_EQ(true, executeIncomeSpend(6, &argv5[0], configName1)) ;
-	EXPECT_EQ(true, executeIncomeSpend(7, &argv6[0], configName1)) ;
-	EXPECT_EQ(true, executeIncomeSpend(7, &argv7[0], configName1)) ;
-	EXPECT_EQ(true, executeIncomeSpend(6, &argv8[0], configName1)) ;
 	
 	//tear-down
 	remove(fileName);	
