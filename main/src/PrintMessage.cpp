@@ -140,7 +140,7 @@ void printMessage( const char messageCode,
 		}
 		case 19: //error: invalid parameter for config.
 		{
-			cout << "error: invalid parameters for 'config'. " << endl;
+			cout << "error: invalid parameters for 'config'." << endl;
 			break;
 		}
 		default: //unknown messageCode value
