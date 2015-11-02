@@ -569,7 +569,7 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 	{
 		case 2:
 		{
-			//print "error: default tag and value should be specified."
+			//show config file containt
 			if (!readFile()) {
 				printMessage(13, "moneytracker.config");
 			}
@@ -581,7 +581,7 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 			{
 				if((parameters[i] == "" || parameters[i+1] == "") && i == 0)
 				{
-					printMessage(16);
+					printMessage(19);
 					changedDefaultTag = false;
 					break;
 				}

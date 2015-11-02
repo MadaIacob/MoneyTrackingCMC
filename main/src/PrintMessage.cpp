@@ -128,13 +128,18 @@ void printMessage( const char messageCode,
 		}
 		case 17: //"parameter1 was configured as default.
 		{
-			cout << parameter1 << " was configured as default." << endl;
+			cout << "'" << parameter1 << "' was configured as default." << endl;
 			break;
 		}
 		case 18: //"parameter1 is not a valid configuration value."
 		{
-			cout << parameter1 << " is not a valid configuration value."
+			cout << "'" << parameter1 << "' is not a valid configuration value."
 			<< endl;
+			break;
+		}
+		case 19: //error: invalid parameter for config.
+		{
+			cout << "error: invalid parameter for config." << endl;
 			break;
 		}
 		default: //unknown messageCode value
