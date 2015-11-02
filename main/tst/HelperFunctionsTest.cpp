@@ -642,49 +642,39 @@ TEST(writeConfigTest, defaultWalletTagOK)
 TEST(writeConfigTest, defaultWalletOKNoValue) 
 {
 	//set-up	
-	string testOkConfigFile2("okConfig3");
-	string containtOkConfig1("default_wallet =  \n default_wallet = other.wallet\n default_wallet2 =other.wallet2");
-	createFile(testOkConfigFile2 , containtOkConfig1);
+	string testOkConfigFile2("okConfig2");
+	string containtOkConfig2("default_wallet =  \n default_wallet = other.wallet\n default_wallet2 =other.wallet2");
+	createFile("okConfig2" , containtOkConfig2);
 	
 	//pre-test
-	EXPECT_EQ("", readConfig("default_wallet", testOkConfigFile2));
+	EXPECT_EQ("", readConfig("default_wallet", "okConfig2"));
 	//test
 	writeConfig("default_wallet",
 				"mytest.wallet",
 				testOkConfigFile2) ;
-	EXPECT_EQ("mytest.wallet", readConfig("default_wallet", testOkConfigFile2));
-	writeConfig("default_wallet2",
-				"mytest.wallet2",
-				testOkConfigFile2) ;
+	EXPECT_EQ("mytest.wallet", readConfig("default_wallet", "okConfig2"));
 				
-	EXPECT_EQ(true, writeConfig("default_wallet",
-				"mytest.wallet",
-				testOkConfigFile2) ) ;
-	EXPECT_EQ(true, writeConfig("default_wallet2",
-				"mytest.wallet2",
-				testOkConfigFile2) ) ;				
-	EXPECT_EQ("mytest.wallet", readConfig("default_wallet", testOkConfigFile2));
-	EXPECT_EQ("mytest.wallet2", readConfig("default_wallet2", testOkConfigFile2));
+	EXPECT_EQ("mytest.wallet", readConfig("default_wallet", "okConfig2"));
 	
 	//tear-down
-	remove("okConfig3");
+	remove("okConfig2");
 	
 }
 
 TEST(writeConfigTest, writeToNonexistingFile) 
 {
 	//set-up	
-	string testOkConfigFile1("okConfig2");
-	string containtOkConfig1("default_wallet = my.wallet \n default_wallet = other.wallet\n default_wallet2 =other.wallet2");
-	createFile(testOkConfigFile1 , containtOkConfig1);
+	string testOkConfigFile3("okConfig3");
+	string containtOkConfig3("default_wallet = my.wallet \n default_wallet = other.wallet\n default_wallet2 =other.wallet2");
+	createFile(testOkConfigFile3 , containtOkConfig3);
 	
 	//pre-test
-	EXPECT_EQ("my.wallet", readConfig("default_wallet", "okConfig2"));
-	EXPECT_EQ("other.wallet2", readConfig("default_wallet2", "okConfig2"));
+	EXPECT_EQ("my.wallet", readConfig("default_wallet", "okConfig3"));
+	EXPECT_EQ("other.wallet2", readConfig("default_wallet2", "okConfig3"));
 	
 	writeConfig("default_wallet", "mytest.wallet", "testNoConfigFile") ;
 	//test
-	EXPECT_EQ("my.wallet", readConfig("default_wallet", "okConfig2"));
+	EXPECT_EQ("my.wallet", readConfig("default_wallet", "okConfig3"));
 	EXPECT_EQ(false, writeConfig("default_wallet", 
 				"mytest.wallet",
 				"testNoConfigFile") ) ;
@@ -696,7 +686,7 @@ TEST(writeConfigTest, writeToNonexistingFile)
 				"testNoConfigFile") ) ;
 			
 	//tear-down
-	remove("okConfig2");
+	remove("okConfig3");
 	
 }
 
