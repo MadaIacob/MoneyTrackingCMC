@@ -767,6 +767,7 @@ TEST(writeConfigTest, writeToNonexistingFile)
 			
 	//tear-down
 	remove("okConfig3");
+	remove("testNoConfigFile");
 	
 }
 
