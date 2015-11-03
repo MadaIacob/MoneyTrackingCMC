@@ -612,6 +612,9 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 		}
 	}
 	
+	//delete memory allocated in "getArgumentsForConfig" function
+	delete[] parameters;
+	
 	return changedDefaultTag;
 }
 
