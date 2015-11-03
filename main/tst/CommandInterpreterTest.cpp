@@ -515,10 +515,15 @@ TEST(executeConfigTest, validParameters)
 					  (char*) "config",
 					  (char*) "default_wallet",
 					  (char*) "=forthTest"};
+	char * argv5[4] = {(char*) "moneytracker.exe",
+					  (char*) "config",
+					  (char*) "default_wallet",
+					  (char*) "==fifthTest"};	
 					  
 	std::string configFileName = "testConfig";
-	std::string configContaint = 
-	"default_wallet=my.wallet\ncurrency = RON,EUR\ndefault_tag = something\n";
+	std::string configContaint = "default_wallet=my.wallet\ncurrency = ";
+	configContaint += "RON,EUR\ndefault_tag = something\n";
+	
 	createFile(configFileName.c_str(), configContaint);
 	
 	//test
@@ -530,6 +535,8 @@ TEST(executeConfigTest, validParameters)
 	EXPECT_EQ("thirdTest", getConfigValue("default_wallet", configFileName));
 	EXPECT_EQ(true,executeConfig(4, &argv4[0], configFileName));
 	EXPECT_EQ("forthTest", getConfigValue("default_wallet", configFileName));
+	EXPECT_EQ(true,executeConfig(4, &argv5[0], configFileName));
+	EXPECT_EQ("=fifthTest", getConfigValue("default_wallet", configFileName));
 	
 	//tear-down
 	remove(configFileName.c_str());
@@ -545,7 +552,34 @@ TEST(executeConfigTest, invalidParameters)
 	char * argv2[4] = {(char*) "moneytracker.exe", 
 					   (char*) "config" , 
 					   (char*) "default_wallet=firstTest",
-					   (char*) "currency="};	
+					   (char*) "currency="};
+	char * argv3[5] = {(char*) "moneytracker.exe", 
+					   (char*) "config" , 
+					   (char*) "default_wallet=firstTest",
+					   (char*) "currency=",
+					   (char*) "RON"};
+	char * argv4[5] = {(char*) "moneytracker.exe", 
+					   (char*) "config" , 
+					   (char*) "default_wallet=firstTest",
+					   (char*) "currency",
+					   (char*) "RON"};
+	char * argv5[6] = {(char*) "moneytracker.exe", 
+					   (char*) "config" , 
+					   (char*) "default_wallet=firstTest",
+					   (char*) "currency",
+					   (char*) "=",
+					   (char*) "RON"};
+	char * argv6[4] = {(char*) "moneytracker.exe", 
+					   (char*) "config" , 
+					   (char*) "default_wallet",
+					   (char*) "firstTest"};
+	char * argv7[4] = {(char*) "moneytracker.exe", 
+					   (char*) "config" , 
+					   (char*) "default_wallettt=",
+					   (char*) "firstTest"};
+	char * argv8[3] = {(char*) "moneytracker.exe", 
+					   (char*) "config" , 
+					   (char*) "default_wallet="};
 					   
 	std::string configFileName = "test.config";				   
 	std::string configContaint = 
@@ -555,6 +589,12 @@ TEST(executeConfigTest, invalidParameters)
 	//test
 	EXPECT_EQ(false,executeConfig(4, &argv1[0], configFileName));
 	EXPECT_EQ(false,executeConfig(4, &argv2[0], configFileName));
+	EXPECT_EQ(false,executeConfig(5, &argv3[0], configFileName));
+	EXPECT_EQ(false,executeConfig(5, &argv4[0], configFileName));
+	EXPECT_EQ(false,executeConfig(6, &argv5[0], configFileName));
+	EXPECT_EQ(false,executeConfig(4, &argv6[0], configFileName));
+	EXPECT_EQ(false,executeConfig(4, &argv7[0], configFileName));
+	EXPECT_EQ(false,executeConfig(3, &argv8[0], configFileName));
 	
 	//tear-down
 	remove(configFileName.c_str());
