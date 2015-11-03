@@ -102,7 +102,14 @@ bool categoryExists(string category,string fileName)
 		foundDef = lineRead.find(category);
 		if (foundDef!=std::string::npos)
 		{
-		valid = true;
+			string fileCategory = lineRead.substr(lineRead.find_first_of(';') + 
+					   3,lineRead.length() - lineRead.find_first_of(';') - 3);
+			fileCategory = fileCategory.substr(fileCategory.find_first_of(';') + 
+					   1,fileCategory.length() - fileCategory.find_first_of(';') - 5);
+			if (category == fileCategory) 
+			{
+				valid = true;
+			}
 		}
 	}
 	fileToOpen.close();

@@ -797,21 +797,22 @@ TEST(formatConfigTest, formatExistingFile)
 TEST(categoryExistsTest,findCategory)
 {
 	//set-up
-	std::string configFileName("testConfigFile");
-	std::string configContaint = "default_wallet = my.wallet\n";
-	configContaint += "curencyy = RON\n";
-	configContaint += "default_income_category = salary\n";
 	
-	createFile(configFileName.c_str(), configContaint);
+	std::string walletName = "test.wallet";
+	std::string walletContaint = "1445286456;+;200;salary;RON\n";
+	walletContaint += walletContaint + "1445286456;+;250;salary;RON";
 	
+	createFile(walletName.c_str(),walletContaint);
+	
+	std::string category1 = "salary";
+	std::string category2 = "vacanta";
 	//test
-	EXPECT_EQ(true, categoryExists("default_wallet",configFileName));
-	EXPECT_EQ(true, categoryExists("default_income_category",configFileName));
+	EXPECT_EQ(true, categoryExists(category1,walletName));
 	
-	EXPECT_EQ(false, categoryExists("currency",configFileName));
+	EXPECT_EQ(false, categoryExists(category2,walletName));
 	
 	//tear-down
-	remove(configFileName.c_str());
+	remove(walletName.c_str());
 }
 
 
