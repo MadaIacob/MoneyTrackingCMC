@@ -770,5 +770,47 @@ TEST(writeConfigTest, writeToNonexistingFile)
 	
 }
 
+TEST(formatConfigTest, formatExistingFile) 
+{
+	//set-up	
+	string testFile = "testFile";
+	string testContent = "default_wallet=my.wallet \n default_wallet =other.wallet\n";
+	testContent += " default_wallet2= other.wallet2\n currency = EURO,RON,USD\n";
+	testContent += " currency = RON,EURO, USD";
+	
+	createFile(testFile, testContent);
+	formatConfigFile(testFile);
+	
+	
+	string expected = "default_wallet = my.walletdefault_wallet = other.wallet";
+	expected += "default_wallet2 = other.wallet2currency = EURO, RON, USD";
+	expected += "currency = RON, EURO, USD";
+
+	//test
+	EXPECT_EQ(expected, readWallet(testFile));
+
+	//tear-down
+	remove(testFile.c_str());
+}
+
+TEST(categoryExistsTest,findCategory)
+{
+	//set-up
+	std::string configFileName("testConfigFile");
+	std::string configContaint = "default_wallet = my.wallet\n";
+	configContaint += "curencyy = RON\n";
+	configContaint += "default_income_category = salary\n";
+	
+	createFile(configFileName.c_str(), configContaint);
+	
+	//test
+	EXPECT_EQ(true, categoryExists("default_wallet",configFileName));
+	EXPECT_EQ(true, categoryExists("default_income_category",configFileName));
+	
+	EXPECT_EQ(false, categoryExists("currency",configFileName));
+	
+	//tear-down
+	remove(configFileName.c_str());
+}
 
 
