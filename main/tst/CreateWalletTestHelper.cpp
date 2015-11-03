@@ -5,6 +5,7 @@
 #include <ctime>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 #include "WalletEntity.h"
 #include "CreateWalletTestHelper.h"
@@ -107,4 +108,39 @@ void createFile(const string fileName,const string containt)
 	ofstream testFileConfig(fileName.c_str());
 	
 	testFileConfig << containt << '\n';
+}
+
+string getConfigValue(const std::string configTag, const std::string configFileName)
+{
+	ifstream configFile(configFileName.c_str());
+	string line;
+	string word = "";
+	//size_t foundTag;
+	size_t foundEqual;
+	while(getline(configFile, line))
+	{	
+		//if configTag was found start storing default wallet name
+		std::size_t foundTag = line.find(configTag);
+		if(foundTag != std::string::npos)
+		{	
+			//remove spaces and tags from current line
+			line.erase(remove(line.begin(), line.end(), ' '), line.end());
+			line.erase(remove(line.begin(), line.end(), '\t'), line.end());
+			
+			std::size_t foundDef = line.find(configTag);
+
+			if(foundDef == 0 && line[foundDef + configTag.size()] == '=')
+			{
+				foundEqual = line.find("=");
+				size_t pos = foundEqual +1;
+				while(pos < line.size())
+				{
+					word = word + line[pos];
+					pos++;				
+				}
+			break;
+			}
+		}
+	}
+	return word;
 }

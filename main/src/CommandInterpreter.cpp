@@ -594,7 +594,7 @@ bool executeConfig(const int argc, char* argv[], const string configFileName)
 				}
 				else 
 				{
-					if((writeConfig(parameters[0], parameters[1]) == true))
+					if((writeConfig(parameters[0], parameters[1],configFileName) == true))
 					{
 						//print "parameters[1] was configured as default."
 						printMessage(17,parameters[1]);

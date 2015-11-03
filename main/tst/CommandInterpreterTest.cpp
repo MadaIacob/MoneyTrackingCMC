@@ -495,3 +495,69 @@ TEST(executeIncomeSpend_CategoryTest, validParameters)
 	remove(fileName);	
 	remove(configName1.c_str());
 } 
+
+TEST(executeConfigTest, validParameters)
+{
+	//set-up
+	char * argv1[3] = {(char*) "moneytracker.exe", 
+					   (char*) "config" , 
+					   (char*) "default_wallet=firstTest"};
+	char * argv2[5] = {(char*) "moneytracker.exe",
+					  (char*) "config",
+					  (char*) "default_wallet",
+					  (char*) "=",
+					  (char*) "secondTest"};
+	char * argv3[4] = {(char*) "moneytracker.exe",
+					  (char*) "config",
+					  (char*) "default_wallet=",
+					  (char*) "thirdTest"};
+	char * argv4[4] = {(char*) "moneytracker.exe",
+					  (char*) "config",
+					  (char*) "default_wallet",
+					  (char*) "=forthTest"};
+					  
+	std::string configFileName = "testConfig";
+	std::string configContaint = 
+	"default_wallet=my.wallet\ncurrency = RON,EUR\ndefault_tag = something\n";
+	createFile(configFileName.c_str(), configContaint);
+	
+	//test
+	EXPECT_EQ(true,executeConfig(3, &argv1[0], configFileName));
+	EXPECT_EQ("firstTest", getConfigValue("default_wallet", configFileName));
+	EXPECT_EQ(true,executeConfig(5, &argv2[0], configFileName));
+	EXPECT_EQ("secondTest", getConfigValue("default_wallet", configFileName));
+	EXPECT_EQ(true,executeConfig(4, &argv3[0], configFileName));
+	EXPECT_EQ("thirdTest", getConfigValue("default_wallet", configFileName));
+	EXPECT_EQ(true,executeConfig(4, &argv4[0], configFileName));
+	EXPECT_EQ("forthTest", getConfigValue("default_wallet", configFileName));
+	
+	//tear-down
+	remove(configFileName.c_str());
+}
+
+TEST(executeConfigTest, invalidParameters)
+{
+	//set-up
+	char * argv1[4] = {(char*) "moneytracker.exe", 
+					   (char*) "config" , 
+					   (char*) "default_wallet=firstTest",
+					   (char*) "currency"};
+	char * argv2[4] = {(char*) "moneytracker.exe", 
+					   (char*) "config" , 
+					   (char*) "default_wallet=firstTest",
+					   (char*) "currency="};	
+					   
+	std::string configFileName = "test.config";				   
+	std::string configContaint = 
+	"default_wallet=my.wallet\ncurrency = RON,EUR\ndefault_tag = something\n";
+	createFile(configFileName, configContaint);
+	
+	//test
+	EXPECT_EQ(false,executeConfig(4, &argv1[0], configFileName));
+	EXPECT_EQ(false,executeConfig(4, &argv2[0], configFileName));
+	
+	//tear-down
+	remove(configFileName.c_str());
+}
+
+

@@ -22,4 +22,6 @@ bool helperAddWalletEntity(
 	const std::string walletName);
 	std::string readLastLine(const std::string fileName);
 void createFile(const std::string fileName,const std::string containt);
+std::string getConfigValue(const std::string configTag, const std::string configFileName);
+
 #endif
