@@ -504,6 +504,86 @@ TEST(getArgumentsForBalanceTest, outOfRangeArguments)
 	delete[] result2;
 	delete[] result3;
 }
+
+TEST(getArgumentsForConfigTest, validArguments)
+{
+	//set-up
+	char* arguments1[2] = {(char*) "default_wallet=", (char*) "my.wallet"};
+	char* arguments2[3] = {(char*) "default_wallet", (char*) "=", (char*) "my.wallet"};
+	char* arguments3[2] = {(char*) "default_wallet", (char*) "=my.wallet"};
+	char* arguments4[1] = {(char*) "default_wallet=my.wallet"};
+	
+	char* expected[2] = {(char*) "default_wallet", (char*) "my.wallet"};
+	
+	std::string* actual1 = getArgumentsForConfig(2,&arguments1[0]);
+	std::string* actual2 = getArgumentsForConfig(3,&arguments2[0]);
+	std::string* actual3 = getArgumentsForConfig(2,&arguments3[0]);
+	std::string* actual4 = getArgumentsForConfig(1,&arguments4[0]);
+	
+	//test
+	EXPECT_EQ(expected[0], actual1[0]);
+	EXPECT_EQ(expected[1], actual1[1]);
+	
+	EXPECT_EQ(expected[0], actual2[0]);
+	EXPECT_EQ(expected[1], actual2[1]);
+	
+	EXPECT_EQ(expected[0], actual3[0]);
+	EXPECT_EQ(expected[1], actual3[1]);
+	
+	EXPECT_EQ(expected[0], actual4[0]);
+	EXPECT_EQ(expected[1], actual4[1]);
+	
+	//tear-down
+
+}
+
+TEST(getArgumentsForConfigTest, invalidArguments)
+{
+	//set-up
+	char* arguments1[1] = {(char*) "default_wallet="};
+	char* arguments2[2] = {(char*) "default_wallet", (char*) "my.wallet"};
+	char* arguments3[2] = {(char*) "default_wallet", (char*) "="};
+	char* arguments4[3] = {(char*) "default_wallet", (char*) "=my.wallet", (char*) "vasile"};
+	char* arguments5[4] = {(char*) "default_wallet", (char*) "=", (char*) "my.wallet", (char*) "vasile"};
+	char* arguments6[4] = {(char*) "default_wallet=", (char*) "my.wallet", (char*) "currency", (char*) "EURO"};
+	char* arguments7[3] = {(char*) "default_wallet=", (char*) "my.wallet", (char*) "currency="};
+	
+	char* expected[2] = {(char*) "", (char*) ""};
+	
+	std::string* actual1 = getArgumentsForConfig(1,&arguments1[0]);
+	std::string* actual2 = getArgumentsForConfig(2,&arguments2[0]);
+	std::string* actual3 = getArgumentsForConfig(2,&arguments3[0]);
+	std::string* actual4 = getArgumentsForConfig(3,&arguments4[0]);
+	std::string* actual5 = getArgumentsForConfig(4,&arguments5[0]);
+	std::string* actual6 = getArgumentsForConfig(4,&arguments6[0]);
+	std::string* actual7 = getArgumentsForConfig(3,&arguments7[0]);
+
+	
+	//test
+	EXPECT_EQ(expected[0], actual1[0]);
+	EXPECT_EQ(expected[1], actual1[1]);
+	
+	EXPECT_EQ(expected[0], actual2[0]);
+	EXPECT_EQ(expected[1], actual2[1]);
+	
+	EXPECT_EQ(expected[0], actual3[0]);
+	EXPECT_EQ(expected[1], actual3[1]);
+	
+	EXPECT_EQ(expected[0], actual4[0]);
+	EXPECT_EQ(expected[1], actual4[1]);
+	
+	EXPECT_EQ(expected[0], actual5[0]);
+	EXPECT_EQ(expected[1], actual5[1]);
+	
+	EXPECT_EQ(expected[0], actual6[0]);
+	EXPECT_EQ(expected[1], actual6[1]);
+	
+	EXPECT_EQ(expected[0], actual7[0]);
+	EXPECT_EQ(expected[1], actual7[1]);
+	//tear-down
+
+}
+
 TEST(getArgumentsForBalanceTest, categoryOnly)
 {
 	//set-up
