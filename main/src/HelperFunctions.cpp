@@ -502,6 +502,7 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 {
 	// returned pointer that contains:
 	// arguments[0]=defaultWalletName
+
 	int argumentsSize = argNumber*2;
 	string* arguments = new string[argumentsSize];//note: PLEASE MODIFY ALLOCATED MEMORY WHEN ADDING/REMOVING A TAG!
 	for (int i = 0; i < argumentsSize; i++) {
@@ -536,7 +537,7 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 						//exemplu "default_wallet=mywallet"
 						arguments[k] = aux.substr(0, foundStr);
 						arguments[k+1] = aux.substr(foundStr+1);
-						k += 2;
+						//k += 2;
 					} 
 					else 
 					{
@@ -547,7 +548,7 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 						{
 							arguments[k] = aux.substr(0, foundStr);
 							arguments[k+1] = argv[i];
-							k += 2;
+							//k += 2;
 						}
 					}
 				} 
@@ -560,7 +561,7 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 					{
 						arguments[k] = argv[i-2];
 						arguments[k+1] = argv[i];
-						k += 2;
+						//k += 2;
 					}
 				} 
 				else  if (i <= argNumber-2) 
@@ -574,7 +575,7 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 						{
 							arguments[k] = argv[i-1];
 							arguments[k+1] = aux.substr(1);
-							k += 2;
+							//k += 2;
 						}
 						else 
 						{
@@ -584,7 +585,14 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 							break;
 						}
 				}	
-				else 
+				/* else 
+				{
+					for (int i = 0; i < argumentsSize; i++) {
+					arguments[i] = "";
+					}
+					break;
+				} */
+				if ((i+1)!=argNumber) 
 				{
 					for (int i = 0; i < argumentsSize; i++) {
 					arguments[i] = "";
@@ -592,6 +600,15 @@ string* getArgumentsForConfig(int argNumber, char* argv[])
 					break;
 				}
 		}
+		for (int i = 0; i < argumentsSize-1; i+=2) 
+		{
+			if (arguments[i] == "" || arguments[i+1] == "") 
+			{
+				arguments[i] = "";
+				arguments[i+1] = "";
+			}
+		}
+		
 	}
 	else
 	{}
