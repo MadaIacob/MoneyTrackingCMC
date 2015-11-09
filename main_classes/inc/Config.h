@@ -12,7 +12,7 @@ class Config {
 		string rate_EUR_USD; // = 1.13 
 		
 	public:
-		Config(string );
+		Config(string configName);
 		void setDefaultWallet(string walletName);
 		string getDefaultWallet();
 		string getDefaultIncomeCategory();
