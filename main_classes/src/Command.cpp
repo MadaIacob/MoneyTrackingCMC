@@ -4,9 +4,9 @@ Author					calin-ciprian.popita
 Date					09.11.2015
 */ 
 
-#include "../inc/Command.h"
-#include "../inc/MessageCodes_E.h"
-#include "../inc/MessageHandler.h"
+#include "Command.h"
+#include "MessageCodes_E.h"
+#include "MessageHandler.h"
 
 //associates a message object to the command
 void setMessageHandler(MessageHandler& message)

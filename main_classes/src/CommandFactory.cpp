@@ -4,8 +4,8 @@ Author					calin-ciprian.popita
 Date					09.11.2015
 */ 
 
-#include "../inc/CommandFactory.h"
-#include "../inc/Command.h"
+#include "CommandFactory.h"
+#include "Command.h"
 #include <string>
 
 //creates the right command object for a given argument

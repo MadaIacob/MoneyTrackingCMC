@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "../inc/MessageCodes_E.h"
-#include "../inc/MessageHandler.h"
+#include "MessageCodes_E.h"
+#include "MessageHandler.h"
 
 using namespace std;
 
