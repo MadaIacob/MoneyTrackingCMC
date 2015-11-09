@@ -4,9 +4,9 @@ Author					calin-ciprian.popita
 Date					09.11.2015
 */ 
 
-#include "Command.h"
-#include "CommandFactory.h"
-#include "MessageHandler.h"
+#include "../inc/Command.h"
+#include "../inc/CommandFactory.h"
+#include "../inc/MessageHandler.h"
 
 int main(int argc, char* argv[]) 
 {

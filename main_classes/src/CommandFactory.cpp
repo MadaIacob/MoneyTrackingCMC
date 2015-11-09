@@ -4,7 +4,7 @@ Author					calin-ciprian.popita
 Date					09.11.2015
 */ 
 
-#include "CommandFactory.h"
+#include "../inc/CommandFactory.h"
 
 Command* CommandFactory::makeCommand(const string& command) 
 {

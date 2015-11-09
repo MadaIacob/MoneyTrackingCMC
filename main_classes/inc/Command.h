@@ -1,3 +1,5 @@
+#include "MessageHandler.h"
+
 class Command {
 	private:
 		MessageHandler* ptrMessage;
