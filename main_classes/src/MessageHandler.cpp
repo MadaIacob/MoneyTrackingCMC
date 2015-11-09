@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "MessageCodes_E.h"
-#include "MessageHandler.h"
+#include "../inc/MessageCodes_E.h"
+#include "../inc/MessageHandler.h"
 
 using namespace std;
 
@@ -215,7 +215,6 @@ void MessageHandler::printMessage(vector<string> parameters)
 		}
 		default:
 		{
-			cout << "mmmmmmmm" << endl;
 			break;
 		}
 		
@@ -228,7 +227,19 @@ MessageCodes_E MessageHandler::getMessageCode()
 	return messageCode;
 }
 
-/* int main()
+void MessageHandler::unknownCommand(string command)
+{
+	if(command != "")
+	{
+		cout << "error: unknown command '" << command << "'!" << endl;
+	}
+	else
+	{
+		cout << "error: no command provided!" << command << endl;
+	}
+}
+/*
+ int main()
 {
 	MessageHandler message;
 	vector<string> parameters;
@@ -238,5 +249,7 @@ MessageCodes_E MessageHandler::getMessageCode()
 	parameters.push_back("dsffdsf");
 	cout << "Message is set?" << message.isSetMessageCode() << endl;
 	message.printMessage(parameters);
-	cout << "Message is: " << message.getMessageCode();
-} */
+	cout << "Message is: " << message.getMessageCode() <<endl;
+	message.unknownCommand();
+	message.unknownCommand("gaina");
+	} */
