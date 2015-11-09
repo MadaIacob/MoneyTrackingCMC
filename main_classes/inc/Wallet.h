@@ -17,13 +17,17 @@ class Wallet {
 		std::vector<WalletEntity> walletContent;
 		
 	public:
-		Wallet(const std::string walletName);
+		Wallet(const std::string WalletName = "", 
+				const std::string Sign = "+", 
+				const std::string Amount = "00.00", 
+				const std::string Currency = "RON");
 		bool readWalletFile();
 		bool createWalletFile();
 		bool appendWalletFile();
 		bool existsWalletFile();
-		double getAmountFromLine(const std::string line);
-		std::string getCategoryFromLine(const std::string line);
+		WalletEntity getWalletEntityFromLine(const std::string line);
+		std::vector<WalletEntity> getWalletContent();
 };
 
 #endif
+

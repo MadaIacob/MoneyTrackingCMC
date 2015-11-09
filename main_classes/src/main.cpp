@@ -4,9 +4,9 @@ Author					calin-ciprian.popita
 Date					09.11.2015
 */ 
 
-#include "../inc/Command.h"
-#include "../inc/CommandFactory.h"
-#include "../inc/MessageHandler.h"
+#include "Command.h"
+#include "CommandFactory.h"
+#include "MessageHandler.h"
 #include <vector>
 #include <string>
 
@@ -14,12 +14,14 @@ using namespace std;
 
 int main(int argc, char* argv[]) 
 {
-	CommandFactory factory;
 	MessageHandler message;
 	
 	//check if any command provided after the application name
 	if ( argc > 1 ) 
 	{//command provided
+		//create the factory to handle the Command object
+		CommandFactory factory;
+		//create the proper Command object
 		Command* command = factory.makeCommand(argv[1]);
 		//check if the provided command is valid
 		if ( command == 0 ) 
@@ -33,7 +35,7 @@ int main(int argc, char* argv[])
 		{//valid command provided
 		}
 		
-		//set message for command
+		//associate a message to command
 		command->setMessageHandler(message);
 		
 		//check for parameters after the command
