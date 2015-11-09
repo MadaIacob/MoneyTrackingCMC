@@ -7,6 +7,10 @@ Date					09.11.2015
 #include "../inc/Command.h"
 #include "../inc/CommandFactory.h"
 #include "../inc/MessageHandler.h"
+#include <vector>
+#include <string>
+
+using namespace std;
 
 int main(int argc, char* argv[]) 
 {

@@ -4,8 +4,13 @@ Author					calin-ciprian.popita
 Date					09.11.2015
 */ 
 
+#ifndef COMMANDFACTORY_H
+#define COMMANDFACTORY_H
+
 #include "Command.h"
 #include "CreateWallet.h"
+#include <vector>
+#include <string>
 
 class CommandFactory {
 private:
@@ -13,7 +18,9 @@ private:
 public:
         CommandFactory() : ptrCmd(0) {}
 
-        Command* makeCommand(const string& command);
+        Command* makeCommand(const std::string& command);
 
         ~CommandFactory();
 };
+
+#endif // COMMANDFACTORY_H

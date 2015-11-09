@@ -1,3 +1,12 @@
+/*
+File Description		command - abstract general description 
+Author					madalina.iacob, sas.catalin.raul, calin-ciprian.popita
+Date					09.11.2015
+*/ 
+#ifndef CONFIG_H
+#define CONFIG_H
+
+
 class Config {
 	private:
 		string configName;
@@ -20,3 +29,5 @@ class Config {
 		bool readConfigFile();
 		bool writeConfigFile();
 };
+
+#endif // CONFIG_H

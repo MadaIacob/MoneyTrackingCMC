@@ -5,12 +5,14 @@ Date					09.11.2015
 */ 
 
 #include "../inc/CommandFactory.h"
+#include "../inc/Command.h"
+#include <string>
 
-Command* CommandFactory::makeCommand(const string& command) 
+Command* CommandFactory::makeCommand(const std::string& command) 
 {
 	if ("create" == command) 
 	{
-		ptrCmd = new CreateWallet();
+		ptrCmd = new CreateWallet;
 	}
 	else if ("income" == command) 
 	{
