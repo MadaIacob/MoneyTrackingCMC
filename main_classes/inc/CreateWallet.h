@@ -9,11 +9,11 @@ Date					09.11.2015
 #include <vector>
 #include <string>
 
-class CreateWalletCmd : public Command {
+class CreateWallet : public Command {
 	private:
 		Wallet wallet;
 	public:
-		CreateWallet(std::string walletName, double amount);
+		CreateWallet();
 		//methods from Command class
 		void parseParams(std::vector<std::string> params) ;
 		void validateParams(std::vector<std::string> &params) ;

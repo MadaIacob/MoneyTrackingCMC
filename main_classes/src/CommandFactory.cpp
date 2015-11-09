@@ -12,7 +12,7 @@ Command* CommandFactory::makeCommand(const std::string& command)
 {
 	if ("create" == command) 
 	{
-		ptrCmd = new CreateWalletCmd;
+		ptrCmd = new CreateWallet();
 	}
 	else if ("income" == command) 
 	{

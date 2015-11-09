@@ -16,7 +16,7 @@ class Command {
 	private:
 		MessageHandler* ptrMessage;
 	public:
-		//virtual Command() = 0;
+		Command();
 		virtual void parseParams(std::vector<std::string> params) = 0;
 		virtual void validateParams(std::vector<std::string> &params) = 0;
 		void setMessageHandler(MessageHandler& message);
