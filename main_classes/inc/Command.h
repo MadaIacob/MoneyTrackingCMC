@@ -19,21 +19,13 @@ class Command {
 		Command();
 		virtual void parseParams(std::vector<std::string> params) = 0;
 		virtual void validateParams(std::vector<std::string> &params) = 0;
-		void setMessageHandler(MessageHandler& message)
-		{
-			ptrMessage = message;
-		}
+		void setMessageHandler(MessageHandler& message);
 		virtual void executeCommand() = 0;
 		virtual ~Command();
 
 		
 	protected:
-		void setMessageCode(MessageCodes_E messageCode)
-		{
-                ptrMessage->setMessage(messageCode);
-
-        }
-		
+		void setMessageCode(MessageCodes_E messageCode);		
 };
 
 #endif // COMMAND_H
