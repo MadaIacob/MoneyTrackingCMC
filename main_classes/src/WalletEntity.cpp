@@ -34,6 +34,23 @@ using namespace std;
 		return timeStamp;
 	}
 	
+	//returns unix timestamp format 
+	//returns a string containing GMT calculated time, formatted like:
+	//"Thu, 08 Oct 2015 10:52:40 GMT"
+	string WalletEntity::getTimeStampGMT()
+	{
+	  struct tm * timeinfo;
+	  char buffer [100];//buffer for streaming time
+	  
+	  //calculate GMT format for myTime
+	  timeinfo = gmtime (&timeStamp);
+
+	  //stream GMT formatted time to buffer
+	  strftime (buffer,100,"%a, %d %b %Y %H:%M:%S GMT",timeinfo);
+
+	  return buffer;
+	}
+	
 	string WalletEntity::getSign()
 	{
 		return sign;;

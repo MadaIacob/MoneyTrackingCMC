@@ -29,6 +29,7 @@ class WalletEntity {
 					const std::string category,
 					const std::string currency);
 		time_t getTimeStamp();
+		std::string getTimeStampGMT();
 		std::string getSign();
 		std::string getAmount();
 		std::string getCategory();
