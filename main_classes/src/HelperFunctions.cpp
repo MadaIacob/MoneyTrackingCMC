@@ -114,6 +114,17 @@ bool validateAmount(const char word [])
 	return valid;
 }
 
+string cutSign(string validAmount)
+{
+	string cutAmount = "" ;
+	int len = validAmount.length();
+	for(int i = 1; i < len; i++)
+		{
+			cutAmount += validAmount[i] ;
+		}
+	return cutAmount;
+}
+
 
 string truncateAmount(const char word[])
 {

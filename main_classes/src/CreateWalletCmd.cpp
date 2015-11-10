@@ -13,7 +13,7 @@ Date					09.11.2015
 #include "MessageHandler.h"
 #include "MessageCodes_E.h"
 
-
+#include <typeinfo>
 using namespace std;
 
 
@@ -88,7 +88,14 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	{
 		amount = "0" ;
 	}
+	cout << "amount 1 " << amount << endl ;
 	
+	const char *amn = amount.c_str() ;
+	amount = truncateAmount(amn) ;
+	
+	
+	
+	cout << "amount 2 " << amount << endl ;	
 	char s = amount.at(0) ;
 	string sign = "" ;
 	if (s == '+')
@@ -99,6 +106,12 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	{
 		sign = "-" ;
 	}
+	
+	string validAmount (amount) ;
+	cout << typeid(validAmount).name() << endl;
+	
+	cout << "validAmount: " << validAmount << endl;
+	amount = cutSign(validAmount) ;
 	
 	WalletEntity entity(sign, amount);
 	wallet = Wallet(walletName,entity);
