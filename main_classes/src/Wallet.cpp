@@ -12,13 +12,12 @@
 #include <iostream>
 #include "Wallet.h"
 using namespace std;
-Wallet::Wallet(const string walletName, 
-				const string sign, 
-				const string amount, 
-				const string currency)
+
+Wallet::Wallet(const std::string walletName) : walletName(walletName) {}
+
+Wallet::Wallet(const string walletName, WalletEntity walletEntity)
 {
 	Wallet::walletName = walletName;
-	WalletEntity walletEntity(sign, amount, currency);
 	walletContent.push_back(walletEntity);
 }
 
@@ -171,7 +170,7 @@ vector<WalletEntity> Wallet::getWalletContent()
 	return walletContent;
 }
 
-/*int main () 
+int main () 
 {
 	WalletEntity walletEntity("+", "20.0", "other", "RON");
 	//WalletEntity walletEntity("+", "200", "EUR");
@@ -181,10 +180,9 @@ vector<WalletEntity> Wallet::getWalletContent()
 	cout<<"walletEntity.amount = "<<walletEntity.getAmount()<<endl;
 	cout<<"walletEntity.category = "<<walletEntity.getCategory()<<endl;
 	cout<<"walletEntity.currency = "<<walletEntity.getCurrency()<<endl;
-	Wallet wallet;
-	wallet = Wallet("ceapa", "+", "60.23", "EUROI");
+	Wallet wallet("ceapa",walletEntity);
 	cout<<"the amount is : "<<wallet.getWalletContent().at(0).getAmount()<<endl;
 	cout<<"fisierul cu numele : " << wallet.getName() << "a fost creat : " << wallet.createWalletFile() << endl;
 	cout<<"s-a facut append : " << wallet.appendWalletFile(walletEntity) << endl;
 } 
-*/
+

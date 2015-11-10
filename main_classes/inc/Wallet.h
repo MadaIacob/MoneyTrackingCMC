@@ -17,10 +17,8 @@ class Wallet {
 		std::vector<WalletEntity> walletContent;
 		
 	public:
-		Wallet(const std::string walletName = "", 
-				const std::string sign = "+", 
-				const std::string amount = "00.00", 
-				const std::string currency = "RON");
+		Wallet(const std::string walletName);
+		Wallet(const std::string walletName, WalletEntity walletEntity);
 		std::string getName();
 		bool readWalletFile();
 		bool createWalletFile();
