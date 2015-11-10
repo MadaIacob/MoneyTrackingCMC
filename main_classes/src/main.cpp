@@ -38,24 +38,29 @@ int main(int argc, char* argv[])
 		//associate a message to command
 		command->setMessageHandler(message);
 		
+		//prepare a vector to keep parameters
+		vector<string> params;
+		
 		//check for parameters after the command
 		if ( argc > 2 ) 
 		{//valid command with parameters
 			//put all parameters into vector
-			vector<string> params(&argv[2], &argv[2] + argc - 2);
+			for (int i = 2; i < argc; i++)
+			{
+				params.push_back(argv[i]);
+			}
 			//check syntax
 			command->parseParams(params);
 		} 
 		else 
 		{//valid command without parameters
-			command->parseParams();
 		}
 
 		//check if any error so far
 		if (message.isSetMessageCode()) 
 		{//invalid syntax for command
 			//print error message
-			message.printMessage(command);
+			message.printMessage(params);
 			//exit
 			return 0;
 		}
@@ -69,7 +74,7 @@ int main(int argc, char* argv[])
 		if (message.isSetMessageCode()) 
 		{//invalid values for parameters
 			//print error message
-			message.printMessage(command);
+			message.printMessage(params);
 			//exit
 			return 0;
 		}
@@ -77,13 +82,13 @@ int main(int argc, char* argv[])
 		{}
 
 		//execute command
-		command->executeCommand();
+		command->executeCommand(params);
 		
 		//check message
 		if (message.isSetMessageCode()) 
 		{//error or success in executing the command
 			//print error/success message
-			message.printMessage(command);
+			message.printMessage(params);
 			//exit
 			return 0;
 		}

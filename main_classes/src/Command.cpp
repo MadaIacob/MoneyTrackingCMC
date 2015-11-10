@@ -9,14 +9,14 @@ Date					09.11.2015
 #include "MessageHandler.h"
 
 //associates a message object to the command
-void setMessageHandler(MessageHandler& message)
+void Command::setMessageHandler(MessageHandler& message)
 {
-	ptrMessage = message;
+	ptrMessage = &message;
 };
 
 //sets the message code for the message object
-void setMessageCode(MessageCodes_E messageCode)
+void Command::setMessageCode(MessageCodes_E messageCode)
 {
-	ptrMessage->setMessage(messageCode);
+	ptrMessage->setMessageCode(messageCode);
 
 };

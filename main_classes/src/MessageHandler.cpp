@@ -30,7 +30,7 @@ bool MessageHandler::isSetMessageCode()
 	return isSetMessage;
 }
 
-void MessageHandler::printMessage(vector<string> parameters)
+void MessageHandler::printMessage(vector<string>& parameters)
 {
 	switch(messageCode)
 	{
