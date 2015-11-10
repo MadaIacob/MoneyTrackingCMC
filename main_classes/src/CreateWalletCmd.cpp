@@ -19,7 +19,7 @@ CreateWalletCmd::CreateWalletCmd(){}
 		
 
 
-void CreateWalletCmd::parseParams(vector<string> params) 
+void CreateWalletCmd::parseParams(vector<string>& params) 
 {
 	// create command with more than two arguments /parameters
 	if ( params.size() > 2)
@@ -29,7 +29,7 @@ void CreateWalletCmd::parseParams(vector<string> params)
 	
 }
 
-void CreateWalletCmd::validateParams(vector<string> & params) 
+void CreateWalletCmd::validateParams(vector<string>& params) 
 {
 	if ( params.size() == 3 )
 	{ // validate walletName
@@ -63,7 +63,7 @@ void CreateWalletCmd::validateParams(vector<string> & params)
 }
 
 
-void CreateWalletCmd::executeCommand(vector<string> &params)
+void CreateWalletCmd::executeCommand(vector<string>& params)
 {
 	// set sign, category, amount ... ;
 	string walletName = params.at(0) ;

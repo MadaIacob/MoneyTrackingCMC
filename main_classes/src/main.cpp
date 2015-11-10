@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 		if (message.isSetMessageCode()) 
 		{//invalid values for parameters
 			//print error message
-			//message.printMessage(command);
+			message.printMessage(params);
 			//exit
 			return 0;
 		}

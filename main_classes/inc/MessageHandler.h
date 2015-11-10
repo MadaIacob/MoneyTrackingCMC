@@ -13,7 +13,7 @@ class MessageHandler {
 		MessageHandler();
 		void setMessageCode(MessageCodes_E messageCode);
 		bool isSetMessageCode();
-		void printMessage(std::vector<std::string> parameters);
+		void printMessage(std::vector<std::string>& parameters);
 		MessageCodes_E getMessageCode();
 		void unknownCommand(std::string command = "");
 };
