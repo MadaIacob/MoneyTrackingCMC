@@ -1,8 +1,11 @@
-/*
-File Description		command - abstract general description 
-Author					madalina.iacob, sas.catalin.raul, calin-ciprian.popita
-Date					09.11.2015
-*/ 
+//============================================================================
+// Name        : Config.h
+// Author      : AmadeusCPPL
+// Version     : 0.1
+// Copyright   : Your copyright notice
+// Description : Header for class Config, in C++
+//============================================================================
+
 #ifndef CONFIG_H
 #define CONFIG_H
 
