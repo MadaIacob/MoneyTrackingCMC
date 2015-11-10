@@ -171,9 +171,9 @@ vector<WalletEntity> Wallet::getWalletContent()
 	return walletContent;
 }
 
-  int main () 
+/*int main () 
 {
-	/* WalletEntity walletEntity("+", "20.0", "other", "RON");
+	WalletEntity walletEntity("+", "20.0", "other", "RON");
 	//WalletEntity walletEntity("+", "200", "EUR");
 	cout<<"walletEntity.timeStamp = "<<walletEntity.getTimeStamp()<<endl;
 	cout<<"walletEntity.timeStampGMT = "<<walletEntity.getTimeStampGMT()<<endl;
@@ -185,6 +185,6 @@ vector<WalletEntity> Wallet::getWalletContent()
 	wallet = Wallet("ceapa", "+", "60.23", "EUROI");
 	cout<<"the amount is : "<<wallet.getWalletContent().at(0).getAmount()<<endl;
 	cout<<"fisierul cu numele : " << wallet.getName() << "a fost creat : " << wallet.createWalletFile() << endl;
-	cout<<"s-a facut append : " << wallet.appendWalletFile(walletEntity) << endl; */
+	cout<<"s-a facut append : " << wallet.appendWalletFile(walletEntity) << endl;
 } 
-
+*/
