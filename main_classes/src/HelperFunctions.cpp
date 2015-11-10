@@ -1,6 +1,13 @@
 
-#include "HelperFunctions.h"
+#include "..\inc\HelperFunctions.h"
+#include <string>
+#include <cstring>
+#include <fstream>
+#include <iomanip>
+#include <sstream>
+#include <stdlib.h>
 
+using namespace std ;
 
 bool validateFileName(string fileName)
 {
