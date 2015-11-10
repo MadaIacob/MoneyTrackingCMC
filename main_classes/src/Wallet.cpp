@@ -26,6 +26,10 @@ std::string Wallet::getName()
 	return walletName;
 }
 
+void Wallet::setName(string walletName) 
+{
+	Wallet::walletName = walletName;
+}
 bool Wallet::readWalletFile()
 {
 	ifstream file(walletName.c_str());
@@ -215,6 +219,6 @@ vector<WalletEntity> Wallet::getWalletContent()
 		cout << " " << w.getCategory();
 		cout << " " << w.getCurrency() << endl;
 	}
-}  
- */
+}   */
+ 
 

@@ -20,6 +20,7 @@ class Wallet {
 		Wallet(const std::string walletName = "");
 		Wallet(const std::string walletName, WalletEntity walletEntity);
 		std::string getName();
+		void setName(std::string walletName);
 		bool readWalletFile();
 		bool createWalletFile();
 		bool appendWalletFile(WalletEntity walletEntity);
