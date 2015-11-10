@@ -107,6 +107,8 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 		sign = "-" ;
 	}
 	
+	
+	
 	string validAmount (amount) ;
 	cout << typeid(validAmount).name() << endl;
 	
@@ -118,6 +120,8 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	
 	wallet.createWalletFile() ;
 	params.push_back(entity.getCurrency());
+	//params.push_back(sign) ;
+	
 	ptrMessage->setMessageCode(WALLET_CRETED_MSG) ;
 } 
 
