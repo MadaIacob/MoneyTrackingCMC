@@ -13,7 +13,7 @@ Date					09.11.2015
 #include <string>
 
 class Command {
-	private:
+	public:
 		MessageHandler* ptrMessage;
 	public:
 		Command();

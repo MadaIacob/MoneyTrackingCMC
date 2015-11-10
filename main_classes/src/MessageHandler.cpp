@@ -48,8 +48,8 @@ void MessageHandler::printMessage(vector<string>& parameters)
 		{
 			//parameters[0] = amount
 			//parameters[1] = walletName
-			cout << "error: '" << parameters.at(0) << "' is not a valid "
-			<<"initial amount." << endl << "Creating '" << parameters.at(1) 
+			cout << "error: '" << parameters.at(1) << "' is not a valid "
+			<<"initial amount." << endl << "Creating '" << parameters.at(0) 
 			<<"' aborted." << endl;
 			break;			
 		}

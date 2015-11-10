@@ -10,6 +10,8 @@ Date					09.11.2015
 #include "HelperFunctions.h"
 #include "Wallet.h"
 #include "WalletEntity.h"
+#include "MessageHandler.h"
+#include "MessageCodes_E.h"
 
 
 using namespace std;
@@ -22,29 +24,42 @@ CreateWalletCmd::CreateWalletCmd(){}
 void CreateWalletCmd::parseParams(vector<string>& params) 
 {
 	// create command with more than two arguments /parameters
-	if ( params.size() > 2)
+	if ( !params.empty() )
 	{
-		cout << "error 1" << endl;// set error message
+		if ( params.size() > 2)
+		{
+			ptrMessage->setMessageCode(INVALID_COM_ERR) ;
+			cout << "error 1" << endl;// set error message
+		}
+		else {}
 	}
-	
+	else 
+	{
+		ptrMessage->setMessageCode(FILENAME_NOT_SPEC_ERR) ;
+	}
 }
 
 void CreateWalletCmd::validateParams(vector<string>& params) 
 {
-	if ( params.size() == 3 )
+	if ( params.size() == 1 )
 	{ // validate walletName
 		if ( validateFileName(params.at(0)) == false )
 		{
+			ptrMessage->setMessageCode(WALLET_EXISTS_ERR) ;
 			cout << "error 2" << endl;// set error file already exists
 		}
-		else {}
+		else 
+		{
+			
+		}
 	}
 	// create command with wallet name and amount
-	else if ( params.size() == 4 )
+	else if ( params.size() == 2 )
 	{
 		// validate filename
 		if ( validateFileName(params.at(0)) == false )
 		{
+			ptrMessage->setMessageCode(WALLET_EXISTS_ERR) ;
 			cout << "error 3" << endl;// set error file already exists
 		}
 		else {}
@@ -55,6 +70,7 @@ void CreateWalletCmd::validateParams(vector<string>& params)
 		// delete [] cstr; //mai jos
 		if (validateAmount( cstr ) == false )
 		{
+			ptrMessage->setMessageCode(INVALID_AMOUNT_ERR) ;
 			cout << "error 4" << endl;// set error invalid amount
 		}
 		else {}
@@ -67,8 +83,17 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 {
 	// set sign, category, amount ... ;
 	string walletName = params.at(0) ;
+	string amount = "" ;
+	if ( params.size() == 2 )
+	{
+		amount = params.at(1) ;
+	}
+	else
+	{
+		cout << "error 5" << endl;
+		amount = "0" ;
+	}
 	
-	string amount = params.at(1) ;
 	char s = amount.at(0) ;
 	string sign = "" ;
 	if (s == '+')
@@ -84,7 +109,8 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	wallet = Wallet(walletName,entity);
 	
 	wallet.createWalletFile() ;
-	cout << "end of executeCommand" << endl;
+	
+	ptrMessage->setMessageCode(WALLET_CRETED_MSG) ;
 } 
 
 CreateWalletCmd::~CreateWalletCmd()

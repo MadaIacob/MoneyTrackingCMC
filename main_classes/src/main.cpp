@@ -9,6 +9,7 @@ Date					09.11.2015
 #include "MessageHandler.h"
 #include <vector>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -23,6 +24,9 @@ int main(int argc, char* argv[])
 		CommandFactory factory;
 		//create the proper Command object
 		Command* command = factory.makeCommand(argv[1]);
+		
+		// associate message to command
+		command->ptrMessage = &message ;
 		//check if the provided command is valid
 		if ( command == 0 ) 
 		{//no valid command provided in command line
@@ -49,19 +53,22 @@ int main(int argc, char* argv[])
 			{
 				params.push_back(argv[i]);
 			}
-			//check syntax
-			command->parseParams(params);
 		} 
 		else 
 		{//valid command without parameters
 		}
-
+cout << "here ok 1 " << message.isSetMessageCode() << endl ;
+cout << "params size: " << params.size() << endl ;	
+		//check syntax
+		command->parseParams(params);
+cout << "here ok 2 " << message.isSetMessageCode() << endl ;	
 		//check if any error so far
 		if (message.isSetMessageCode()) 
 		{//invalid syntax for command
 			//print error message
 			message.printMessage(params);
 			//exit
+
 			return 0;
 		}
 		else
@@ -69,7 +76,7 @@ int main(int argc, char* argv[])
 	
 		//check parameters for valid values
 		command->validateParams(params);
-
+cout << "here ok 3 " << message.isSetMessageCode() << endl ;
 		//check if any error so far
 		if (message.isSetMessageCode()) 
 		{//invalid values for parameters
