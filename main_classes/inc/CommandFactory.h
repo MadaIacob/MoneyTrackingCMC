@@ -8,7 +8,7 @@ Date					09.11.2015
 #define COMMANDFACTORY_H
 
 #include "Command.h"
-#include "CreateWallet.h"
+#include "CreateWalletCmd.h"
 #include <vector>
 #include <string>
 

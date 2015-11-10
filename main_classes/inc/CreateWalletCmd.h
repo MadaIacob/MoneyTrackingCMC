@@ -4,8 +4,8 @@ Author					madalina.iacob, sas.catalin.raul, calin-ciprian.popita
 						cosmin.farcau
 Date					09.11.2015
 */ 
-#ifndef CREATEWALLET_H
-#define CREATEWALLET_H
+#ifndef CREATEWALLETCMD_H
+#define CREATEWALLETCMD_H
 #include "Wallet.h"
 #include "Command.h"
 #include <vector>
@@ -22,4 +22,4 @@ class CreateWalletCmd : public Command {
 		void executeCommand() ;
 };
 
-#endif //CREATEWALLET_H
+#endif //CREATEWALLETCMD_H
