@@ -13,13 +13,9 @@ Date					09.11.2015
 #include "MessageHandler.h"
 #include "MessageCodes_E.h"
 
-#include <typeinfo>
 using namespace std;
 
-
 CreateWalletCmd::CreateWalletCmd(){}
-		
-
 
 void CreateWalletCmd::parseParams(vector<string>& params) 
 {
@@ -46,9 +42,7 @@ void CreateWalletCmd::validateParams(vector<string>& params)
 		{
 			ptrMessage->setMessageCode(WALLET_EXISTS_ERR) ;
 		}
-		else 
-		{
-			
+		else {
 		}
 	}
 	// create command with wallet name and amount
@@ -59,8 +53,8 @@ void CreateWalletCmd::validateParams(vector<string>& params)
 		{
 			ptrMessage->setMessageCode(WALLET_EXISTS_ERR) ;
 		}
-		else {}
-		
+		else {
+		}
 		// validate amount
 		string str = params.at(1) ;
 		const char *amnt = str.c_str() ;
@@ -69,9 +63,9 @@ void CreateWalletCmd::validateParams(vector<string>& params)
 		{
 			ptrMessage->setMessageCode(INVALID_AMOUNT_ERR) ;
 		}
-		else {}
+		else {
+		}
 	}
-	
 }
 
 
@@ -88,12 +82,10 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	{
 		amount = "0" ;
 	}
-	cout << "amount 1 " << amount << endl ;
 	
 	const char *amn = amount.c_str() ;
-	amount = truncateAmount(amn) ;
-	
-	cout << "amount 2 " << amount << endl ;	
+	amount = truncateAmount(amn) ; //could modify this function to take string
+	// set sign according to amount
 	char s = amount.at(0) ;
 	string sign = "" ;
 	if (s == '+')
@@ -104,25 +96,34 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	{
 		sign = "-" ;
 	}
-	
+	// cut + or - from amount
 	string validAmount (amount) ;
-	cout << typeid(validAmount).name() << endl;
-	
-	cout << "validAmount: " << validAmount << endl;
 	amount = cutSign(validAmount) ;
-	
+	//create line object in wallet file
 	WalletEntity entity(sign, amount);
+	//initialize wallet
 	wallet = Wallet(walletName,entity);
 	
-	wallet.createWalletFile() ;
-	params.pop_back() ;
-	params.push_back(entity.getSign()) ;
-	params.push_back(entity.getAmount()) ;
-	params.push_back(entity.getCurrency()) ;
-	
-	cout << params.at(0) << endl<<params.at(1) << endl<< params.at(2) << endl<< params.at(3) << endl ;
-	
-	ptrMessage->setMessageCode(WALLET_CRETED_MSG) ;
+// problema cand un folder are space in nume !?	
+	//create wallet and check if creation worked
+	if (wallet.createWalletFile())
+	{
+		if (params.size() == 2 )
+		{
+			params.pop_back() ;
+		}
+		else {}
+		// set members in params, to use for print in main
+		params.push_back(entity.getSign()) ;
+		params.push_back(entity.getAmount()) ;
+		params.push_back(entity.getCurrency()) ;
+		
+		ptrMessage->setMessageCode(WALLET_CRETED_MSG) ;
+	}
+	else
+	{
+		ptrMessage->setMessageCode(COULD_NOT_CREATE_ERR) ;
+	}
 } 
 
 CreateWalletCmd::~CreateWalletCmd()
