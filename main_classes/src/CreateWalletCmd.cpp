@@ -109,7 +109,7 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	wallet = Wallet(walletName,entity);
 	
 	wallet.createWalletFile() ;
-	
+	params.push_back(entity.getCurrency());
 	ptrMessage->setMessageCode(WALLET_CRETED_MSG) ;
 } 
 

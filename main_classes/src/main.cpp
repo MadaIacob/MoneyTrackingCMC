@@ -76,7 +76,7 @@ cout << "here ok 2 " << message.isSetMessageCode() << endl ;
 	
 		//check parameters for valid values
 		command->validateParams(params);
-cout << "here ok 3 " << message.isSetMessageCode() << endl ;
+		cout << "here ok 3 " << message.isSetMessageCode() << endl ;
 		//check if any error so far
 		if (message.isSetMessageCode()) 
 		{//invalid values for parameters
@@ -90,12 +90,20 @@ cout << "here ok 3 " << message.isSetMessageCode() << endl ;
 
 		//execute command
 		command->executeCommand(params);
-		
+		cout << "here ok 4 " << message.isSetMessageCode() << endl ;
 		//check message
 		if (message.isSetMessageCode()) 
 		{//error or success in executing the command
 			//print error/success message
+			cout << "here ok 5 " << params.size() << endl 
+			<< message.getMessageCode() << endl;
+			for(unsigned int i = 0; i< params.size(); i++)
+			{
+				cout << "params. " << i << " = " << params.at(i) << endl;
+			}
+			
 			message.printMessage(params);
+			cout << "here ok 6 " << params.size() << endl ;
 			//exit
 			return 0;
 		}
