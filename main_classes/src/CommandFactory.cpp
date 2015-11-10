@@ -15,9 +15,9 @@ Command* CommandFactory::makeCommand(const std::string& command)
 	if ("create" == command) 
 	{
 		//the Command object needed is a CreateWallet object
-		CreateWalletCmd aux = CreateWalletCmd();
-		//ptrCmd = new CreateWalletCmd();
-		ptrCmd = &aux;
+		//CreateWalletCmd aux = CreateWalletCmd();
+		ptrCmd = new CreateWalletCmd();
+		//ptrCmd = &aux;
 	}
 	//"income" command
 	else if ("income" == command) 
