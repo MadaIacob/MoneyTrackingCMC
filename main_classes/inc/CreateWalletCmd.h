@@ -20,6 +20,7 @@ class CreateWalletCmd : public Command {
 		void parseParams(std::vector<std::string>& params) ;
 		void validateParams(std::vector<std::string>& params) ;
 		void executeCommand(std::vector<std::string>& params) ;
+		~CreateWalletCmd();
 };
 
 #endif //CREATEWALLETCMD_H
