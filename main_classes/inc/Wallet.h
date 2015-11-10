@@ -17,7 +17,7 @@ class Wallet {
 		std::vector<WalletEntity> walletContent;
 		
 	public:
-		Wallet(const std::string walletName);
+		Wallet(const std::string walletName = "");
 		Wallet(const std::string walletName, WalletEntity walletEntity);
 		std::string getName();
 		bool readWalletFile();
