@@ -29,7 +29,6 @@ void CreateWalletCmd::parseParams(vector<string>& params)
 		if ( params.size() > 2)
 		{
 			ptrMessage->setMessageCode(INVALID_COM_ERR) ;
-			cout << "error 1" << endl;// set error message
 		}
 		else {}
 	}
@@ -46,7 +45,6 @@ void CreateWalletCmd::validateParams(vector<string>& params)
 		if ( validateFileName(params.at(0)) == false )
 		{
 			ptrMessage->setMessageCode(WALLET_EXISTS_ERR) ;
-			cout << "error 2" << endl;// set error file already exists
 		}
 		else 
 		{
@@ -60,18 +58,16 @@ void CreateWalletCmd::validateParams(vector<string>& params)
 		if ( validateFileName(params.at(0)) == false )
 		{
 			ptrMessage->setMessageCode(WALLET_EXISTS_ERR) ;
-			cout << "error 3" << endl;// set error file already exists
 		}
 		else {}
 		
 		// validate amount
 		string str = params.at(1) ;
-		const char *cstr = str.c_str() ;
+		const char *amnt = str.c_str() ;
 		// delete [] cstr; //mai jos
-		if (validateAmount( cstr ) == false )
+		if (validateAmount( amnt ) == false )
 		{
 			ptrMessage->setMessageCode(INVALID_AMOUNT_ERR) ;
-			cout << "error 4" << endl;// set error invalid amount
 		}
 		else {}
 	}
@@ -90,7 +86,6 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	}
 	else
 	{
-		cout << "error 5" << endl;
 		amount = "0" ;
 	}
 	
