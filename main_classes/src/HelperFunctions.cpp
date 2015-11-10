@@ -1,5 +1,5 @@
 
-#include "..\inc\HelperFunctions.h"
+#include "HelperFunctions.h"
 #include <string>
 #include <cstring>
 #include <fstream>
