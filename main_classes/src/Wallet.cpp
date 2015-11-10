@@ -170,7 +170,7 @@ vector<WalletEntity> Wallet::getWalletContent()
 	return walletContent;
 }
 
-int main () 
+/* int main () 
 {
 	WalletEntity walletEntity("+", "20.0", "other", "RON");
 	//WalletEntity walletEntity("+", "200", "EUR");
@@ -184,5 +184,5 @@ int main ()
 	cout<<"the amount is : "<<wallet.getWalletContent().at(0).getAmount()<<endl;
 	cout<<"fisierul cu numele : " << wallet.getName() << "a fost creat : " << wallet.createWalletFile() << endl;
 	cout<<"s-a facut append : " << wallet.appendWalletFile(walletEntity) << endl;
-} 
+} */ 
 

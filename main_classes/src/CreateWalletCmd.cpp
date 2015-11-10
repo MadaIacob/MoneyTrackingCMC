@@ -80,7 +80,8 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 		sign = "-" ;
 	}
 	
-	wallet = Wallet(walletName, sign, amount) ;
+	WalletEntity entity(sign, amount);
+	wallet = Wallet(walletName,entity);
 	
 	wallet.createWalletFile() ;
 	cout << "end of executeCommand" << endl;
