@@ -57,11 +57,8 @@ int main(int argc, char* argv[])
 		else 
 		{//valid command without parameters
 		}
-cout << "here ok 1 " << message.isSetMessageCode() << endl ;
-cout << "params size: " << params.size() << endl ;	
 		//check syntax
 		command->parseParams(params);
-cout << "here ok 2 " << message.isSetMessageCode() << endl ;	
 		//check if any error so far
 		if (message.isSetMessageCode()) 
 		{//invalid syntax for command
@@ -76,7 +73,6 @@ cout << "here ok 2 " << message.isSetMessageCode() << endl ;
 	
 		//check parameters for valid values
 		command->validateParams(params);
-cout << "here ok 3 " << message.isSetMessageCode() << endl ;
 		//check if any error so far
 		if (message.isSetMessageCode()) 
 		{//invalid values for parameters
