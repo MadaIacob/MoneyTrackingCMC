@@ -4,36 +4,27 @@ Author					cosmin.farcau
 Date					09.11.2015
 */
 
-#include "WalletCreateCmd.h"
+#include <iostream>
+#include <vector>
+#include "CreateWalletCmd.h"
+#include "HelperFunctions.h"
+#include "Wallet.h"
+#include "WalletEntity.h"
 
 
+using namespace std;
 
-CreateWalletCmd::CreateWalletCmd(string walletName, string sign, string amount):
-		wallet()
-{
-	
-	
-}
+
+// CreateWalletCmd::CreateWalletCmd(){}
+		
+
 
 void CreateWalletCmd::parseParams(vector<string> params) 
 {
-
-	// create command with only wallet name
-	if ( params.size() == 3 )
+	// create command with more than two arguments /parameters
+	if ( params.size() > 2)
 	{
-		walletName = params.at(2) ;
-	//	amount = 0 ;
-	}
-	// create command with wallet name and amount
-	else if ( params.size() == 4 )
-	{
-		walletName = params.at(2) ;
-		amount = params.at(3) ;
-	}
-	// create with three arguments or more
-	else
-	{
-		// set error message
+		cout << "error 1" << endl;// set error message
 	}
 	
 }
@@ -41,13 +32,32 @@ void CreateWalletCmd::parseParams(vector<string> params)
 void CreateWalletCmd::validateParams(vector<string> & params) 
 {
 	if ( params.size() == 3 )
-	{ // validate walletName = params.at(2) ;
-	
+	{ // validate walletName
+		if ( validateFileName(params.at(0)) == false )
+		{
+			cout << "error 2" << endl;// set error file already exists
+		}
+		else {}
 	}
 	// create command with wallet name and amount
 	else if ( params.size() == 4 )
-	{// validate walletName = params.at(2) ;
-		// validate amount = params.at(3) ;
+	{
+		// validate filename
+		if ( validateFileName(params.at(0)) == false )
+		{
+			cout << "error 3" << endl;// set error file already exists
+		}
+		else {}
+		
+		// validate amount
+		string str = params.at(1) ;
+		const char *cstr = str.c_str() ;
+		// delete [] cstr; //mai jos
+		if (validateAmount( cstr ) == false )
+		{
+			cout << "error 4" << endl;// set error invalid amount
+		}
+		else {}
 	}
 	
 }
@@ -55,21 +65,28 @@ void CreateWalletCmd::validateParams(vector<string> & params)
 
 void CreateWalletCmd::executeCommand()
 {
+	// set sign, category, amount ... ;
+	string walletName = params.at(0) ;
 	
+	string amount = params.at(1) ;
+	char s = amount.at(0) ;
+	string sign = "" ;
+	if (s == '+')
+	{
+		sign = "+" ;
+	}
+	else
+	{
+		sign = "-" ;
+	}
+	
+	wallet = Wallet(walletName, sign, amount) ;
+	
+	wallet.createWalletFile() ;
+	cout << "end of executeCommand" << endl;
 } 
 
 
-class CreateWalletCmd : public Command 
-{
-	private:
-		Wallet wallet;
-	public:
-		CreateWallet(string walletName, double amount);
-		//methods from Command class
-		void parseParams(vector<string> params) ;
-		void validateParams(vector<string> &params) ;
-		void executeCommand() ;
-}
 
 
 
