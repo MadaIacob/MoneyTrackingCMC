@@ -48,14 +48,16 @@ int main(int argc, char* argv[])
 		} 
 		else 
 		{//valid command without parameters
-			command->parseParams();
+			//vector<string> params;
+			//command->parseParams(params);
+			//command -> executeCommand();
 		}
 
 		//check if any error so far
 		if (message.isSetMessageCode()) 
 		{//invalid syntax for command
 			//print error message
-			message.printMessage(command);
+			//message.printMessage(command);
 			//exit
 			return 0;
 		}
@@ -63,13 +65,13 @@ int main(int argc, char* argv[])
 		{}
 	
 		//check parameters for valid values
-		command->validateParams(params);
+		//command->validateParams(params);
 
 		//check if any error so far
 		if (message.isSetMessageCode()) 
 		{//invalid values for parameters
 			//print error message
-			message.printMessage(command);
+			//message.printMessage(command);
 			//exit
 			return 0;
 		}
@@ -83,7 +85,7 @@ int main(int argc, char* argv[])
 		if (message.isSetMessageCode()) 
 		{//error or success in executing the command
 			//print error/success message
-			message.printMessage(command);
+			//message.printMessage(command);
 			//exit
 			return 0;
 		}

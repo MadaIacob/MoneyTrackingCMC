@@ -15,7 +15,7 @@ Date					09.11.2015
 using namespace std;
 
 
-// CreateWalletCmd::CreateWalletCmd(){}
+CreateWalletCmd::CreateWalletCmd(){}
 		
 
 
@@ -63,7 +63,7 @@ void CreateWalletCmd::validateParams(vector<string> & params)
 }
 
 
-void CreateWalletCmd::executeCommand()
+void CreateWalletCmd::executeCommand(vector<string> &params)
 {
 	// set sign, category, amount ... ;
 	string walletName = params.at(0) ;
