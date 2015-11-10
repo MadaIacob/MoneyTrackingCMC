@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstdlib>
 #include "WalletEntity.h"
 using namespace std;
 	WalletEntity::WalletEntity(const string lhSign, 
@@ -27,6 +28,18 @@ using namespace std;
 					currency(lhCurrency) 
 	{
 		setTimeStamp();
+	}
+	WalletEntity::WalletEntity(const string lhTimestamp,
+					const string lhSign, 
+					const string lhAmount, 
+					const string lhCategory,
+					const string lhCurrency) : 
+					sign(lhSign), 
+					amount(lhAmount), 
+					category(lhCategory),
+					currency(lhCurrency) 
+	{
+		timeStamp = atol(lhTimestamp.c_str());
 	}
 					
 	time_t WalletEntity::getTimeStamp()

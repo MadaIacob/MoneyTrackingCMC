@@ -28,6 +28,11 @@ class WalletEntity {
 					const std::string amount, 
 					const std::string category,
 					const std::string currency);
+		WalletEntity(const std::string lhTimestamp,
+					const std::string lhSign, 
+					const std::string lhAmount, 
+					const std::string lhCategory,
+					const std::string lhCurrency);
 		time_t getTimeStamp();
 		std::string getTimeStampGMT();
 		std::string getSign();

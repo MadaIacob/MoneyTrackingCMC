@@ -31,7 +31,7 @@ bool Wallet::readWalletFile()
 	ifstream file(walletName.c_str());
 	bool fileOperation = false;
 	string line = "";
-	while(getline(file,line))
+	while(getline(file,line) && line != "")
 		{
 			WalletEntity walletEntity;
 			walletEntity = getWalletEntityFromLine(line);
@@ -152,15 +152,28 @@ WalletEntity Wallet::getWalletEntityFromLine(const string line)
 			if(!getline(ss,parameter,';')) break;
 			data.push_back(parameter);
 		}	
-		//convert the amount from string to double
+		//create a walletEntity from the line
 			WalletEntity walletEntity(data.at(0), data.at(1), 
-										data.at(2), data.at(3));
+										data.at(2), data.at(3), data.at(4));
 			returnWalletEntity = walletEntity;
 	}
-	else
-	{//first line in a wallet file (initial amount only)
-		
-		
+	else 
+	{//first line in a wallet file (sign, initial amount only, currency)
+		size_t foundTag;
+		string sign = line.substr(0, 1);
+		//get ridd of the sign
+		string newLine = line.substr(1);
+		//push the sign into the vector
+		data.push_back(sign);
+		foundTag = newLine.find(" ");
+		string amount = newLine.substr(0, foundTag);
+		//push the amount into the vector
+		data.push_back(amount);
+		string currency = newLine.substr(foundTag+1);
+		//push the currency into the vector
+		data.push_back(currency);
+		WalletEntity walletEntity(data.at(0), data.at(1), data.at(2));
+		returnWalletEntity = walletEntity;
 	}
 	//return a walletEntity object
 	return returnWalletEntity;
@@ -173,18 +186,34 @@ vector<WalletEntity> Wallet::getWalletContent()
 /* int main () 
 {
 	WalletEntity walletEntity("+", "20.0", "other", "RON");
+	WalletEntity walletEntity1("+", "30.0", "other", "RON");
+	WalletEntity walletEntity2("+", "40.0", "other", "RON");
 	//WalletEntity walletEntity("+", "200", "EUR");
 	cout<<"walletEntity.timeStamp = "<<walletEntity.getTimeStamp()<<endl;
 	cout<<"walletEntity.timeStampGMT = "<<walletEntity.getTimeStampGMT()<<endl;
 	cout<<"walletEntity.sign = "<<walletEntity.getSign()<<endl;
 	cout<<"walletEntity.amount = "<<walletEntity.getAmount()<<endl;
 	cout<<"walletEntity.category = "<<walletEntity.getCategory()<<endl;
-	cout<<"walletEntity.currency = "<<walletEntity.getCurrency()<<endl;
+	cout<<"walletEntity.currency = "<<walletEntity.getCurrency()<<endl; 
 	Wallet wallet("ceapa",walletEntity);
-	cout<<"the amount is : "<<wallet.getWalletContent().at(0).getAmount()<<endl;
-	cout<<"fisierul cu numele : " << wallet.getName() << "a fost creat : " << wallet.createWalletFile() << endl;
-	cout<<"s-a facut append : " << wallet.appendWalletFile(walletEntity) << endl;
-
-}  */
-
+	wallet.createWalletFile();
+	wallet.appendWalletFile(walletEntity1);
+	wallet.appendWalletFile(walletEntity2);
+	
+	Wallet wal("ceapa");
+	wal.readWalletFile();
+	vector<WalletEntity> v = wal.getWalletContent();
+	cout <<"dimensiunea vectorului este : " << v.size() << endl;
+	for (unsigned int i = 0; i < v.size(); i++) 
+	{
+		WalletEntity w = v.at(i);
+		cout << "elementele sunt : " << endl;
+		cout <<	" " << w.getTimeStamp();
+		cout <<	" " << w.getSign();
+		cout << " " << w.getAmount();
+		cout << " " << w.getCategory();
+		cout << " " << w.getCurrency() << endl;
+	}
+}  
+ */
 
