@@ -20,7 +20,8 @@ HEADERS = \
 	..\inc\MessageCodes_E.h \
 	..\inc\MessageHandler.h \
 	..\inc\Wallet.h \
-	..\inc\WalletEntity.h
+	..\inc\WalletEntity.h \
+	..\inc\FileHelper.h
 	
 OBJECTS = \
 	Command.o \
@@ -28,7 +29,8 @@ OBJECTS = \
 	CreateWalletCmd.o \
 	MessageHandler.o \
 	Wallet.o \
-	WalletEntity.o
+	WalletEntity.o \
+	FileHelper.o
 
 WALLET_LIB = ..\lib\WalletLib.a
 
@@ -55,6 +57,9 @@ WalletEntity.o: WalletEntity.cpp $(HEADERS)
 	
 MessageHandler.o: MessageHandler.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o MessageHandler.o -c MessageHandler.cpp
+
+FileHelper.o: FileHelper.cpp $(HEADERS)
+	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o FileHelper.o -c FileHelper.cpp
 	
 WalletMain.o: main.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o WalletMain.o -c main.cpp
