@@ -93,8 +93,6 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	const char *amn = amount.c_str() ;
 	amount = truncateAmount(amn) ;
 	
-	
-	
 	cout << "amount 2 " << amount << endl ;	
 	char s = amount.at(0) ;
 	string sign = "" ;
@@ -107,8 +105,6 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 		sign = "-" ;
 	}
 	
-	
-	
 	string validAmount (amount) ;
 	cout << typeid(validAmount).name() << endl;
 	
@@ -119,8 +115,12 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	wallet = Wallet(walletName,entity);
 	
 	wallet.createWalletFile() ;
-	params.push_back(entity.getCurrency());
-	//params.push_back(sign) ;
+	params.pop_back() ;
+	params.push_back(entity.getSign()) ;
+	params.push_back(entity.getAmount()) ;
+	params.push_back(entity.getCurrency()) ;
+	
+	cout << params.at(0) << endl<<params.at(1) << endl<< params.at(2) << endl<< params.at(3) << endl ;
 	
 	ptrMessage->setMessageCode(WALLET_CRETED_MSG) ;
 } 

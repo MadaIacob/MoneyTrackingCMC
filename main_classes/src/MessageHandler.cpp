@@ -128,11 +128,12 @@ void MessageHandler::printMessage(vector<string>& parameters)
 		case WALLET_CRETED_MSG:
 		{
 			//parameters[0] = wallet name
-			//parameters[1] = amount
-			//parameters[2] = currency
+			//parameters[1] = sign
+			//parameters[2] = amount
+			//parameters[3] = currency
 			cout << "'" << parameters.at(0) 
 			<< "' created with the initial amount of "
-			<< parameters.at(1) << " " << parameters.at(2) << endl;
+			<< parameters.at(1)<<parameters.at(2) << " " << parameters.at(3) << endl;
 			break;
 		}
 		case SPEND_INCOME_REGISTERED_MSG:
