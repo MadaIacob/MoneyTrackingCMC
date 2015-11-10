@@ -86,7 +86,10 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	cout << "end of executeCommand" << endl;
 } 
 
-
+CreateWalletCmd::~CreateWalletCmd()
+{
+	
+}
 
 
 

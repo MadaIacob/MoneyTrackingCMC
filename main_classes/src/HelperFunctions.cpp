@@ -9,56 +9,6 @@
 
 using namespace std ;
 
-bool validateFileName(string fileName)
-{
-	//save first position on which '\' was found in fileName
-	size_t firstFound = fileName.find("\\");
-	//if at least one '\' found
-	if(!firstFound)
-	{
-		//replace all '\' with '/' in fileName
-		fileName = convertPath(fileName);
-	}
-	else
-	{
-		//keep fileName unchanged
-	}
-
-	bool isValidFileName = true;
-	
-	ifstream fileChecking(fileName.c_str());
-	
-	//check if fileName already exists
-	if(fileChecking.good())
-	{
-		fileChecking.close();
-		isValidFileName = false;
-		//print "error: wallet "<< fileName << " already exists!\n"
-		//printMessage(4,fileName);
-	}
-	else
-	{
-		//valid fileName, so keep isValidFileName=true
-	}
-
-	return isValidFileName;
-	
-} 
-
-
-string convertPath(string givenPath)
-{
-	for(unsigned int i = 0; i < givenPath.length(); i++)
-	{
-		if(givenPath[i] == '\\')
-		{
-			givenPath[i] = '/';
-		}
-	}
-	
-	return givenPath;
-}
-
 
 // validates the amount input
 bool validateAmount(const char word [])

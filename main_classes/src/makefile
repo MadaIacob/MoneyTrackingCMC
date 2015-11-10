@@ -21,7 +21,8 @@ HEADERS = \
 	..\inc\MessageHandler.h \
 	..\inc\Wallet.h \
 	..\inc\WalletEntity.h \
-	..\inc\FileHelper.h
+	..\inc\FileHelper.h \
+	..\inc\HelperFunctions.h
 	
 OBJECTS = \
 	Command.o \
@@ -30,7 +31,8 @@ OBJECTS = \
 	MessageHandler.o \
 	Wallet.o \
 	WalletEntity.o \
-	FileHelper.o
+	FileHelper.o \
+	HelperFunctions.o
 
 WALLET_LIB = ..\lib\WalletLib.a
 
@@ -60,6 +62,9 @@ MessageHandler.o: MessageHandler.cpp $(HEADERS)
 
 FileHelper.o: FileHelper.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o FileHelper.o -c FileHelper.cpp
+
+HelperFunctions.o: HelperFunctions.cpp $(HEADERS)
+	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o HelperFunctions.o -c HelperFunctions.cpp
 	
 WalletMain.o: main.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o WalletMain.o -c main.cpp
