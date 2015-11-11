@@ -71,7 +71,16 @@ void BalanceCmd::validateParams(vector<string>& params)
 	// verify that file specified as default exists
 	if ( ! wallet.existsWalletFile() )
 	{	
-		ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR) ;
+		if( params.empty() )
+		{
+			params.push_back(defaultWallet) ;
+		}	
+		else
+		{
+			params.at(0) = defaultWallet ;
+		}
+		
+		ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
 	}
 	else {}
 	
