@@ -7,7 +7,7 @@ Date					09.11.2015
 #ifndef COMMAND_H
 #define COMMAND_H
 
-
+#include "MessageCodes_E.h"
 #include "MessageHandler.h"
 #include <vector>
 #include <string>
