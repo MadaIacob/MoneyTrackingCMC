@@ -4,13 +4,8 @@ Author					calin-ciprian.popita
 Date					10.11.2015
 */
 
-#include <string>
 #include <stdlib.h>
-#include <vector>
 #include "TransactionCmd.h"
-#include "HelperFunctions.h"
-#include "Wallet.h"
-#include "WalletEntity.h"
 
 using namespace std;
 
@@ -194,16 +189,6 @@ void TransactionCmd::validateParams(vector<string>& params)
 	}
 	else
 	{//no walletName provided
-	}
-	
-}
-
-//executes income/spend 
-void TransactionCmd::executeCommand(vector<string>& params)
-{
-	//check if no walletName provided using flags
-	if(wallet.getName() == "")
-	{//walletName not provided 
 		//check for default_wallet tag in config
 		
 		//default_wallet tag exists
@@ -217,14 +202,17 @@ void TransactionCmd::executeCommand(vector<string>& params)
 		
 		//default_wallet tag doesn't exist
 			//set error message 		
-	}
-	else
-	{//wallet name provided using flags and already validated
+	
 	}
 	
-	//execute an income/spend without any validations
+}
+
+//executes income/spend without any validations
+void TransactionCmd::executeCommand(vector<string>& params)
+{
+	//append a line in walletName file and check if successfull
 	if(wallet.appendWalletFile(walletEntity))
-	{//display success message
+	{//line appended - display success message
 
 		//rearrange params vector for message printing ?????   **********************************************************************************
 		//empty the vector
@@ -255,7 +243,7 @@ void TransactionCmd::executeCommand(vector<string>& params)
 		ptrMessage->setMessageCode(SPEND_INCOME_REGISTERED_MSG);
 	}
 	else
-	{//display error message
+	{//line not appended - display error message
 		
 		//rearrange params vector for message printing ?????   **********************************************************************************
 		//empty the vector
