@@ -8,6 +8,7 @@
 class ConfigCmd : public Command {
 	private:
 		Command command;
+		Config config;
 	public:
 		ConfigCmd();
 		void parseParams(std::vector<std::string>& params);
