@@ -35,7 +35,7 @@ Command* CommandFactory::makeCommand(const std::string& command)
 	else if ("config" == command) 
 	{
 		//the Command object needed is a Config object
-		//ptrCmd = new Config();
+		ptrCmd = new ConfigCmd();
 	}
 	else 
 	{}

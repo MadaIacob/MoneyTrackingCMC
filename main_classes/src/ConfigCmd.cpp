@@ -1,6 +1,7 @@
 #include "ConfigCmd.h"
 #include "Command.h"
 #include "MessageHandler.h"
+#include "FileHelper.h"
 
 #include <vector>
 #include <string>
@@ -118,10 +119,39 @@ void ConfigCmd::validateParams(vector<string>& params)
 
 void ConfigCmd::executeCommand(vector<string>& params)
 {
-	if(params.size() == 0)
+	params.push_back(config.getConfigFileName());
+	
+	if(validateFileName(config.getConfigFileName())
 	{
-		
+		config.readConfigFile();
+		if(params.size() == 0)
+		{
+			config.printConfigContent();
+		}
+		else 
+		{
+			if(config.existsTag(params.at(0))
+			{
+				config.modifyContent(params.at(0), params.at(1));
+				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
+			}
+			else if(config.isValidTag(params.at(0))
+			{
+				config.modifyContent(params.at(0), params.at(1));
+				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
+			}
+			else 
+			{
+				ptrMessage->setMessageCode(NO_VALID_CONFIG_VALUE_ERR);
+			}
+			
+		}
 	}
+	else
+	{
+		ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR);
+	}
+	
 }
 
 ConfigCmd::~ConfigCmd()
@@ -129,7 +159,7 @@ ConfigCmd::~ConfigCmd()
 	
 }
 
-int main()
+/* int main()
 {
 	ConfigCmd cmd;
 	vector<string> params;
@@ -144,4 +174,4 @@ int main()
 	{
 		cout << "elementul : " << i << params.at(i) << endl;
 	}
-}
+} */
