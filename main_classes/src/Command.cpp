@@ -5,8 +5,6 @@ Date					09.11.2015
 */ 
 
 #include "Command.h"
-#include "MessageCodes_E.h"
-#include "MessageHandler.h"
 
 Command::Command()
 {

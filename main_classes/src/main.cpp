@@ -25,8 +25,6 @@ int main(int argc, char* argv[])
 		//create the proper Command object
 		Command* command = factory.makeCommand(argv[1]);
 		
-		// associate message to command
-		command->ptrMessage = &message ;
 		//check if the provided command is valid
 		if ( command == 0 ) 
 		{//no valid command provided in command line
@@ -39,7 +37,7 @@ int main(int argc, char* argv[])
 		{//valid command provided
 		}
 		
-		//associate a message to command
+		// associate message object to command
 		command->setMessageHandler(message);
 		
 		//prepare a vector to keep parameters
@@ -57,7 +55,7 @@ int main(int argc, char* argv[])
 		else 
 		{//valid command without parameters
 		}
-		//check syntax
+		//check syntax		
 		command->parseParams(params);
 		//check if any error so far
 		if (message.isSetMessageCode()) 
@@ -65,7 +63,6 @@ int main(int argc, char* argv[])
 			//print error message
 			message.printMessage(params);
 			//exit
-
 			return 0;
 		}
 		else
@@ -73,7 +70,6 @@ int main(int argc, char* argv[])
 	
 		//check parameters for valid values
 		command->validateParams(params);
-		cout << "here ok 3 " << message.isSetMessageCode() << endl ;
 		//check if any error so far
 		if (message.isSetMessageCode()) 
 		{//invalid values for parameters
@@ -87,20 +83,11 @@ int main(int argc, char* argv[])
 
 		//execute command
 		command->executeCommand(params);
-		cout << "here ok 4 " << message.isSetMessageCode() << endl ;
 		//check message
 		if (message.isSetMessageCode()) 
 		{//error or success in executing the command
 			//print error/success message
-			cout << "here ok 5 " << params.size() << endl 
-			<< message.getMessageCode() << endl;
-			for(unsigned int i = 0; i< params.size(); i++)
-			{
-				cout << "params. " << i << " = " << params.at(i) << endl;
-			}
-			
 			message.printMessage(params);
-			cout << "here ok 6 " << params.size() << endl ;
 			//exit
 			return 0;
 		}

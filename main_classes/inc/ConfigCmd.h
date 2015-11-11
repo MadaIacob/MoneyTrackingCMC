@@ -1,0 +1,19 @@
+#ifndef CONFIGCMD_H
+#define CONFIGCMD_H
+
+#include "Command.h"
+#include <vector>
+#include <string>
+
+class ConfigCmd : public Command {
+	private:
+		Command command;
+	public:
+		ConfigCmd();
+		void parseParams(std::vector<std::string>& params);
+		void validateParams(std::vector<std::string>& params);
+		void executeCommand(std::vector<std::string>& params);
+		~ConfigCmd();
+};
+
+#endif
