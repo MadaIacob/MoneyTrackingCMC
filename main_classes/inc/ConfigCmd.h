@@ -2,6 +2,7 @@
 #define CONFIGCMD_H
 
 #include "Command.h"
+#include "Config.h"
 #include <vector>
 #include <string>
 

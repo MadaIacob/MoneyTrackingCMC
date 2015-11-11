@@ -11,6 +11,7 @@ Date					09.11.2015
 #include "CreateWalletCmd.h"
 #include "TransactionCmd.h"
 #include "BalanceCmd.h"
+#include "ConfigCmd.h"
 #include <vector>
 #include <string>
 

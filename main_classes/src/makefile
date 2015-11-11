@@ -16,6 +16,7 @@ HEADERS = \
 	..\inc\Command.h \
 	..\inc\CommandFactory.h \
 	..\inc\Config.h \
+	..\inc\ConfigCmd.h \
 	..\inc\CreateWalletCmd.h \
 	..\inc\TransactionCmd.h \
 	..\inc\BalanceCmd.h \
@@ -30,6 +31,7 @@ OBJECTS = \
 	Command.o \
 	CommandFactory.o \
 	Config.o \
+	ConfigCmd.o\
 	CreateWalletCmd.o \
 	TransactionCmd.o \
 	BalanceCmd.o \
@@ -79,6 +81,9 @@ HelperFunctions.o: HelperFunctions.cpp $(HEADERS)
 
 Config.o: Config.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o Config.o -c Config.cpp
+	
+ConfigCmd.o: ConfigCmd.cpp $(HEADERS)
+	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o ConfigCmd.o -c ConfigCmd.cpp
 	
 WalletMain.o: main.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o WalletMain.o -c main.cpp
