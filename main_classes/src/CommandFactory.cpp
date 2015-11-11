@@ -34,8 +34,8 @@ Command* CommandFactory::makeCommand(const std::string& command)
 	//"balance" command
 	else if ("balance" == command) 
 	{
-		//the Command object needed is a Balance object
-		//ptrCmd = new Balance();
+		//the Command object needed is a BalanceCmd object
+		ptrCmd = new BalanceCmd() ;
 	}
 	//"config" command
 	else if ("config" == command) 
