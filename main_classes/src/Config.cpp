@@ -219,6 +219,12 @@ std::string Config::getTagValue(const std::string key)
     return value;
 }
 
+string Config::getConfigFilename()
+{
+    return configFileName;
+}
+
+
 // int main(int argc, char const *argv[]) {
 //     Config config("vasilica");
 //     //config.createConfigFile();
@@ -244,6 +250,7 @@ std::string Config::getTagValue(const std::string key)
 //         cout << "key is : " << cont.at(i).key << "-> value is : " << cont.at(i).value << std::endl;
 //     }
 //     std::cout << "value for default_wallet -> " << config.getTagValue("default_wallet") << std::endl;
+//     std::cout << "configFileName : " << config.getConfigFilename() << std::endl;
 //
 //     return 0;
 // }
