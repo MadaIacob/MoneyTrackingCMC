@@ -100,7 +100,7 @@ void MessageHandler::printMessage(vector<string>& parameters)
 		{
 			//parameters[0] = fileName
 			cout << "error: could not open '" << parameters.at(0) 
-			<< "' to register transaction." << endl;
+			<< "' to calculate balance." << endl;
 			break;
 		}
 		case COULD_NOT_OPEN_CONFIG_ERR:
