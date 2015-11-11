@@ -121,7 +121,7 @@ void ConfigCmd::executeCommand(vector<string>& params)
 {
 	params.push_back(config.getConfigFileName());
 	
-	if(validateFileName(config.getConfigFileName())
+	if(!validateFileName(config.getConfigFileName()))
 	{
 		config.readConfigFile();
 		if(params.size() == 0)
@@ -130,12 +130,13 @@ void ConfigCmd::executeCommand(vector<string>& params)
 		}
 		else 
 		{
-			if(config.existsTag(params.at(0))
+			if(config.existsTag(params.at(0)))
 			{
 				config.modifyContent(params.at(0), params.at(1));
+				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 			}
-			else if(config.isValidTag(params.at(0))
+			else if(config.isValidTag(params.at(0)))
 			{
 				config.modifyContent(params.at(0), params.at(1));
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);

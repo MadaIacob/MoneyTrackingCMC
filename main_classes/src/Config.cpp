@@ -219,7 +219,7 @@ std::string Config::getTagValue(const std::string key)
     return value;
 }
 
-string Config::getConfigFilename()
+string Config::getConfigFileName()
 {
     return configFileName;
 }
