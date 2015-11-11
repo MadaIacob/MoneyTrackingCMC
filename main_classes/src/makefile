@@ -18,6 +18,7 @@ HEADERS = \
 	..\inc\Config.h \
 	..\inc\CreateWalletCmd.h \
 	..\inc\TransactionCmd.h \
+	..\inc\BalanceCmd.h \
 	..\inc\MessageCodes_E.h \
 	..\inc\MessageHandler.h \
 	..\inc\Wallet.h \
@@ -30,6 +31,7 @@ OBJECTS = \
 	CommandFactory.o \
 	CreateWalletCmd.o \
 	TransactionCmd.o \
+	BalanceCmd.o \
 	MessageHandler.o \
 	Wallet.o \
 	WalletEntity.o \
@@ -58,6 +60,9 @@ CreateWalletCmd.o: CreateWalletCmd.cpp $(HEADERS)
 
 TransactionCmd.o: TransactionCmd.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o TransactionCmd.o -c TransactionCmd.cpp
+
+BalanceCmd.o: BalanceCmd.cpp $(HEADERS)
+	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o BalanceCmd.o -c BalanceCmd.cpp
 
 WalletEntity.o: WalletEntity.cpp $(HEADERS)
 	$(CPP) $(CPP_FLAGS) $(INC_FLAG) -o WalletEntity.o -c WalletEntity.cpp

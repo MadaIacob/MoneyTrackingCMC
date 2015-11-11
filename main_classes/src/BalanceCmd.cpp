@@ -46,10 +46,10 @@ void BalanceCmd::validateParams(vector<string>& params)
 	// verify default wallet in config
 		
 		// 'moneytracker.config' can not be created
-		ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR) 
+		ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR); 
 	
 		//error: no default wallet configured in 'moneytracker.config'
-		ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR)
+		ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR);
 	
 	// verify that file specified as default exists
 	if ( ! wallet.existsWalletFile() )
@@ -61,7 +61,7 @@ void BalanceCmd::validateParams(vector<string>& params)
 	if ( params.size()==2 )
 	{	
 	// validate that specified category exists in wallet 
-		if( ) // if category ( params.at(1) ) exists
+		if(1) // if category ( params.at(1) ) exists
 		{
 			// allow to get balance for category
 		}
@@ -75,7 +75,7 @@ void BalanceCmd::validateParams(vector<string>& params)
 	{}	
 }
 
-void CreateWalletCmd::executeCommand(vector<string>& params)
+void BalanceCmd::executeCommand(vector<string>& params)
 {
 	// get balance for entire wallet
 	if ( params.empty() )
