@@ -8,6 +8,7 @@ Date					11.11.2015
 #include <vector>
 #include "BalanceCmd.h"
 #include "HelperFunctions.h"
+#include "FileHelper.h"
 #include "Wallet.h"
 
 #include "WalletEntity.h" 
@@ -51,7 +52,11 @@ void BalanceCmd::validateParams(vector<string>& params)
 		ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR)
 	
 	// verify that file specified as default exists
+	if ( ! wallet.existsWalletFile() )
+	{	
 		ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR) ;
+	}
+	else {}
 	
 	if ( params.size()==2 )
 	{	
@@ -65,7 +70,9 @@ void BalanceCmd::validateParams(vector<string>& params)
 		{
 			ptrMessage->setMessageCode(NO_TRANSACTION_REG_ERR) ;
 		}
-	}	
+	}
+	else 
+	{}	
 }
 
 void CreateWalletCmd::executeCommand(vector<string>& params)
@@ -74,6 +81,7 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	if ( params.empty() )
 	{ 
 		// do stuff to get balance 
+		
 	}
 	// get balance for category; params.size()==2
 	else 	
