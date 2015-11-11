@@ -35,6 +35,7 @@ bool Wallet::readWalletFile()
 	ifstream file(walletName.c_str());
 	bool fileOperation = false;
 	string line = "";
+	walletContent.clear();
 	while(getline(file,line) && line != "")
 		{
 			WalletEntity walletEntity;
