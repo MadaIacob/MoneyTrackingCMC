@@ -57,7 +57,6 @@ bool Wallet::createWalletFile()
 		//write initialAmount into walletName file
 		file << walletContent.at(0).getSign() << walletContent.at(0).getAmount()
 				<< " " << walletContent.at(0).getCurrency() << "\n";
-cout << "error 1. size of data vector: " << walletContent.size() << endl;		
 		
 		//check if the writing was ok
 		if(!file.good())
