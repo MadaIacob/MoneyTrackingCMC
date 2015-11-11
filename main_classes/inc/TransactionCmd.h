@@ -6,7 +6,9 @@ Date					10.11.2015
 */ 
 #ifndef TRANSACTIONCMD_H
 #define TRANSACTIONCMD_H
+#include "HelperFunctions.h"
 #include "Wallet.h"
+#include "WalletEntity.h"
 #include "Command.h"
 #include <vector>
 #include <string>
@@ -16,7 +18,7 @@ class TransactionCmd : public Command {
 		Wallet wallet;// wallet to execute transaction in
 		WalletEntity walletEntity;// new line to append to wallet
 	public:
-		TransactionCmd(const std:string& command);
+		TransactionCmd(const std::string& command);
 		//methods from Command class
 		void parseParams(std::vector<std::string>& params);
 		void validateParams(std::vector<std::string>& params);

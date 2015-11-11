@@ -1,15 +1,11 @@
 /*
-File Description		Implementation of WalletCreateCmd class 
+File Description		Implementation of TransactionCmd class 
 Author					calin-ciprian.popita
 Date					10.11.2015
 */
 
-#include <string>
-#include <vector>
+#include <stdlib.h>
 #include "TransactionCmd.h"
-#include "HelperFunctions.h"
-#include "Wallet.h"
-#include "WalletEntity.h"
 
 using namespace std;
 
@@ -18,14 +14,20 @@ TransactionCmd::TransactionCmd(const string& command)
 {
 	if(command == "income")
 	{//"income" command 
-		// set transaction sign to (+)
+		//set transaction sign to (+)
 		walletEntity.setSign("+");
+		//set transaction category to default value
+		walletEntity.setCategory("salary");
 	}
 	else
 	{//"spend" command 
-		// set transaction sign to (-)
+		//set transaction sign to (-)
 		walletEntity.setSign("-");
+		//set transaction category to default value
+		walletEntity.setCategory("other");
 	}
+	//set transaction time stamp
+	walletEntity.setTimeStamp();
 }
 
 //performs syntactic analysis - sets error message if anything besides 
@@ -42,7 +44,7 @@ void TransactionCmd::parseParams(vector<string>& params)
 		bool walletFound = false;
 		//signalises the first amount found;
 		bool amountFound = false;
-		int i = 0;
+		unsigned int i = 0;
 		//go through command line params
 		for(; i < params.size() - 1; i++)
 		{
@@ -67,7 +69,7 @@ void TransactionCmd::parseParams(vector<string>& params)
 				//jump over "-w" or "--wallet" flag
 				i++;
 				//put the next command line argument into Wallet.walletName
-				wallet.setWalletName(params.at(i)); 				
+				wallet.setName(params.at(i)); 				
 			}
 			//check for the first amount among parameters
 			else if(!amountFound)
@@ -126,9 +128,10 @@ void TransactionCmd::parseParams(vector<string>& params)
 }
 
 // validates the values provided for income/spend parameters
-void TransactionCmd::validateParams() 
+void TransactionCmd::validateParams(vector<string>& params) 
 {
-	//validate amount - mandatory parameter for transaction
+	//----------validate amount - mandatory parameter for transaction-----------
+	
 	//check if amount is valid
 	if(!validateAmount(walletEntity.getAmount().c_str()))
 	{//amount is not valid
@@ -141,7 +144,7 @@ void TransactionCmd::validateParams()
 		//put amount in vector for INVALID_AMOUNT_ERR case
 		params.push_back(walletEntity.getAmount());	
 		//put amount in vector for INVALID_AMOUNT_ERR case
-		params.push_back(wallet.getWalletName());	
+		params.push_back(wallet.getName());	
 	}
 	else 
 	{//amount is valid
@@ -160,17 +163,32 @@ void TransactionCmd::validateParams()
 			walletEntity.setAmount(cutSign(truncatedAmount));
 		}
 	}
-}
-
-void TransactionCmd::executeCommand(vector<string>& params)
-{
+	
+	//------------validate walletName if provided for transaction---------------
+	
 	//check if walletName was provided
-	if(wallet.getWalletName() != "")
+	if(wallet.getName() != "")
 	{//walletName provided
 		//check if walletName file exists
+		if(!validateFileName(wallet.getName()))
+		{//walletName file exists
+
+		}
+		else 
+		{//walletName file doesn't exist - display error message
+			
+			//rearrange params vector for message printing ?????   **********************************************************************************
+			//empty the vector
+			params.resize(0);
+			//put wallet name in vector 
+			params.push_back(wallet.getName());	
+			
+			//set error message
+			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR);
+		}
 	}
 	else
-	{//walletName not provided 
+	{//no walletName provided
 		//check for default_wallet tag in config
 		
 		//default_wallet tag exists
@@ -184,10 +202,58 @@ void TransactionCmd::executeCommand(vector<string>& params)
 		
 		//default_wallet tag doesn't exist
 			//set error message 		
+	
 	}
 	
-	//append transaction to walletName file
-	//set success message
+}
+
+//executes income/spend without any validations
+void TransactionCmd::executeCommand(vector<string>& params)
+{
+	//append a line in walletName file and check if successfull
+	if(wallet.appendWalletFile(walletEntity))
+	{//line appended - display success message
+
+		//rearrange params vector for message printing ?????   **********************************************************************************
+		//empty the vector
+		params.resize(0);
+		//check whether the command is "income" or "spend"
+		if(walletEntity.getSign() == "+")
+		{//the command is "income"
+			//put command name in vector for SPEND_INCOME_REGISTERED_MSG
+			params.push_back("income");
+		}
+		else
+		{//the command is "spend"
+			//put command name in vector for SPEND_INCOME_REGISTERED_MSG
+			params.push_back("spend");
+		}
+		//put category in vector
+		params.push_back(walletEntity.getCategory());	
+		//put amount in vector
+		params.push_back(walletEntity.getAmount());
+		//put currency in vector
+		params.push_back(walletEntity.getCurrency());
+		//put wallet name in vector 
+		params.push_back(wallet.getName());	
+		//put GMT format timestamp in vector
+		params.push_back(walletEntity.getTimeStampGMT());
+		
+		//set success message
+		ptrMessage->setMessageCode(SPEND_INCOME_REGISTERED_MSG);
+	}
+	else
+	{//line not appended - display error message
+		
+		//rearrange params vector for message printing ?????   **********************************************************************************
+		//empty the vector
+		params.resize(0);
+		//put wallet name in vector 
+		params.push_back(wallet.getName());	
+		
+		//set error message
+		ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR);
+	}
 } 
 
 

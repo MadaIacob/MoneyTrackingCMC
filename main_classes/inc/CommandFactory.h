@@ -9,6 +9,7 @@ Date					09.11.2015
 
 #include "Command.h"
 #include "CreateWalletCmd.h"
+#include "TransactionCmd.h"
 #include <vector>
 #include <string>
 
