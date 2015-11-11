@@ -118,7 +118,10 @@ void ConfigCmd::validateParams(vector<string>& params)
 
 void ConfigCmd::executeCommand(vector<string>& params)
 {
-	
+	if(params.size() == 0)
+	{
+		
+	}
 }
 
 ConfigCmd::~ConfigCmd()
