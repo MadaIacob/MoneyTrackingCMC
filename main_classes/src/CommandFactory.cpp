@@ -19,17 +19,11 @@ Command* CommandFactory::makeCommand(const std::string& command)
 		ptrCmd = new CreateWalletCmd();
 		//ptrCmd = &aux;
 	}
-	//"income" command
-	else if ("income" == command) 
+	//"income" or "spend" command
+	else if (("income" == command) || ("spend" == command))
 	{
 		//the Command object needed is a Transaction object
-		//ptrCmd = new Transaction(command);
-	}
-	//"spend" command
-	else if ("spend" == command) 
-	{
-		//the Command object needed is a Transaction object
-		//ptrCmd = new Transaction(command);
+		ptrCmd = new TransactionCmd(command);
 	}
 	//"balance" command
 	else if ("balance" == command) 
