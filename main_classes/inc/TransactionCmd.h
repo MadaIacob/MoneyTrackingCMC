@@ -7,6 +7,7 @@ Date					10.11.2015
 #ifndef TRANSACTIONCMD_H
 #define TRANSACTIONCMD_H
 #include "HelperFunctions.h"
+#include "FileHelper.h"
 #include "Wallet.h"
 #include "WalletEntity.h"
 #include "Command.h"

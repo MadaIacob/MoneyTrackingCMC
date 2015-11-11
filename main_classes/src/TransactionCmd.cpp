@@ -196,7 +196,7 @@ void TransactionCmd::validateParams(vector<string>& params)
 			
 			//default_wallet file exists
 				//set default_wallet as walletName 
-				
+				wallet.setName("my.wallet");
 			//default_wallet file doesn't exist
 				//set error message
 		
