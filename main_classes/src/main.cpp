@@ -25,8 +25,6 @@ int main(int argc, char* argv[])
 		//create the proper Command object
 		Command* command = factory.makeCommand(argv[1]);
 		
-		// associate message to command
-		command->ptrMessage = &message ;
 		//check if the provided command is valid
 		if ( command == 0 ) 
 		{//no valid command provided in command line
@@ -39,7 +37,7 @@ int main(int argc, char* argv[])
 		{//valid command provided
 		}
 		
-		//associate a message to command
+		// associate message object to command
 		command->setMessageHandler(message);
 		
 		//prepare a vector to keep parameters
