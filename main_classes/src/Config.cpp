@@ -219,7 +219,7 @@ std::string Config::getTagValue(const std::string key)
     return value;
 }
 
-string Config::getConfigFilename()
+string Config::getConfigFileName()
 {
     return configFileName;
 }
@@ -250,7 +250,7 @@ string Config::getConfigFilename()
 //         cout << "key is : " << cont.at(i).key << "-> value is : " << cont.at(i).value << std::endl;
 //     }
 //     std::cout << "value for default_wallet -> " << config.getTagValue("default_wallet") << std::endl;
-//     std::cout << "configFileName : " << config.getConfigFilename() << std::endl;
+//     std::cout << "configFileName : " << config.getConfigFileName() << std::endl;
 //
 //     return 0;
 // }
