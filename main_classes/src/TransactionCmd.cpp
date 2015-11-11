@@ -1,5 +1,5 @@
 /*
-File Description		Implementation of WalletCreateCmd class 
+File Description		Implementation of TransactionCmd class 
 Author					calin-ciprian.popita
 Date					10.11.2015
 */
@@ -135,7 +135,8 @@ void TransactionCmd::parseParams(vector<string>& params)
 // validates the values provided for income/spend parameters
 void TransactionCmd::validateParams(vector<string>& params) 
 {
-	//validate amount - mandatory parameter for transaction
+	//----------validate amount - mandatory parameter for transaction-----------
+	
 	//check if amount is valid
 	if(!validateAmount(walletEntity.getAmount().c_str()))
 	{//amount is not valid
@@ -167,61 +168,16 @@ void TransactionCmd::validateParams(vector<string>& params)
 			walletEntity.setAmount(cutSign(truncatedAmount));
 		}
 	}
-}
-
-//executes income/spend 
-void TransactionCmd::executeCommand(vector<string>& params)
-{
+	
+	//------------validate walletName if provided for transaction---------------
+	
 	//check if walletName was provided
 	if(wallet.getName() != "")
 	{//walletName provided
 		//check if walletName file exists
 		if(!validateFileName(wallet.getName()))
 		{//walletName file exists
-			//execute an income/spend without any validations
-			if(wallet.appendWalletFile(walletEntity))
-			{//display success message
-		
-				//rearrange params vector for message printing ?????   **********************************************************************************
-				//empty the vector
-				params.resize(0);
-				//check whether the command is "income" or "spend"
-				if(walletEntity.getSign() == "+")
-				{//the command is "income"
-					//put command name in vector for INVALID_PARAM_ERR case
-					params.push_back("income");
-				}
-				else
-				{//the command is "spend"
-					//put command name in vector for INVALID_PARAM_ERR case
-					params.push_back("spend");
-				}
-				//put category in vector
-				params.push_back(walletEntity.getCategory());	
-				//put amount in vector
-				params.push_back(walletEntity.getAmount());
-				//put currency in vector
-				params.push_back(walletEntity.getCurrency());
-				//put wallet name in vector 
-				params.push_back(wallet.getName());	
-				//put GMT format timestamp in vector
-				params.push_back(walletEntity.getTimeStampGMT());
-				
-				//set success message
-				ptrMessage->setMessageCode(SPEND_INCOME_REGISTERED_MSG);
-			}
-			else
-			{//display error message
-				
-				//rearrange params vector for message printing ?????   **********************************************************************************
-				//empty the vector
-				params.resize(0);
-				//put wallet name in vector 
-				params.push_back(wallet.getName());	
-				
-				//set error message
-				ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR);
-			}
+
 		}
 		else 
 		{//walletName file doesn't exist - display error message
@@ -237,6 +193,16 @@ void TransactionCmd::executeCommand(vector<string>& params)
 		}
 	}
 	else
+	{//no walletName provided
+	}
+	
+}
+
+//executes income/spend 
+void TransactionCmd::executeCommand(vector<string>& params)
+{
+	//check if no walletName provided using flags
+	if(wallet.getName() == "")
 	{//walletName not provided 
 		//check for default_wallet tag in config
 		
@@ -252,9 +218,54 @@ void TransactionCmd::executeCommand(vector<string>& params)
 		//default_wallet tag doesn't exist
 			//set error message 		
 	}
+	else
+	{//wallet name provided using flags and already validated
+	}
 	
-	//append transaction to walletName file
-	//set success message
+	//execute an income/spend without any validations
+	if(wallet.appendWalletFile(walletEntity))
+	{//display success message
+
+		//rearrange params vector for message printing ?????   **********************************************************************************
+		//empty the vector
+		params.resize(0);
+		//check whether the command is "income" or "spend"
+		if(walletEntity.getSign() == "+")
+		{//the command is "income"
+			//put command name in vector for SPEND_INCOME_REGISTERED_MSG
+			params.push_back("income");
+		}
+		else
+		{//the command is "spend"
+			//put command name in vector for SPEND_INCOME_REGISTERED_MSG
+			params.push_back("spend");
+		}
+		//put category in vector
+		params.push_back(walletEntity.getCategory());	
+		//put amount in vector
+		params.push_back(walletEntity.getAmount());
+		//put currency in vector
+		params.push_back(walletEntity.getCurrency());
+		//put wallet name in vector 
+		params.push_back(wallet.getName());	
+		//put GMT format timestamp in vector
+		params.push_back(walletEntity.getTimeStampGMT());
+		
+		//set success message
+		ptrMessage->setMessageCode(SPEND_INCOME_REGISTERED_MSG);
+	}
+	else
+	{//display error message
+		
+		//rearrange params vector for message printing ?????   **********************************************************************************
+		//empty the vector
+		params.resize(0);
+		//put wallet name in vector 
+		params.push_back(wallet.getName());	
+		
+		//set error message
+		ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR);
+	}
 } 
 
 
