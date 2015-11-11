@@ -112,9 +112,9 @@ void MessageHandler::printMessage(vector<string>& parameters)
 		}
 		case NO_DEFAULT_WALLET_ERR:
 		{
-			//parameters[3] = config file name
+			//parameters[0] = config file name
 			cout << "error: no default wallet configured in '" 
-			<< parameters.at(3) << "'." << endl;
+			<< parameters.at(0) << "'." << endl;
 			break;
 		}
 		case NO_TRANSACTION_REG_ERR:
