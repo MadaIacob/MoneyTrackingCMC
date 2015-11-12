@@ -140,7 +140,7 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			//parameters[3] = currency
 			cout << "'" << parameters.at(0)
 			<< "' created with the initial amount of "
-			<< parameters.at(1)<<parameters.at(2) << " " << parameters.at(3) 
+			<< parameters.at(1)<<parameters.at(2) << " " << parameters.at(3)
 			<< "." << endl;
 			break;
 		}
@@ -170,16 +170,21 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			//parameters[1] = currency
 			//parameters[2] = file name
 			//parameters[3] = category
+			string formatedBalance = parameters.at(0);
+			if(parameters.at(0) == "+00.00")
+			{
+				formatedBalance = "+0.00";
+			}
 			if(parameters.size() == 4)
 			{
 				cout << "Balance for '"	<< parameters.at(3)<< "' in '"
-				<< parameters.at(2) << "' is " << parameters.at(0) << " "
+				<< parameters.at(2) << "' is " << formatedBalance << " "
 				<< parameters.at(1) << "." << endl;
 			}
 			else
 			{
 				cout << "Balance for '"	<< parameters.at(2) << "' is "
-				<< parameters.at(0) << " " << parameters.at(1)
+				<< formatedBalance << " " << parameters.at(1)
 				<< "." << endl;
 			}
 			break ;
