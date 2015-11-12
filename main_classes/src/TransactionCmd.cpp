@@ -100,8 +100,27 @@ bool TransactionCmd::parseParams(vector<string>& params)
 				walletEntity.setAmount(params.at(i));
 			}
 			else
-			{//unwanted parameter found on last position - set error message
+			{//unwanted parameter found on last position
+		
+				//rearrange params vector for message printing ?????   **********************************************************************************
+				//empty the vector
+				params.resize(0);
+				//check whether the command is "income" or "spend"
+				if(walletEntity.getSign() == "+")
+				{//the command is "income"
+					//put command name in vector for INVALID_PARAM_ERR case
+					params.push_back("income");
+				}
+				else
+				{//the command is "spend"
+					//put command name in vector for INVALID_PARAM_ERR case
+					params.push_back("spend");
+				}
+	
+				//set error message
 				ptrMessage->setMessageCode(INVALID_PARAM_ERR);
+				
+				return false;
 			}
 		}
 		else
@@ -110,24 +129,29 @@ bool TransactionCmd::parseParams(vector<string>& params)
 		
 	}
 	else
-	{//no amount provided for income/spend command - set error message
+	{//no amount provided for income/spend command 
+		
+		//rearrange params vector for message printing ?????   **********************************************************************************
+		//empty the vector
+		params.resize(0);
+		//check whether the command is "income" or "spend"
+		if(walletEntity.getSign() == "+")
+		{//the command is "income"
+			//put command name in vector for INVALID_PARAM_ERR case
+			params.push_back("income");
+		}
+		else
+		{//the command is "spend"
+			//put command name in vector for INVALID_PARAM_ERR case
+			params.push_back("spend");
+		}
+
+		//set error message
 		ptrMessage->setMessageCode(INVALID_PARAM_ERR);
+		
+		return false;
 	}
 	
-	//rearrange params vector for message printing ?????   **********************************************************************************
-	//empty the vector
-	params.resize(0);
-	//check whether the command is "income" or "spend"
-	if(walletEntity.getSign() == "+")
-	{//the command is "income"
-		//put command name in vector for INVALID_PARAM_ERR case
-		params.push_back("income");
-	}
-	else
-	{//the command is "spend"
-		//put command name in vector for INVALID_PARAM_ERR case
-		params.push_back("spend");
-	}
 	return true;
 }
 
@@ -139,9 +163,26 @@ bool TransactionCmd::validateParams(vector<string>& params)
 	//check if amount is valid
 	if(!validateAmount(walletEntity.getAmount().c_str()))
 	{//amount is not valid
+
+		//rearrange params vector for message printing ?????   **********************************************************************************
+		//empty the vector
+		params.resize(0);
+		//check whether the command is "income" or "spend"
+		if(walletEntity.getSign() == "+")
+		{//the command is "income"
+			//put command name in vector for INVALID_PARAM_ERR case
+			params.push_back("income");
+		}
+		else
+		{//the command is "spend"
+			//put command name in vector for INVALID_PARAM_ERR case
+			params.push_back("spend");
+		}
+		
 		//set error message
 		ptrMessage->setMessageCode(INVALID_PARAM_ERR);	
-		//params vector is already set by parseParams method *********************************************************
+
+		return false;
 	}
 	else 
 	{//amount is valid
@@ -150,9 +191,26 @@ bool TransactionCmd::validateParams(vector<string>& params)
 		//check if validated sum is negative or zero
 		if(atof(truncatedAmount.c_str()) <= 0.00)								
 		{//amount is valid, but negative or zero 
+
+			//rearrange params vector for message printing ?????   **********************************************************************************
+			//empty the vector
+			params.resize(0);
+			//check whether the command is "income" or "spend"
+			if(walletEntity.getSign() == "+")
+			{//the command is "income"
+				//put command name in vector for INVALID_PARAM_ERR case
+				params.push_back("income");
+			}
+			else
+			{//the command is "spend"
+				//put command name in vector for INVALID_PARAM_ERR case
+				params.push_back("spend");
+			}
+			
 			//set error message
 			ptrMessage->setMessageCode(INCOME_SPEND_HIGHER_ERR);
-			//params vector is already set by parseParams method *****************************************************************
+
+			return false;
 		}
 		else
 		{//amount is valid and positive
@@ -182,6 +240,8 @@ bool TransactionCmd::validateParams(vector<string>& params)
 			
 			//set error message
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR);
+			
+			return false;
 		}
 	}
 	else
@@ -218,6 +278,8 @@ bool TransactionCmd::validateParams(vector<string>& params)
 						
 						//set error message
 						ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR);
+						
+						return false;
 					}
 				}
 				else
@@ -231,11 +293,13 @@ bool TransactionCmd::validateParams(vector<string>& params)
 					
 					//set error message
 					ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR);
+					
+					return false;
 				}
 			}
 			else
 			{//error reading config file
-				
+				return false;
 			}
 		}
 		else
@@ -249,6 +313,8 @@ bool TransactionCmd::validateParams(vector<string>& params)
 	
 			//set error message
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR);
+			
+			return false;
 		}
 	}
 	return true;
@@ -300,6 +366,8 @@ bool TransactionCmd::executeCommand(vector<string>& params)
 		
 		//set error message
 		ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR);
+		
+		return false;
 	}
 	return true;
 } 
