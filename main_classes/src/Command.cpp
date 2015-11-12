@@ -2,13 +2,13 @@
 File Description		factory pattern for Command, handles all commands
 Author					calin-ciprian.popita
 Date					09.11.2015
-*/ 
+*/
 
 #include "Command.h"
 
 Command::Command()
 {
-	
+
 }
 
 bool Command::parseParams(std::vector<std::string>& params)
@@ -37,6 +37,11 @@ void Command::setMessageCode(MessageCodes_E messageCode)
 bool Command::executeCommand(std::vector<std::string>& params)
 {
 	return true;
+}
+
+MessageCodes_E Command::getPtrMessage()
+{
+	return ptrMessage;
 }
 
 Command::~Command()

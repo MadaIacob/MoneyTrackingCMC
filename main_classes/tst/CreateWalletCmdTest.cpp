@@ -2,6 +2,7 @@
 
 #include "Wallet.h"
 #include "CreateWalletCmd.h"
+#include "MessageHandler.h"
 
 #include <vector>
 #include <string>

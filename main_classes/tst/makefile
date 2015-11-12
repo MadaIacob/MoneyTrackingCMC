@@ -13,7 +13,8 @@ HEADERS = \
 	..\inc\Wallet.h \
 	..\inc\WalletEntity.h \
 	..\inc\Command.h \
-	..\inc\CreateWalletCmd.h
+	..\inc\CreateWalletCmd.h \
+	..\inc\MessageHandler.h
 
 TESTS = \
 	WalletTest.o \

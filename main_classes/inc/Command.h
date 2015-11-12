@@ -1,8 +1,8 @@
 /*
-File Description		command - abstract general description 
+File Description		command - abstract general description
 Author					madalina.iacob, sas.catalin.raul, calin-ciprian.popita
 Date					09.11.2015
-*/ 
+*/
 
 #ifndef COMMAND_H
 #define COMMAND_H
@@ -21,11 +21,12 @@ class Command {
 		virtual bool validateParams(std::vector<std::string>& params);
 		void setMessageHandler(MessageHandler& message);
 		virtual bool executeCommand(std::vector<std::string>& params);
+		MessageCodes_E getPtrMessage();
 		virtual ~Command();
 
-		
+
 	protected:
-		void setMessageCode(MessageCodes_E messageCode);		
+		void setMessageCode(MessageCodes_E messageCode);
 };
 
 #endif // COMMAND_H
