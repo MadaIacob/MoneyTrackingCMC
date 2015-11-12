@@ -1,5 +1,5 @@
 /*
-File Description		Implementation of WalletCreateCmd class 
+File Description		Implementation of WalletCreateCmd class
 Author					cosmin.farcau
 Date					09.11.2015
 */
@@ -17,7 +17,7 @@ using namespace std;
 
 CreateWalletCmd::CreateWalletCmd(){}
 
-void CreateWalletCmd::parseParams(vector<string>& params) 
+void CreateWalletCmd::parseParams(vector<string>& params)
 {
 	// create command with more than two arguments /parameters
 	if ( !params.empty() )
@@ -28,13 +28,13 @@ void CreateWalletCmd::parseParams(vector<string>& params)
 		}
 		else {}
 	}
-	else 
+	else
 	{
 		ptrMessage->setMessageCode(FILENAME_NOT_SPEC_ERR) ;
 	}
 }
 
-void CreateWalletCmd::validateParams(vector<string>& params) 
+void CreateWalletCmd::validateParams(vector<string>& params)
 {
 	if ( params.size() == 1 )
 	{ // validate walletName
@@ -80,9 +80,9 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	}
 	else
 	{
-		amount = "0" ;
+		amount = "00.00" ;
 	}
-	
+
 	const char *amn = amount.c_str() ;
 	amount = truncateAmount(amn) ; //could modify this function to take string
 	// set sign according to amount
@@ -103,8 +103,8 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	WalletEntity entity(sign, amount);
 	//initialize wallet
 	wallet = Wallet(walletName,entity);
-	
-// problema cand un folder are space in nume !?	
+
+// problema cand un folder are space in nume !?
 	//create wallet and check if creation worked
 	if (wallet.createWalletFile())
 	{
@@ -117,23 +117,16 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 		params.push_back(entity.getSign()) ;
 		params.push_back(entity.getAmount()) ;
 		params.push_back(entity.getCurrency()) ;
-		
+
 		ptrMessage->setMessageCode(WALLET_CRETED_MSG) ;
 	}
 	else
 	{
 		ptrMessage->setMessageCode(COULD_NOT_CREATE_ERR) ;
 	}
-} 
+}
 
 CreateWalletCmd::~CreateWalletCmd()
 {
-	
+
 }
-
-
-
-
-
-
-

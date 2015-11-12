@@ -219,6 +219,7 @@ bool Config::modifyContent(const std::string key, const std::string value)
                 {
                     configContent.at(i).value = kv.value;
                     contentModified = true;
+                    break;
                 }
             }
         }
