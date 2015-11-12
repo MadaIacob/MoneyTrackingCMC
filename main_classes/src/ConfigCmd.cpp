@@ -127,8 +127,8 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		config.readConfigFile();
 		if(params.size() == 1)
 		{
-			//config.writeConfigFile();
-			//config.readConfigFile();
+
+			config.readConfigFile();
 			config.printConfigContent();
 		}
 		else
