@@ -53,6 +53,7 @@ bool Config::createConfigFile()
 
 bool Config::readConfigFile()
 {
+    configContent.clear();
     bool fileOperation = false;
     ifstream file(configFileName.c_str());
     if (file.good())
@@ -72,6 +73,10 @@ bool Config::readConfigFile()
                 //separate the key val pairs
                 string key = line.substr(0, found);
                 string value = line.substr(found+1);
+                if (value == "")
+                {
+                    key += " = ";
+                }
                 KeyVal kV;
                 kV.key = key;
                 kV.value = value;
