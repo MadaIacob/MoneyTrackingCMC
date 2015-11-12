@@ -140,7 +140,8 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			//parameters[3] = currency
 			cout << "'" << parameters.at(0) 
 			<< "' created with the initial amount of "
-			<< parameters.at(1)<<parameters.at(2) << " " << parameters.at(3) << endl;
+			<< parameters.at(1)<<parameters.at(2) << " " << parameters.at(3) 
+			<< "." << endl;
 			break;
 		}
 		case SPEND_INCOME_REGISTERED_MSG:
@@ -151,11 +152,11 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			//parameters[3] = currency
 			//parameters[4] = walletName
 			//parameters[5] = GMT time
-			string commandName = "income";
+			string commandName = "Income";
 			
 			if(parameters.at(0) == "spend")
 			{
-				commandName = "spending";
+				commandName = "Spending";
 			}
 			
 			cout << commandName << " '" << parameters.at(1)
