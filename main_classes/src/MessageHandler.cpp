@@ -112,17 +112,17 @@ void MessageHandler::printMessage(vector<string>& parameters)
 		}
 		case NO_DEFAULT_WALLET_ERR:
 		{
-			//parameters[3] = config file name
+			//parameters[0] = config file name
 			cout << "error: no default wallet configured in '" 
-			<< parameters.at(3) << "'." << endl;
+			<< parameters.at(0) << "'." << endl;
 			break;
 		}
 		case NO_TRANSACTION_REG_ERR:
 		{
-			//parameters[0] = category
-			//parameters[1] = walletName
-			cout << "No transaction with category '" << parameters.at(0)
-			<< "' is registered in '" << parameters.at(1) << "'." << endl;
+			//parameters[1] = category
+			//parameters[0] = walletName
+			cout << "No transaction with category '" << parameters.at(1)
+			<< "' is registered in '" << parameters.at(0) << "'." << endl;
 			break;
 		}
 		case NO_VALID_CONFIG_VALUE_ERR:
@@ -182,6 +182,7 @@ void MessageHandler::printMessage(vector<string>& parameters)
 				<< parameters.at(0) << " " << parameters.at(1) 
 				<< "." << endl;
 			}
+			break ;
 		}
 		case TAG_CONFIGURED_MSG:
 		{

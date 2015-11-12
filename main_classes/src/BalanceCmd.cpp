@@ -72,7 +72,7 @@ void BalanceCmd::validateParams(vector<string>& params)
 	if ( ! wallet.existsWalletFile() )
 	{	
 		if( params.empty() )
-		{
+		{	// set first value in vector, used for print
 			params.push_back(defaultWallet) ;
 		}	
 		else
@@ -106,6 +106,7 @@ void BalanceCmd::validateParams(vector<string>& params)
 		//  check if existsCategory was changed to true
 		if(existsCategory == false)
 		{
+			params.at(0)= defaultWallet ;
 			ptrMessage->setMessageCode(NO_TRANSACTION_REG_ERR) ;
 		}
 		else{}
