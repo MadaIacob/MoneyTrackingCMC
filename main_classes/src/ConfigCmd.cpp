@@ -19,7 +19,9 @@ bool ConfigCmd::parseParams(vector<string>& params)
 {
 	if(params.size() > 3)
 	{
-		ptrMessage->setMessageCode(INVALID_COM_ERR) ;
+		params.clear();
+		params.push_back("config");
+		ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
 	}
 	else if(params.size() == 0)
 	{
@@ -95,8 +97,11 @@ bool ConfigCmd::parseParams(vector<string>& params)
 			}
 			if((i+1) != paramsSize)
 			{
+
 				params.clear();
-				break;
+				params.push_back("config");
+				ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
+				return false;
 			}
 		}
 		if(params.at(0) == "" || params.at(1) == "")
@@ -122,6 +127,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		config.readConfigFile();
 		if(params.size() == 1)
 		{
+
 			config.readConfigFile();
 			config.printConfigContent();
 		}
