@@ -105,7 +105,7 @@ bool ConfigCmd::parseParams(vector<string>& params)
 		}
 	}
 	}
-	
+
 	return true;
 }
 
@@ -122,6 +122,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		config.readConfigFile();
 		if(params.size() == 1)
 		{
+			config.readConfigFile();
 			config.printConfigContent();
 		}
 		else
@@ -143,7 +144,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 	{
 		ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR);
 	}
-	
+
 	return true;
 
 }

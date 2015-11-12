@@ -68,6 +68,15 @@ bool Config::readConfigFile()
                 //get ridd of all spaces and tabs
                 line.erase(remove(line.begin(), line.end(), ' '), line.end());
                 line.erase(remove(line.begin(), line.end(), '\t'), line.end());
+                //format a line that contains a "," so that it has a
+                //  space after every comma
+                for( size_t pos = 0; pos < line.length(); pos += 2)
+                {
+                    pos = line.find( ",", pos );
+                    if( pos == string::npos ) break;
+                    line.erase( pos, 1 );
+                    line.insert( pos, ", " );
+                }
                 //get the position of the "="
                 found = line.find("=");
                 //separate the key val pairs
@@ -121,16 +130,6 @@ bool Config::writeConfigFile()
                 //if the key->value pair does not have a value,
                 //  put only the key in the line to be written to file
                 line = configContent.at(i).key + "\n";
-            }
-            //format a line that contains a "," so that it has a
-            //  space after every comma
-            for( size_t pos = 0; pos < line.length(); pos += 2)
-            {
-                pos = line.find( ",", pos );
-                if( pos == string::npos ) break;
-
-                line.erase( pos, 1 );
-                line.insert( pos, ", " );
             }
             //write the line to the file
             file << line;
@@ -220,8 +219,17 @@ bool Config::modifyContent(const std::string key, const std::string value)
             for (unsigned int i = 0; i < configContent.size(); i++)
             {
                 //modify the key->value pair with the provided values
-                if (configContent.at(i).key == kv.key)
+                string aux = configContent.at(i).key;
+                size_t pos = aux.find("=");
+                if ( pos != std::string::npos) {
+                    aux.erase(remove(aux.begin(), aux.end(), ' '), aux.end());
+                    aux.erase(remove(aux.begin(), aux.end(), '\t'), aux.end());
+                    string auxiliar = aux.substr(0, pos-1);
+                    aux = auxiliar;
+                }
+                if (aux == kv.key)
                 {
+                    configContent.at(i).key = aux;
                     configContent.at(i).value = kv.value;
                     contentModified = true;
                     break;
