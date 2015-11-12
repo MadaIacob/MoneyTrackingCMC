@@ -67,29 +67,28 @@ void BalanceCmd::validateParams(vector<string>& params)
 	
 	//set walletName with value from config file
 	wallet.setName(defaultWallet) ; 
-	
 	// verify that file specified as default exists
-	if ( ! wallet.existsWalletFile() )
+	if ( !wallet.existsWalletFile() )
 	{	
 		if( params.empty() )
 		{	// set first value in vector, used for print
 			params.push_back(defaultWallet) ;
+			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
 		}	
 		else
 		{
 			params.at(0) = defaultWallet ;
+			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
 		}
-		
-		ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
 	}
 	else {}
 	
+	wallet.readWalletFile() ;	
+	
 	if ( params.size()==2 )
 	{	
-	
 	// validate that specified category exists in wallet 
 		bool existsCategory = false ;
-		wallet.readWalletFile() ;
 		// len - length of walletContent = number of lines in wallet
 		int len = wallet.getWalletContent().size() ;
 		for( int i=0; i < len ; i++ )
@@ -100,7 +99,6 @@ void BalanceCmd::validateParams(vector<string>& params)
 				existsCategory = true ;
 				break ;
 			}
-		
 			else {}// category not found in wallet file line
 		}
 		//  check if existsCategory was changed to true
@@ -111,7 +109,8 @@ void BalanceCmd::validateParams(vector<string>& params)
 		}
 		else{}
 	}
-	else {}	
+	else 
+	{}	
 }
 
 void BalanceCmd::executeCommand(vector<string>& params)
@@ -119,7 +118,6 @@ void BalanceCmd::executeCommand(vector<string>& params)
 	// get balance for entire wallet
 	double balance = 0 ;
 	int len = wallet.getWalletContent().size() ;
-	
 	if ( params.empty() )
 	{ 
 		// do stuff to get balance 
@@ -160,11 +158,17 @@ void BalanceCmd::executeCommand(vector<string>& params)
 			else {}// category not found in wallet file line
 		}
 	}
+	
 	//convert double to string
 	string balanceString;
 	ostringstream sstream;
 	sstream <<  balance;
 	balanceString = sstream.str();
+	
+	// truncate amount to add + to positive balance
+	const char *amn = balanceString.c_str() ;
+	balanceString = truncateAmount(amn) ; 
+	
 	if ( params.empty() )
 	{
 		params.push_back(balanceString) ;
