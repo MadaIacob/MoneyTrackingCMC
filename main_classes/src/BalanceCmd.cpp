@@ -62,6 +62,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		}
 		else
 		{
+			params.clear();
 			params.push_back(configFile.getConfigFileName()) ;
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR) ;
 			return false ;
@@ -74,12 +75,14 @@ bool BalanceCmd::validateParams(vector<string>& params)
 	{
 		if( params.empty() )
 		{	// set first value in vector, used for print
+			params.clear();
 			params.push_back("moneytracker.config") ;
 			ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR) ;
 			return false ;
 		}
 		else
 		{
+			params.clear();
 			params.push_back("moneytracker.config") ;
 			ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR) ;
 			return false ;
@@ -104,6 +107,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		}
 		else
 		{
+			params.clear();
 			params.push_back(defaultWallet) ;
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
 			return false ;
