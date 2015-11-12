@@ -241,18 +241,6 @@ MessageCodes_E MessageHandler::getMessageCode()
 	return messageCode;
 }
 
-//displayes an error message when no Command object was created
-void MessageHandler::unknownCommand(string command)
-{
-	if(command != "")
-	{//an unknown command was provided in command line
-		cout << "error: unknown command '" << command << "'!" << endl;
-	}
-	else
-	{//no command provided in command line
-		cout << "error: no command provided!" << command << endl;
-	}
-}
 /*
  int main()
 {
