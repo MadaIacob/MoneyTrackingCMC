@@ -6,7 +6,10 @@ Date					10.11.2015
 
 #include <stdlib.h>
 #include "TransactionCmd.h"
-
+#include "HelperFunctions.h"
+#include "FileHelper.h"
+#include "Config.h"
+#include <iostream>
 using namespace std;
 
 //constructor - chooses between income/spend
@@ -189,20 +192,70 @@ void TransactionCmd::validateParams(vector<string>& params)
 	}
 	else
 	{//no walletName provided
-		//check for default_wallet tag in config
-		
-		//default_wallet tag exists
-			//check if default_wallet file exists
+		//check for config file
+		if(!validateFileName("moneytracker.config"))
+		{//config file exists
 			
-			//default_wallet file exists
-				//set default_wallet as walletName 
-				wallet.setName("my.wallet");
-			//default_wallet file doesn't exist
-				//set error message
-		
-		//default_wallet tag doesn't exist
-			//set error message 		
+			//create config object
+			Config configFile;
+			configFile = Config("moneytracker.config");
+			
+			//put config file content into config object
+			if(configFile.readConfigFile())
+			{//no error reading config file
+				//check for default_wallet tag in config
+				if(configFile.existsTag("default_wallet") &&
+				   (configFile.getTagValue("default_wallet") != ""))
+				{//default_wallet tag exists
+					//check if default_wallet file exists
+					if(!validateFileName(configFile.getTagValue("default_wallet")))
+					{//default_wallet file exists
+						//set default_wallet as walletName 
+						wallet.setName(configFile.getTagValue("default_wallet"));
+					}
+					else
+					{//default_wallet file doesn't exist
+						
+						//rearrange params vector for message printing ?????   **********************************************************************************
+						//empty the vector
+						params.resize(0);
+						//put wallet name in vector 
+						params.push_back(configFile.getTagValue("default_wallet"));	
+						
+						//set error message
+						ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR);
+					}
+				}
+				else
+				{//default_wallet tag doesn't exist or is empty
+					
+					//rearrange params vector for message printing ?????   **********************************************************************************
+					//empty the vector
+					params.resize(0);
+					//put config file name in vector 
+					params.push_back("moneytracker.config");	
+					
+					//set error message
+					ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR);
+				}
+			}
+			else
+			{//error reading config file
+				
+			}
+		}
+		else
+		{//config file doesn't exist
+
+			//rearrange params vector for message printing ?????   **********************************************************************************
+			//empty the vector
+			params.resize(0);
+			//put config file name in vector 
+			params.push_back("moneytracker.config");
 	
+			//set error message
+			ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR);
+		}
 	}
 	
 }

@@ -12,20 +12,20 @@ using namespace std;
 
 ConfigCmd::ConfigCmd()
 {
-	
+
 }
 
 void ConfigCmd::parseParams(vector<string>& params)
 {
-	if(params.empty())
+	if(params.size() > 3)
 	{
-		if ( params.size() > 2)
-		{
-			ptrMessage->setMessageCode(INVALID_COM_ERR) ;
-		}
-		else {}
+		ptrMessage->setMessageCode(INVALID_COM_ERR) ;
 	}
-	else 
+	else if(params.size() == 0)
+	{
+
+	}
+	else
 	{
 	vector<string> auxParams;
 	for(size_t i = 0; i< params.size(); i++)
@@ -34,7 +34,7 @@ void ConfigCmd::parseParams(vector<string>& params)
 	}
 	params.clear();
 	size_t paramsSize;
-	
+
 	paramsSize = auxParams.size();
 	if(paramsSize >= 1)
 	{
@@ -80,7 +80,7 @@ void ConfigCmd::parseParams(vector<string>& params)
 				//cazul in care "=" este la inceputul argumentului doi
 				//exemplu "default_wallet =mywallet"
 				i++;
-				
+
 				aux = auxParams.at(i);
 				if(aux.find("=") != string::npos)
 				{
@@ -104,60 +104,49 @@ void ConfigCmd::parseParams(vector<string>& params)
 			params.clear();
 		}
 	}
-	else
-	{
-		
-	}
-		
 	}
 }
 
 void ConfigCmd::validateParams(vector<string>& params)
 {
-	
+
 }
 
 void ConfigCmd::executeCommand(vector<string>& params)
 {
 	params.push_back(config.getConfigFileName());
-	
 	if(!validateFileName(config.getConfigFileName()))
 	{
 		config.readConfigFile();
-		if(params.size() == 0)
+		if(params.size() == 1)
 		{
 			config.printConfigContent();
 		}
-		else 
+		else
 		{
-			if(config.existsTag(params.at(0)))
+			if(config.existsTag(params.at(0)) || config.isValidTag(params.at(0)))
 			{
 				config.modifyContent(params.at(0), params.at(1));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 			}
-			else if(config.isValidTag(params.at(0)))
-			{
-				config.modifyContent(params.at(0), params.at(1));
-				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
-			}
-			else 
+			else
 			{
 				ptrMessage->setMessageCode(NO_VALID_CONFIG_VALUE_ERR);
 			}
-			
+
 		}
 	}
 	else
 	{
 		ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR);
 	}
-	
+
 }
 
 ConfigCmd::~ConfigCmd()
 {
-	
+
 }
 
 /* int main()
@@ -167,7 +156,7 @@ ConfigCmd::~ConfigCmd()
 	params.push_back("default_wallet=");
 	//params.push_back("=");
 	params.push_back("mada.wallet");
-	
+
 	cout << "params size 1: " << params.size() << endl;
 	cmd.parseParams(params);
 	cout << "params size 2: " << params.size() << endl;
