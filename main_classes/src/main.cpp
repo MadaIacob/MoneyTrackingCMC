@@ -15,7 +15,11 @@ using namespace std;
 
 int main(int argc, char* argv[]) 
 {
+	//create message object
 	MessageHandler message;
+	//prepare a vector to keep parameters
+	vector<string> params;
+		
 	
 	//check if any command provided after the application name
 	if ( argc > 1 ) 
@@ -28,8 +32,10 @@ int main(int argc, char* argv[])
 		//check if the provided command is valid
 		if ( command == 0 ) 
 		{//no valid command provided in command line
+			//set error message
+			message.setMessageCode(INVALID_COM_ERR);
 			//print error message
-			message.unknownCommand(argv[1]);
+			message.printMessage(params);
 			//exit
 			return 0;
 		}
@@ -39,9 +45,6 @@ int main(int argc, char* argv[])
 		
 		// associate message object to command
 		command->setMessageHandler(message);
-		
-		//prepare a vector to keep parameters
-		vector<string> params;
 		
 		//check for parameters after the command
 		if ( argc > 2 ) 
@@ -96,7 +99,10 @@ int main(int argc, char* argv[])
 	}
 	else
 	{//no command provided after the application name
-		message.unknownCommand();
+		//set error message
+		message.setMessageCode(INVALID_COM_ERR);
+		//print error message
+		message.printMessage(params);
 	}
 
 	return 0;
