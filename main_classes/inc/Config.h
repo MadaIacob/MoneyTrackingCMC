@@ -24,16 +24,7 @@ struct KeyVal {
 	string rate_RON_EUR; // = 0.23
 	string rate_USD_RON; // = 3.92
 	string rate_EUR_USD; // = 1.13
-	vector <std::string> validTags;
-	validTags.push_back("default_wallet");
-	validTags.push_back("default_currency");
-	validTags.push_back("default_income_category");
-	validTags.push_back("default_spending_category");
-	validTags.push_back("currencies");
-	validTags.push_back("rate_EUR_RON");
-	validTags.push_back("rate_RON_EUR");
-	validTags.push_back("rate_USD_RON");
-	validTags.push_back("rate_EUR_USD");*/
+	vector <std::string> validTags;*/
 
 
 class Config
@@ -43,19 +34,52 @@ class Config
         std::vector<std::string> validTags;
         std::vector<KeyVal> configContent;
     public :
+        //constructor for class Config with default fileName set to
+        // "moneytracker.config" if no parameter is specified
         Config(std::string configFileName = "moneytracker.config");
-        std::string validTagsToString();
-		std::vector<KeyVal> getConfigContent();
-        bool createConfigFile();
-		bool readConfigFile();
-		bool writeConfigFile();
-		void printConfigContent();
-        bool existsTag(const std::string tag );
-        bool isValidTag(const std::string tag);
-        bool modifyContent(const std::string key, const std::string value);
-        std::string getTagValue(const std::string);
-        std::string getConfigFileName();
 
+        //returns all the valid default tags from the config file
+        std::string validTagsToString();
+
+        //returns the content of the config file as a vector of
+        //  key->value pairs of strings
+		std::vector<KeyVal> getConfigContent();
+
+        //creates a config file with the name set to configFileName field
+        //returns true in case of success and false otherwise
+        bool createConfigFile();
+
+        //reads the content of the config file and saves into a vector of
+        //  key->value pairs of strings
+        //returns true in case of success and false otherwise
+		bool readConfigFile();
+
+        //writes the content ot the vector of key->value pairs of strings
+        //  to the the config file
+        //returns true in case of success and false otherwise
+		bool writeConfigFile();
+
+        //prints the content of the vector of key->value pairs of strings
+        //  to the console
+		void printConfigContent();
+
+        //checks if a tag exists and returns true if the tag exists
+        //  and false otherwise
+        bool existsTag(const std::string tag );
+
+        //checks if a tag one of the default tags and returns true if
+        //  the tag is a default tag and false otherwise
+        bool isValidTag(const std::string tag);
+
+        //modifies a key->value pair or adds a key->value pair if the key
+        //  does not exist
+        bool modifyContent(const std::string key, const std::string value);
+
+        //returns the value for a given key or "" if key is not found
+        std::string getTagValue(const std::string);
+
+        //returns the configFileName
+        std::string getConfigFileName();
 };
 
 #endif // CONFIG_H

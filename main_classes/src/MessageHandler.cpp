@@ -8,7 +8,7 @@ using namespace std;
 
 MessageHandler::MessageHandler() : messageCode(NO_MESSAGE)
 {
-	
+
 }
 
 void MessageHandler::setMessageCode(MessageCodes_E messageCode)
@@ -26,7 +26,7 @@ bool MessageHandler::isSetMessageCode()
 	{
 		isSetMessage = true;
 	}
-	
+
 	return isSetMessage;
 }
 
@@ -49,9 +49,9 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			//parameters[0] = amount
 			//parameters[1] = walletName
 			cout << "error: '" << parameters.at(1) << "' is not a valid "
-			<<"initial amount." << endl << "Creating '" << parameters.at(0) 
+			<<"initial amount." << endl << "Creating '" << parameters.at(0)
 			<<"' aborted." << endl;
-			break;			
+			break;
 		}
 		case COULD_NOT_CREATE_ERR:
 		{
@@ -70,7 +70,7 @@ void MessageHandler::printMessage(vector<string>& parameters)
 		case INVALID_PARAM_ERR:
 		{
 			//parameters[0] = command name
-			cout << "error: invalid parameters for '" << parameters.at(0) << "'." 
+			cout << "error: invalid parameters for '" << parameters.at(0) << "'."
 			<< endl;
 			break;
 		}
@@ -78,35 +78,35 @@ void MessageHandler::printMessage(vector<string>& parameters)
 		{
 			//parameters[0] = income or spend
 			string commandName = "income";
-			
+
 			if(parameters.at(0) == "spend")
 			{
 				commandName = "spending";
 			}
-			
+
 			cout << "error: " << commandName
 			<< " should be higher than 0." << endl;
-			
+
 			break;
 		}
 		case COULD_NOT_OPEN_FILE_ERR:
 		{
 			//parameters[0] = fileName
-			cout << "error: could not open '" << parameters.at(0) 
+			cout << "error: could not open '" << parameters.at(0)
 			<< "' to register transaction." << endl;
 			break;
 		}
 		case COULD_NOT_OPEN_CONFIG_ERR:
 		{
 			//parameters[0] = config file name
-			cout << "error: could not open configuration '" << parameters.at(0) 
+			cout << "error: could not open configuration '" << parameters.at(0)
 			<< "'." << endl;
 			break;
 		}
 		case NO_DEFAULT_WALLET_ERR:
 		{
 			//parameters[3] = config file name
-			cout << "error: no default wallet configured in '" 
+			cout << "error: no default wallet configured in '"
 			<< parameters.at(3) << "'." << endl;
 			break;
 		}
@@ -131,7 +131,7 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			//parameters[1] = sign
 			//parameters[2] = amount
 			//parameters[3] = currency
-			cout << "'" << parameters.at(0) 
+			cout << "'" << parameters.at(0)
 			<< "' created with the initial amount of "
 			<< parameters.at(1)<<parameters.at(2) << " " << parameters.at(3) << endl;
 			break;
@@ -145,12 +145,12 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			//parameters[4] = walletName
 			//parameters[5] = GMT time
 			string commandName = "income";
-			
+
 			if(parameters.at(0) == "spend")
 			{
 				commandName = "spending";
 			}
-			
+
 			cout << commandName << " '" << parameters.at(1)
 			<< "' in an amount of "<< parameters.at(2) <<" "<<parameters.at(3)
 			<<" was registered to '"<< parameters.at(4)<<"'."<<endl;
@@ -166,51 +166,51 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			if(parameters.size() == 4)
 			{
 				cout << "Balance for '"	<< parameters.at(3)<< "' in '"
-				<< parameters.at(2) << "' is " << parameters.at(0) << " " 
+				<< parameters.at(2) << "' is " << parameters.at(0) << " "
 				<< parameters.at(1) << "." << endl;
 			}
 			else
 			{
-				cout << "Balance for '"	<< parameters.at(2) << "' is " 
-				<< parameters.at(0) << " " << parameters.at(1) 
+				cout << "Balance for '"	<< parameters.at(2) << "' is "
+				<< parameters.at(0) << " " << parameters.at(1)
 				<< "." << endl;
 			}
 		}
 		case TAG_CONFIGURED_MSG:
 		{
 			//parameters[1] = tag value
-			cout << "'" << parameters.at(1) 
+			cout << "'" << parameters.at(1)
 			<< "' was configured as default." << endl;
 			break;
 		}
 		case HELP_MSG:
 		{
 			cout << endl << "Accepted commands and arguments:" << endl;
-			cout << " ------------------------------------" 
+			cout << " ------------------------------------"
 			<< "---------------------------------" << endl;
-			cout << " moneytracker[.exe] create <file_name> <initial_amount>" 
+			cout << " moneytracker[.exe] create <file_name> <initial_amount>"
 			<< endl;
-			cout << " ------------------------------------" 
+			cout << " ------------------------------------"
 			<< "---------------------------------" << endl;
-			cout << " moneytracker[.exe] income [-c/--category]" 
+			cout << " moneytracker[.exe] income [-c/--category]"
 			<< " <category> [-w/--wallet] <walletName>"
 			<< " <initial_amount> " << endl;
-			cout << " moneytracker[.exe] income <initial_amount>" 
+			cout << " moneytracker[.exe] income <initial_amount>"
 			<< " [-c/--category] <category>"
 			<< " [-w/--wallet] <walletName>" << endl;
-			cout << " ------------------------------------" 
+			cout << " ------------------------------------"
 			<< "---------------------------------" << endl;
-			cout << " moneytracker[.exe] spend [-c/--category]" 
+			cout << " moneytracker[.exe] spend [-c/--category]"
 			<< " <category> <initial_amount> " << endl;
-			cout << " moneytracker[.exe] spend <initial_amount>" 
+			cout << " moneytracker[.exe] spend <initial_amount>"
 			<< " [-c/--category] <category>" << endl;
-			cout << " ------------------------------------" 
+			cout << " ------------------------------------"
 			<< "---------------------------------" << endl;
 			cout << " moneytracker[.exe] balance [-c/--category] <category>"
 			<< endl;
-			cout << " ------------------------------------" 
+			cout << " ------------------------------------"
 			<< "---------------------------------" << endl;
-			cout << " moneytracker[.exe] config default_wallet[ ]=[ ] <new_tag_value> " 
+			cout << " moneytracker[.exe] config default_wallet[ ]=[ ] <new_tag_value> "
 			<< endl;
 			break;
 		}
@@ -218,9 +218,9 @@ void MessageHandler::printMessage(vector<string>& parameters)
 		{
 			break;
 		}
-		
+
 	}
-	
+
 }
 
 MessageCodes_E MessageHandler::getMessageCode()
@@ -245,7 +245,7 @@ void MessageHandler::unknownCommand(string command)
 {
 	MessageHandler message;
 	vector<string> parameters;
-	
+
 	cout << "Message is set?" << message.isSetMessageCode() << endl;
 	message.setMessageCode(NO_VALID_CONFIG_VALUE_ERR);
 	parameters.push_back("dsffdsf");

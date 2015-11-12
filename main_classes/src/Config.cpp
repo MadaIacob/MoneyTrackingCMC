@@ -18,12 +18,14 @@ Config::Config(string configFileName)
     Config::configFileName  = configFileName;
     validTags.push_back("default_wallet");
     validTags.push_back("default_currency");
-    validTags.push_back("default_income_currency");
-    validTags.push_back("default_spend_currency");
+    validTags.push_back("default_income_category");
+    validTags.push_back("default_spend_category");
 }
+
 string Config::validTagsToString()
 {
     string result;
+    //create the result string with all the tags from validTags
     for (unsigned int i = 0; i < validTags.size(); i++)
     {
         result += validTags.at(i) + " ";
@@ -40,9 +42,9 @@ bool Config::createConfigFile()
 {
     bool fileOperation = false;
     ofstream file(configFileName.c_str());
+    //check if the file was created
     if (file.good())
     {
-        file << "ceapa" << '\n' << "cartofi" << '\n';
         fileOperation = true;
     }
     file.close();
@@ -59,11 +61,15 @@ bool Config::readConfigFile()
         string line;
         while (getline(file, line))
         {
+            //check if the line contains an "="
             found = line.find("=");
             if (found != std::string::npos) {
+                //get ridd of all spaces and tabs
                 line.erase(remove(line.begin(), line.end(), ' '), line.end());
                 line.erase(remove(line.begin(), line.end(), '\t'), line.end());
+                //get the position of the "="
                 found = line.find("=");
+                //separate the key val pairs
                 string key = line.substr(0, found);
                 string value = line.substr(found+1);
                 KeyVal kV;
@@ -71,6 +77,7 @@ bool Config::readConfigFile()
                 kV.value = value;
                 configContent.push_back(kV);
             }
+            //if the line doesn't have an "=" copy the line as it is in key
             else
             {
                 KeyVal kv;
@@ -94,8 +101,11 @@ bool Config::writeConfigFile()
     ofstream file(configFileName.c_str());
     if (!configContent.empty())
     {
+        //iterate trough the configContent
         for (unsigned int i = 0; i < configContent.size(); i++)
         {
+            //check if the key->value pair has a value and if so,
+            //  put both key and value in the line to be written to file
             if (configContent.at(i).value != "")
             {
                 line = configContent.at(i).key + " = " +
@@ -103,8 +113,12 @@ bool Config::writeConfigFile()
             }
             else
             {
+                //if the key->value pair does not have a value,
+                //  put only the key in the line to be written to file
                 line = configContent.at(i).key + "\n";
             }
+            //format a line that contains a "," so that it has a
+            //  space after every comma
             for( size_t pos = 0; pos < line.length(); pos += 2)
             {
                 pos = line.find( ",", pos );
@@ -113,8 +127,10 @@ bool Config::writeConfigFile()
                 line.erase( pos, 1 );
                 line.insert( pos, ", " );
             }
+            //write the line to the file
             file << line;
         }
+        //check if the operation of writing to the file was ok
         if (file.good())
         {
             fileOperation = true;
@@ -126,9 +142,12 @@ bool Config::writeConfigFile()
 
 void Config::printConfigContent()
 {
+    //check if there is something in the configContent
     if (!configContent.empty())
     {
         string line = "";
+        //iterate trough the configContent and print the
+        //  key->value pair to the console
         for (unsigned int i = 0; i < configContent.size(); i++)
         {
             if (configContent.at(i).value != "")
@@ -146,8 +165,11 @@ void Config::printConfigContent()
 }
 bool Config::existsTag(const string tag){
     bool tagExists = false;
+    //check if there is something in the configContent
     if (!configContent.empty())
     {
+        //iterate trough the configContent and check if the provided tag
+        //  exists in the key->value pairs of the configContent
         for (unsigned int i = 0; i < configContent.size(); i++)
         {
             if (configContent.at(i).key == tag)
@@ -162,8 +184,11 @@ bool Config::existsTag(const string tag){
 bool Config::isValidTag(const string tag)
 {
     bool validTag = false;
+    //check if there is something in the validTag vector
     if (!validTags.empty())
     {
+        //iterate trough the validTags and check if the provided tag
+        //  exists in the validTags vector
         for (unsigned int i = 0; i < validTags.size(); i++)
         {
             if (validTags.at(i) == tag)
@@ -180,13 +205,16 @@ bool Config::modifyContent(const std::string key, const std::string value)
     kv.key = key;
     kv.value = value;
     bool contentModified = false;
-
+    //check if there is something in the configContent
     if (!configContent.empty())
     {
+        //check if the provided tag exists in the configContent vector
         if(existsTag(kv.key))
         {
+            //iterate trough the configContent
             for (unsigned int i = 0; i < configContent.size(); i++)
             {
+                //modify the key->value pair with the provided values
                 if (configContent.at(i).key == kv.key)
                 {
                     configContent.at(i).value = kv.value;
@@ -194,6 +222,9 @@ bool Config::modifyContent(const std::string key, const std::string value)
                 }
             }
         }
+        //if the provided tag doesen't exist in the configContent vector
+        //  check if the tag is a valid tag and if so, add the key->value pair
+        //  to the configContent
         else if (isValidTag(kv.key))
         {
             configContent.push_back(kv);
@@ -206,8 +237,11 @@ bool Config::modifyContent(const std::string key, const std::string value)
 std::string Config::getTagValue(const std::string key)
 {
     string value = "";
+    //check if there is something in the configContent
     if (!configContent.empty())
     {
+        //iterate trough the configContent and
+        //  return the value for the provided key
         for (unsigned int i = 0; i < configContent.size(); i++)
         {
             if (configContent.at(i).key == key)
@@ -242,7 +276,7 @@ string Config::getConfigFileName()
 //     cout << "exista tagul default_wallet ? : " << config.existsTag("default_wallet") << endl;
 //     cout << "este valid tagul  default_wallet ? : " << config.isValidTag("default_wallet") << endl;
 //     std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
-//     cout << "modificarea efectuata cu succes ? : " << config.modifyContent("gatu_masiii","ceapa_pulii") << endl;
+//     cout << "modificarea efectuata cu succes ? : " << config.modifyContent("leguma","carnea") << endl;
 //     config.writeConfigFile();
 //     cont = config.getConfigContent();
 //     for (unsigned int i =0; i < cont.size(); i++)
