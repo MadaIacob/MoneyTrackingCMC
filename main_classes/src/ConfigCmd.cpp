@@ -133,11 +133,24 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		}
 		else
 		{
-			if(config.existsTag(params.at(0)) || config.isValidTag(params.at(0)))
+			if(config.existsTag(params.at(0)))
 			{
+				cout << "aici1" << endl;
 				config.modifyContent(params.at(0), params.at(1));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
+			}
+			else if(config.isValidTag(params.at(0)))
+			{
+				cout << "aici2" << endl;
+				config.readConfigFile();
+				config.printConfigContent();
+				config.modifyContent(params.at(0), params.at(1));
+				config.writeConfigFile();
+				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
+				cout << "/////////////////////////" << endl;
+				config.readConfigFile();
+				config.printConfigContent();
 			}
 			else
 			{
