@@ -39,6 +39,8 @@ bool BalanceCmd::parseParams(vector<string>& params)
 	// balance command with 1 or more than 2 parameters
 	else
 	{
+		params.clear();
+		params.push_back("balance");
 		ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
 		return false ;
 	}
@@ -54,13 +56,13 @@ bool BalanceCmd::validateParams(vector<string>& params)
 	{
 		if( params.empty() )
 		{	// set first value in vector, used for print
-			params.push_back("moneytracker.config") ;
+			params.push_back(configFile.getConfigFileName()) ;
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR) ;
 			return false ;
 		}
 		else
 		{
-			params.at(0) = "moneytracker.config" ;
+			params.push_back(configFile.getConfigFileName()) ;
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR) ;
 			return false ;
 		}
@@ -68,7 +70,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 	else{}
 
 	//error: no default wallet configured in 'moneytracker.config'
-	if( !configFile.existsTag("default_wallet") )
+	if( configFile.getTagValue("default_wallet") == "" )
 	{
 		if( params.empty() )
 		{	// set first value in vector, used for print
@@ -78,7 +80,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		}
 		else
 		{
-			params.at(0) = "moneytracker.config" ;
+			params.push_back("moneytracker.config") ;
 			ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR) ;
 			return false ;
 		}
@@ -102,7 +104,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		}
 		else
 		{
-			params.at(0) = defaultWallet ;
+			params.push_back(defaultWallet) ;
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
 			return false ;
 		}
