@@ -14,7 +14,8 @@ HEADERS = \
 	..\inc\WalletEntity.h
 
 TESTS = \
-	WalletTest.o
+	WalletTest.o \
+	BalanceCmdTest.o
 
 LIB_OBJ = ..\lib\WalletLib.a
 	
@@ -26,6 +27,9 @@ all: ..\..\test.exe ..\lib\TestLib.a
 
 WalletTest.o: WalletTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o WalletTest.o -c WalletTest.cpp
+
+BalanceCmdTest.o: BalanceCmdTest.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o BalanceCmdTest.o -c BalanceCmdTest.cpp
 
 	
 ..\..\test.exe: $(LIB_OBJ) $(TESTS) $(GTEST_LIB)
