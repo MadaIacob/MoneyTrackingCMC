@@ -133,6 +133,7 @@ void ConfigCmd::executeCommand(vector<string>& params)
 			if(config.existsTag(params.at(0)))
 			{
 				config.modifyContent(params.at(0), params.at(1));
+				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 			}
 			else if(config.isValidTag(params.at(0)))

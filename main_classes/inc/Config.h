@@ -54,7 +54,7 @@ class Config
         bool isValidTag(const std::string tag);
         bool modifyContent(const std::string key, const std::string value);
         std::string getTagValue(const std::string);
-        std::string getConfigFilename();
+        std::string getConfigFileName();
 
 };
 

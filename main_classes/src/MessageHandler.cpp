@@ -96,6 +96,13 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			<< "' to register transaction." << endl;
 			break;
 		}
+		case COULD_NOT_OPEN_FILE_BAL_ERR:
+		{
+			//parameters[0] = fileName
+			cout << "error: could not open '" << parameters.at(0) 
+			<< "' to calculate balance." << endl;
+			break;
+		}
 		case COULD_NOT_OPEN_CONFIG_ERR:
 		{
 			//parameters[0] = config file name
