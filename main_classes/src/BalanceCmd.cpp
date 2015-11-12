@@ -1,5 +1,5 @@
 /*
-File Description		Implementation of BalanceCmd class 
+File Description		Implementation of BalanceCmd class
 Author					cosmin.farcau
 Date					11.11.2015
 */
@@ -14,7 +14,7 @@ Date					11.11.2015
 #include "Wallet.h"
 #include "Config.h"
 
-#include "WalletEntity.h" 
+#include "WalletEntity.h"
 
 #include "MessageHandler.h"
 #include "MessageCodes_E.h"
@@ -27,7 +27,7 @@ bool BalanceCmd::parseParams(vector<string>& params)
 {
 	// balance command with no parameters
 	if ( params.empty() )
-	{ 
+	{
 		// do nothing, allow to get balance
 	}
 	// balance command with 2 parameters
@@ -41,9 +41,9 @@ bool BalanceCmd::parseParams(vector<string>& params)
 	{
 		ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
 	}
-	
+
 	return true;
-} 
+}
 
 bool BalanceCmd::validateParams(vector<string>& params)
 {
@@ -55,28 +55,28 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR)  ;
 	}
 	else{}
-	
+
 	//error: no default wallet configured in 'moneytracker.config'
 	if( !configFile.existsTag("default_wallet") )
 	{
 		ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR) ;
 	}
 	else {}
-	
+
 	// get name of default wallet
 	configFile.readConfigFile() ;
 	string defaultWallet = configFile.getTagValue ("default_wallet") ;
-	
+
 	//set walletName with value from config file
-	wallet.setName(defaultWallet) ; 
+	wallet.setName(defaultWallet) ;
 	// verify that file specified as default exists
 	if ( !wallet.existsWalletFile() )
-	{	
+	{
 		if( params.empty() )
 		{	// set first value in vector, used for print
 			params.push_back(defaultWallet) ;
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
-		}	
+		}
 		else
 		{
 			params.at(0) = defaultWallet ;
@@ -84,12 +84,12 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		}
 	}
 	else {}
-	
-	wallet.readWalletFile() ;	
-	
+
+	wallet.readWalletFile() ;
+
 	if ( params.size()==2 )
-	{	
-	// validate that specified category exists in wallet 
+	{
+	// validate that specified category exists in wallet
 		bool existsCategory = false ;
 		// len - length of walletContent = number of lines in wallet
 		int len = wallet.getWalletContent().size() ;
@@ -111,7 +111,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		}
 		else{}
 	}
-	else 
+	else
 	{}
 
 	return true;
@@ -123,8 +123,8 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 	double balance = 0 ;
 	int len = wallet.getWalletContent().size() ;
 	if ( params.empty() )
-	{ 
-		// do stuff to get balance 
+	{
+		// do stuff to get balance
 		for( int i=0; i < len ; i++ )
 		{
 			string amnt = wallet.getWalletContent().at(i).getAmount() ;
@@ -140,9 +140,9 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 		}
 	}
 	// get balance for category; params.size()==2
-	else 	
+	else
 	{
-		// do stuff  
+		// do stuff
 		for( int i=0; i < len ; i++ )
 		{
 			if( params.at(1) == wallet.getWalletContent().at(i).getCategory() )
@@ -158,21 +158,21 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 					balance = balance + amont ;
 				}
 			}
-		
+
 			else {}// category not found in wallet file line
 		}
 	}
-	
+
 	//convert double to string
 	string balanceString;
 	ostringstream sstream;
 	sstream <<  balance;
 	balanceString = sstream.str();
-	
+
 	// truncate amount to add + to positive balance
 	const char *amn = balanceString.c_str() ;
-	balanceString = truncateAmount(amn) ; 
-	
+	balanceString = truncateAmount(amn) ;
+
 	if ( params.empty() )
 	{
 		params.push_back(balanceString) ;
@@ -180,7 +180,7 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 		params.push_back(wallet.getName()) ;
 	}
 	else
-	{	
+	{
 		string tempCategory = params.at(1) ;
 		params.at(0) = balanceString ;
 		params.at(1) = "RON" ;
@@ -188,14 +188,6 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 		params.push_back(tempCategory) ;
 	}
 	ptrMessage->setMessageCode(BALANCE_IS_MSG) ;
-	
+
 	return true;
 }
-
-
-
-
-
-
-
-
