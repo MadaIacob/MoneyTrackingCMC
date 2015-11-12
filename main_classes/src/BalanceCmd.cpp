@@ -40,8 +40,8 @@ bool BalanceCmd::parseParams(vector<string>& params)
 	else
 	{
 		ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
+		return false ;
 	}
-
 	return true;
 }
 
@@ -52,14 +52,36 @@ bool BalanceCmd::validateParams(vector<string>& params)
 	// 'moneytracker.config' can not be opened
 	if( !configFile.readConfigFile() )
 	{
-		ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR)  ;
+		if( params.empty() )
+		{	// set first value in vector, used for print
+			params.push_back("moneytracker.config") ;
+			ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR) ;
+			return false ;
+		}
+		else
+		{
+			params.at(0) = "moneytracker.config" ;
+			ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR) ;
+			return false ;
+		}
 	}
 	else{}
 
 	//error: no default wallet configured in 'moneytracker.config'
 	if( !configFile.existsTag("default_wallet") )
 	{
-		ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR) ;
+		if( params.empty() )
+		{	// set first value in vector, used for print
+			params.push_back("moneytracker.config") ;
+			ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR) ;
+			return false ;
+		}
+		else
+		{
+			params.at(0) = "moneytracker.config" ;
+			ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR) ;
+			return false ;
+		}
 	}
 	else {}
 
@@ -76,11 +98,13 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		{	// set first value in vector, used for print
 			params.push_back(defaultWallet) ;
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
+			return false;
 		}
 		else
 		{
 			params.at(0) = defaultWallet ;
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
+			return false ;
 		}
 	}
 	else {}
@@ -108,6 +132,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		{
 			params.at(0)= defaultWallet ;
 			ptrMessage->setMessageCode(NO_TRANSACTION_REG_ERR) ;
+			return false ;
 		}
 		else{}
 	}
