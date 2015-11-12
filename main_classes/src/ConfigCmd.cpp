@@ -135,20 +135,17 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		{
 			if(config.existsTag(params.at(0)))
 			{
-				cout << "aici1" << endl;
 				config.modifyContent(params.at(0), params.at(1));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 			}
 			else if(config.isValidTag(params.at(0)))
 			{
-				cout << "aici2" << endl;
 				config.readConfigFile();
 				config.printConfigContent();
 				config.modifyContent(params.at(0), params.at(1));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
-				cout << "/////////////////////////" << endl;
 				config.readConfigFile();
 				config.printConfigContent();
 			}
@@ -172,20 +169,3 @@ ConfigCmd::~ConfigCmd()
 {
 
 }
-
-/* int main()
-{
-	ConfigCmd cmd;
-	vector<string> params;
-	params.push_back("default_wallet=");
-	//params.push_back("=");
-	params.push_back("mada.wallet");
-
-	cout << "params size 1: " << params.size() << endl;
-	cmd.parseParams(params);
-	cout << "params size 2: " << params.size() << endl;
-	for(size_t i = 0; i < params.size(); i++)
-	{
-		cout << "elementul : " << i << params.at(i) << endl;
-	}
-} */
