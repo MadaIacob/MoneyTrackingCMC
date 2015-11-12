@@ -25,14 +25,16 @@ bool CreateWalletCmd::parseParams(vector<string>& params)
 		if ( params.size() > 2)
 		{
 			ptrMessage->setMessageCode(INVALID_COM_ERR) ;
+			return false;
 		}
 		else {}
 	}
 	else
 	{
 		ptrMessage->setMessageCode(FILENAME_NOT_SPEC_ERR) ;
+		return false;
 	}
-	
+
 	return true;
 }
 
@@ -68,7 +70,7 @@ bool CreateWalletCmd::validateParams(vector<string>& params)
 		else {
 		}
 	}
-	
+
 	return true;
 }
 
@@ -128,7 +130,7 @@ bool CreateWalletCmd::executeCommand(vector<string>& params)
 	{
 		ptrMessage->setMessageCode(COULD_NOT_CREATE_ERR) ;
 	}
-	
+
 	return true;
 }
 
