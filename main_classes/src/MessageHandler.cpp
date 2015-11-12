@@ -153,7 +153,6 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			//parameters[4] = walletName
 			//parameters[5] = GMT time
 			string commandName = "Income";
-	
 			if(parameters.at(0) == "spend")
 			{
 				commandName = "Spending";
