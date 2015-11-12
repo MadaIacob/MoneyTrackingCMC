@@ -19,9 +19,9 @@ class TransactionCmd : public Command {
 	public:
 		TransactionCmd(const std::string& command);
 		//methods from Command class
-		void parseParams(std::vector<std::string>& params);
-		void validateParams(std::vector<std::string>& params);
-		void executeCommand(std::vector<std::string>& params);
+		bool parseParams(std::vector<std::string>& params);
+		bool validateParams(std::vector<std::string>& params);
+		bool executeCommand(std::vector<std::string>& params);
 };
 
 #endif //TRANSACTIONCMD_H

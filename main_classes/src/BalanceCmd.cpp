@@ -23,7 +23,7 @@ using namespace std;
 
 BalanceCmd::BalanceCmd(){}
 
-void BalanceCmd::parseParams(vector<string>& params)
+bool BalanceCmd::parseParams(vector<string>& params)
 {
 	// balance command with no parameters
 	if ( params.empty() )
@@ -41,9 +41,11 @@ void BalanceCmd::parseParams(vector<string>& params)
 	{
 		ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
 	}
+	
+	return true;
 } 
 
-void BalanceCmd::validateParams(vector<string>& params)
+bool BalanceCmd::validateParams(vector<string>& params)
 {
 	Config configFile;
 	// verify default wallet in config
@@ -110,10 +112,12 @@ void BalanceCmd::validateParams(vector<string>& params)
 		else{}
 	}
 	else 
-	{}	
+	{}
+
+	return true;
 }
 
-void BalanceCmd::executeCommand(vector<string>& params)
+bool BalanceCmd::executeCommand(vector<string>& params)
 {
 	// get balance for entire wallet
 	double balance = 0 ;
@@ -184,6 +188,8 @@ void BalanceCmd::executeCommand(vector<string>& params)
 		params.push_back(tempCategory) ;
 	}
 	ptrMessage->setMessageCode(BALANCE_IS_MSG) ;
+	
+	return true;
 }
 
 

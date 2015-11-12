@@ -11,14 +11,14 @@ Command::Command()
 	
 }
 
-void Command::parseParams(std::vector<std::string>& params)
+bool Command::parseParams(std::vector<std::string>& params)
 {
-	
+	return true;
 }
 
-void Command::validateParams(std::vector<std::string>& params)
+bool Command::validateParams(std::vector<std::string>& params)
 {
-	
+	return true;
 }
 
 //associates a message object to the command
@@ -34,9 +34,9 @@ void Command::setMessageCode(MessageCodes_E messageCode)
 
 }
 
-void Command::executeCommand(std::vector<std::string>& params)
+bool Command::executeCommand(std::vector<std::string>& params)
 {
-	
+	return true;
 }
 
 Command::~Command()

@@ -36,7 +36,7 @@ TransactionCmd::TransactionCmd(const string& command)
 //performs syntactic analysis - sets error message if anything besides 
 //tags and amount provided for 
 //income/spend  
-void TransactionCmd::parseParams(vector<string>& params) 
+bool TransactionCmd::parseParams(vector<string>& params) 
 {
 	//check how many parameters were provided for income/spend
 	if (!params.empty()) 
@@ -128,10 +128,11 @@ void TransactionCmd::parseParams(vector<string>& params)
 		//put command name in vector for INVALID_PARAM_ERR case
 		params.push_back("spend");
 	}
+	return true;
 }
 
 // validates the values provided for income/spend parameters
-void TransactionCmd::validateParams(vector<string>& params) 
+bool TransactionCmd::validateParams(vector<string>& params) 
 {
 	//----------validate amount - mandatory parameter for transaction-----------
 	
@@ -139,15 +140,8 @@ void TransactionCmd::validateParams(vector<string>& params)
 	if(!validateAmount(walletEntity.getAmount().c_str()))
 	{//amount is not valid
 		//set error message
-		ptrMessage->setMessageCode(INVALID_AMOUNT_ERR);
-		
-		//rearrange params vector for message printing ?????   **********************************************************************************
-		//empty the vector
-		params.resize(0);
-		//put amount in vector for INVALID_AMOUNT_ERR case
-		params.push_back(walletEntity.getAmount());	
-		//put amount in vector for INVALID_AMOUNT_ERR case
-		params.push_back(wallet.getName());	
+		ptrMessage->setMessageCode(INVALID_PARAM_ERR);	
+		//params vector is already set by parseParams method *********************************************************
 	}
 	else 
 	{//amount is valid
@@ -158,7 +152,7 @@ void TransactionCmd::validateParams(vector<string>& params)
 		{//amount is valid, but negative or zero 
 			//set error message
 			ptrMessage->setMessageCode(INCOME_SPEND_HIGHER_ERR);
-			//params vector is already set by parseParams method
+			//params vector is already set by parseParams method *****************************************************************
 		}
 		else
 		{//amount is valid and positive
@@ -257,11 +251,11 @@ void TransactionCmd::validateParams(vector<string>& params)
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_CONFIG_ERR);
 		}
 	}
-	
+	return true;
 }
 
 //executes income/spend without any validations
-void TransactionCmd::executeCommand(vector<string>& params)
+bool TransactionCmd::executeCommand(vector<string>& params)
 {
 	//append a line in walletName file and check if successfull
 	if(wallet.appendWalletFile(walletEntity))
@@ -307,6 +301,7 @@ void TransactionCmd::executeCommand(vector<string>& params)
 		//set error message
 		ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_ERR);
 	}
+	return true;
 } 
 
 

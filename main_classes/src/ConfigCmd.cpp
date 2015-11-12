@@ -15,7 +15,7 @@ ConfigCmd::ConfigCmd()
 
 }
 
-void ConfigCmd::parseParams(vector<string>& params)
+bool ConfigCmd::parseParams(vector<string>& params)
 {
 	if(params.size() > 3)
 	{
@@ -105,14 +105,16 @@ void ConfigCmd::parseParams(vector<string>& params)
 		}
 	}
 	}
+	
+	return true;
 }
 
-void ConfigCmd::validateParams(vector<string>& params)
+bool ConfigCmd::validateParams(vector<string>& params)
 {
-
+	return true;
 }
 
-void ConfigCmd::executeCommand(vector<string>& params)
+bool ConfigCmd::executeCommand(vector<string>& params)
 {
 	params.push_back(config.getConfigFileName());
 	if(!validateFileName(config.getConfigFileName()))
@@ -141,6 +143,8 @@ void ConfigCmd::executeCommand(vector<string>& params)
 	{
 		ptrMessage->setMessageCode(NO_DEFAULT_WALLET_ERR);
 	}
+	
+	return true;
 
 }
 

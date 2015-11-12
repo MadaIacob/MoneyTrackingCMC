@@ -12,9 +12,9 @@ class ConfigCmd : public Command {
 		Config config;
 	public:
 		ConfigCmd();
-		void parseParams(std::vector<std::string>& params);
-		void validateParams(std::vector<std::string>& params);
-		void executeCommand(std::vector<std::string>& params);
+		bool parseParams(std::vector<std::string>& params);
+		bool validateParams(std::vector<std::string>& params);
+		bool executeCommand(std::vector<std::string>& params);
 		~ConfigCmd();
 };
 

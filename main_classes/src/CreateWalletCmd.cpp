@@ -17,7 +17,7 @@ using namespace std;
 
 CreateWalletCmd::CreateWalletCmd(){}
 
-void CreateWalletCmd::parseParams(vector<string>& params)
+bool CreateWalletCmd::parseParams(vector<string>& params)
 {
 	// create command with more than two arguments /parameters
 	if ( !params.empty() )
@@ -32,9 +32,11 @@ void CreateWalletCmd::parseParams(vector<string>& params)
 	{
 		ptrMessage->setMessageCode(FILENAME_NOT_SPEC_ERR) ;
 	}
+	
+	return true;
 }
 
-void CreateWalletCmd::validateParams(vector<string>& params)
+bool CreateWalletCmd::validateParams(vector<string>& params)
 {
 	if ( params.size() == 1 )
 	{ // validate walletName
@@ -66,10 +68,12 @@ void CreateWalletCmd::validateParams(vector<string>& params)
 		else {
 		}
 	}
+	
+	return true;
 }
 
 
-void CreateWalletCmd::executeCommand(vector<string>& params)
+bool CreateWalletCmd::executeCommand(vector<string>& params)
 {
 	// set sign, category, amount ... ;
 	string walletName = params.at(0) ;
@@ -124,6 +128,8 @@ void CreateWalletCmd::executeCommand(vector<string>& params)
 	{
 		ptrMessage->setMessageCode(COULD_NOT_CREATE_ERR) ;
 	}
+	
+	return true;
 }
 
 CreateWalletCmd::~CreateWalletCmd()
