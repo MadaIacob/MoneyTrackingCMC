@@ -176,7 +176,15 @@ bool Config::existsTag(const string tag){
         //  exists in the key->value pairs of the configContent
         for (unsigned int i = 0; i < configContent.size(); i++)
         {
-            if (configContent.at(i).key == tag)
+            string aux = configContent.at(i).key;
+            size_t pos = aux.find("=");
+            if ( pos != std::string::npos) {
+                aux.erase(remove(aux.begin(), aux.end(), ' '), aux.end());
+                aux.erase(remove(aux.begin(), aux.end(), '\t'), aux.end());
+                string auxiliar = aux.substr(0, pos-1);
+                aux = auxiliar;
+            }
+            if (aux == tag)
             {
                 tagExists = true;
             }
