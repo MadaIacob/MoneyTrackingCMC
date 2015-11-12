@@ -176,15 +176,14 @@ TEST(CreateConfigFileTest, ValidTags)
 	//set-up
 	string testOkConfigFile1("testConfig");
 
-	Config config(testOkConfigFile1);
-	std::cout << "se creaza fisierul ? " <<config.createConfigFile() <<  std::endl;
-
+	Config config("testConfig");
+	config.createConfigFile();
 	//test
 
-	//EXPECT_EQ(true, okConfig1.isValidTag(vect.at(i).key));
+	EXPECT_NE(true, validateFileName(testOkConfigFile1));
 
 	//tear-down
-	//remove("okConfig1");
+	remove(testOkConfigFile1.c_str());
 }
 
 TEST(ExistsConfigTagTest, defaultWalletTagOK)
