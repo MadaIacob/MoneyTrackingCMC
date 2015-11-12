@@ -45,6 +45,7 @@ bool CreateWalletCmd::validateParams(vector<string>& params)
 		if ( validateFileName(params.at(0)) == false )
 		{
 			ptrMessage->setMessageCode(WALLET_EXISTS_ERR) ;
+			return false;
 		}
 		else {
 		}
@@ -56,8 +57,10 @@ bool CreateWalletCmd::validateParams(vector<string>& params)
 		if ( validateFileName(params.at(0)) == false )
 		{
 			ptrMessage->setMessageCode(WALLET_EXISTS_ERR) ;
+			return false;
 		}
-		else {
+		else
+		{
 		}
 		// validate amount
 		string str = params.at(1) ;
@@ -66,8 +69,10 @@ bool CreateWalletCmd::validateParams(vector<string>& params)
 		if (validateAmount( amnt ) == false )
 		{
 			ptrMessage->setMessageCode(INVALID_AMOUNT_ERR) ;
+			return false;
 		}
-		else {
+		else
+		{
 		}
 	}
 
@@ -129,6 +134,7 @@ bool CreateWalletCmd::executeCommand(vector<string>& params)
 	else
 	{
 		ptrMessage->setMessageCode(COULD_NOT_CREATE_ERR) ;
+		return false;
 	}
 
 	return true;

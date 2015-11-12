@@ -8,7 +8,7 @@
 class MessageHandler {
 	private:
 		MessageCodes_E messageCode;
-	
+
 	public:
 		MessageHandler();
 		void setMessageCode(MessageCodes_E messageCode);

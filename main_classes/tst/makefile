@@ -14,11 +14,16 @@ HEADERS = \
 	..\inc\WalletEntity.h \
 	..\inc\Command.h \
 	..\inc\CreateWalletCmd.h \
-	..\inc\MessageHandler.h
+	..\inc\MessageHandler.h \
+	..\inc\MessageCodes_E.h \
+	TestHelper.h \
+	..\inc\Config.h
 
 TESTS = \
 	WalletTest.o \
-	CreateWalletCmdTest.o
+	CreateWalletCmdTest.o \
+	TestHelper.o \
+	ConfigClasTest.o
 
 
 LIB_OBJ = ..\lib\WalletLib.a
@@ -29,12 +34,17 @@ all: ..\..\test.exe ..\lib\TestLib.a
 ..\lib\TestLib.a: $(TESTS)
 	$(AR) ..\lib\TestLib.a $(TESTS)
 
+TestHelper.o: TestHelper.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o TestHelper.o -c TestHelper.cpp
+
 WalletTest.o: WalletTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o WalletTest.o -c WalletTest.cpp
 
 CreateWalletCmdTest.o: CreateWalletCmdTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o CreateWalletCmdTest.o -c CreateWalletCmdTest.cpp
 
+ConfigClasTest.o: ConfigClasTest.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o ConfigClasTest.o -c ConfigClasTest.cpp
 
 ..\..\test.exe: $(LIB_OBJ) $(TESTS) $(GTEST_LIB)
 	$(CPP) -o ..\..\test.exe $(TESTS) $(LIB_OBJ) $(GTEST_LIB)

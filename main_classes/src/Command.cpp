@@ -39,9 +39,9 @@ bool Command::executeCommand(std::vector<std::string>& params)
 	return true;
 }
 
-MessageCodes_E Command::getPtrMessage()
+MessageHandler Command::getPtrMessage()
 {
-	return ptrMessage;
+	return *ptrMessage;
 }
 
 Command::~Command()
