@@ -247,6 +247,7 @@ std::string Config::getTagValue(const std::string key)
             if (configContent.at(i).key == key)
             {
                 value = configContent.at(i).value;
+                break;
             }
         }
     }
