@@ -92,7 +92,9 @@ bool ConfigCmd::parseParams(vector<string>& params)
 				else
 				{
 					params.clear();
-					break;
+					params.push_back("config");
+					ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
+					return false;
 				}
 			}
 			if((i+1) != paramsSize)
@@ -107,6 +109,9 @@ bool ConfigCmd::parseParams(vector<string>& params)
 		if(params.at(0) == "" || params.at(1) == "")
 		{
 			params.clear();
+			params.push_back("config");
+			ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
+			return false;
 		}
 	}
 	}
