@@ -51,7 +51,6 @@ bool Config::createConfigFile()
     return fileOperation;
 }
 
-
 bool Config::readConfigFile()
 {
     configContent.clear();
