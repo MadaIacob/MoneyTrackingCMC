@@ -34,8 +34,8 @@ TransactionCmd::TransactionCmd(const string& command)
 }
 
 //performs syntactic analysis - sets error message if anything besides 
-//tags and amount provided for 
-//income/spend  
+//tags and amount provided for income/spend  
+//returns true if amount and only flagged parameters are found
 bool TransactionCmd::parseParams(vector<string>& params) 
 {
 	//returned value
@@ -163,6 +163,7 @@ bool TransactionCmd::parseParams(vector<string>& params)
 }
 
 // validates the values provided for income/spend parameters
+//returns true if all parameters have valid values
 bool TransactionCmd::validateParams(vector<string>& params) 
 {
 	//----------validate amount - mandatory parameter for transaction-----------
@@ -299,6 +300,7 @@ bool TransactionCmd::validateParams(vector<string>& params)
 }
 
 //executes income/spend without any validations
+//returns true if execution is successfull
 bool TransactionCmd::executeCommand(vector<string>& params)
 {
 	//append a line in walletName file and check if successfull
