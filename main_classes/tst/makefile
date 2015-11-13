@@ -17,14 +17,18 @@ HEADERS = \
 	..\inc\MessageHandler.h \
 	..\inc\MessageCodes_E.h \
 	TestHelper.h \
-	..\inc\Config.h
+	..\inc\Config.h \
+	..\inc\HelperFunctions.h \
+	..\inc\TransactionCmd.h
+
 
 TESTS = \
 	WalletTest.o \
 	CreateWalletCmdTest.o \
 	TestHelper.o \
-	ConfigClasTest.o
-
+	ConfigClasTest.o \
+	HelperFunctionsTest.o \
+	TransactionsCmdTest.o
 
 LIB_OBJ = ..\lib\WalletLib.a
 
@@ -45,6 +49,12 @@ CreateWalletCmdTest.o: CreateWalletCmdTest.cpp $(TEST_HELPER_H)
 
 ConfigClasTest.o: ConfigClasTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o ConfigClasTest.o -c ConfigClasTest.cpp
+
+HelperFunctionsTest.o: HelperFunctionsTest.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o HelperFunctionsTest.o -c HelperFunctionsTest.cpp
+
+TransactionsCmdTest.o: TransactionsCmdTest.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o TransactionsCmdTest.o -c TransactionsCmdTest.cpp
 
 ..\..\test.exe: $(LIB_OBJ) $(TESTS) $(GTEST_LIB)
 	$(CPP) -o ..\..\test.exe $(TESTS) $(LIB_OBJ) $(GTEST_LIB)

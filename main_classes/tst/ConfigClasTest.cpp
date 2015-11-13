@@ -1,3 +1,11 @@
+//============================================================================
+// Name        : ConfigClasTest.cpp
+// Author      : AmadeusCPPL
+// Version     : 0.1
+// Copyright   : Your copyright notice
+// Description : Test implementation for class Config, in C++
+//============================================================================
+
 #include "gtest/gtest.h"
 #include <cstring>
 #include <string>
