@@ -19,8 +19,8 @@ HEADERS = \
 	TestHelper.h \
 	..\inc\Config.h \
 	..\inc\HelperFunctions.h \
-	..\inc\TransactionCmd.h
-
+	..\inc\TransactionCmd.h \
+	..\inc\FileHelper.h
 
 TESTS = \
 	WalletTest.o \
@@ -28,7 +28,8 @@ TESTS = \
 	TestHelper.o \
 	ConfigClasTest.o \
 	HelperFunctionsTest.o \
-	TransactionsCmdTest.o
+	TransactionsCmdTest.o \
+	FileHelperTest.o
 
 LIB_OBJ = ..\lib\WalletLib.a
 
@@ -55,6 +56,9 @@ HelperFunctionsTest.o: HelperFunctionsTest.cpp $(TEST_HELPER_H)
 
 TransactionsCmdTest.o: TransactionsCmdTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o TransactionsCmdTest.o -c TransactionsCmdTest.cpp
+
+FileHelperTest.o: FileHelperTest.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o FileHelperTest.o -c FileHelperTest.cpp
 
 ..\..\test.exe: $(LIB_OBJ) $(TESTS) $(GTEST_LIB)
 	$(CPP) -o ..\..\test.exe $(TESTS) $(LIB_OBJ) $(GTEST_LIB)
