@@ -17,10 +17,10 @@ class Command {
 		MessageHandler* ptrMessage;
 	public:
 		Command();
-		virtual bool parseParams(std::vector<std::string>& params);
-		virtual bool validateParams(std::vector<std::string>& params);
+		virtual bool parseParams(std::vector<std::string>& params) = 0;
+		virtual bool validateParams(std::vector<std::string>& params) = 0;
 		void setMessageHandler(MessageHandler& message);
-		virtual bool executeCommand(std::vector<std::string>& params);
+		virtual bool executeCommand(std::vector<std::string>& params) = 0;
 		MessageHandler getPtrMessage();
 		virtual ~Command();
 

@@ -11,20 +11,6 @@ Command::Command()
 
 }
 
-//syntax analysis of parameters given to any command
-//implemented in every command class (CreateCmd, TransactionCmd etc.)
-bool Command::parseParams(std::vector<std::string>& params)
-{//dummy implementation to avoid warnings
-	return true;
-}
-
-//value analysis for parameters given to any command
-//implemented in every command class (CreateCmd, TransactionCmd etc.)
-bool Command::validateParams(std::vector<std::string>& params)
-{//dummy implementation to avoid warnings
-	return true;
-}
-
 //associates a message object to the command
 void Command::setMessageHandler(MessageHandler& message)
 {
@@ -36,13 +22,6 @@ void Command::setMessageCode(MessageCodes_E messageCode)
 {
 	ptrMessage->setMessageCode(messageCode);
 
-}
-
-//the execution of any command
-//implemented in every command class (CreateCmd, TransactionCmd etc.)
-bool Command::executeCommand(std::vector<std::string>& params)
-{//dummy implementation to avoid warnings
-	return true;
 }
 
 MessageHandler Command::getPtrMessage()
