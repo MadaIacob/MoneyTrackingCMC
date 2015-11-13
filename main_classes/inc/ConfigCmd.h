@@ -8,7 +8,6 @@
 
 class ConfigCmd : public Command {
 	private:
-		Command command;
 		Config config;
 	public:
 		ConfigCmd();
