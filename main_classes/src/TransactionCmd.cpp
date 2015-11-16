@@ -8,14 +8,15 @@ Date					10.11.2015
 #include "TransactionCmd.h"
 #include "HelperFunctions.h"
 #include "FileHelper.h"
+#include "Command.h"
 #include "Config.h"
 #include <iostream>
 using namespace std;
 
 //constructor - chooses between income/spend
-TransactionCmd::TransactionCmd(const string& command)
+TransactionCmd::TransactionCmd(Transaction_E transaction)
 {
-	if(command == "income")
+	if(transaction == INCOME)
 	{//"income" command
 		//set transaction sign to (+)
 		walletEntity.setSign("+");
