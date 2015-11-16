@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "Wallet.h"
 #include "WalletEntity.h"
