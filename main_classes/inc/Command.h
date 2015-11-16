@@ -21,7 +21,7 @@ class Command {
 		virtual bool validateParams(std::vector<std::string>& params) = 0;
 		void setMessageHandler(MessageHandler& message);
 		virtual bool executeCommand(std::vector<std::string>& params) = 0;
-		MessageHandler getPtrMessage();
+		MessageHandler& getPtrMessage();
 		virtual ~Command();
 
 

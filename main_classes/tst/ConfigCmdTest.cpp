@@ -22,7 +22,7 @@ TEST(ConfigParseTest, noParameters)
     //test
     EXPECT_EQ(true, command.parseParams(params));
     mes = command.getPtrMessage();
- 	
+
 	//tear-down
 }
 /*
@@ -53,6 +53,6 @@ TEST(ConfigParseTest, invalidParameters)
     //EXPECT_EQ(false, command.parseParams(params1));
     mes = command.getPtrMessage();
     //EXPECT_EQ(INVALID_PARAM_ERR, mes.getMessageCode());
-	
+
 	//tear-down
 }*/
