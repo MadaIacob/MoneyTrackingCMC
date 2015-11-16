@@ -11,5 +11,5 @@ yetother
 *.doc
 *.bat
 *.build
-
+.gcc-flags.json
 

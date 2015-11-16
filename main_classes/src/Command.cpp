@@ -24,7 +24,7 @@ void Command::setMessageCode(MessageCodes_E messageCode)
 
 }
 
-MessageHandler Command::getPtrMessage()
+MessageHandler& Command::getPtrMessage()
 {
 	return *ptrMessage;
 }
