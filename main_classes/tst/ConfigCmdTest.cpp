@@ -25,7 +25,7 @@ TEST(ConfigParseTest, noParameters)
 
 	//tear-down
 }
-/*
+
 TEST(ConfigParseTest, invalidParameters)
 {
     //set-up
@@ -43,16 +43,28 @@ TEST(ConfigParseTest, invalidParameters)
     vector<string> params5;
  	params5.push_back("default_wallet");
 	params5.push_back("=");
-	vector<string> params6;
- 	params6.push_back("default_wallet");
-	params6.push_back("==");
     vector<string> params7;
 	params7.push_back("default_wallet= ");
 
     //test
-    //EXPECT_EQ(false, command.parseParams(params1));
+    EXPECT_EQ(false, command.parseParams(params1));
     mes = command.getPtrMessage();
-    //EXPECT_EQ(INVALID_PARAM_ERR, mes.getMessageCode());
+    EXPECT_EQ(INVALID_PARAM_ERR, mes.getMessageCode());
+    EXPECT_EQ(false, command.parseParams(params2));
+    mes = command.getPtrMessage();
+    EXPECT_EQ(INVALID_PARAM_ERR, mes.getMessageCode());
+    EXPECT_EQ(false, command.parseParams(params3));
+    mes = command.getPtrMessage();
+    EXPECT_EQ(INVALID_PARAM_ERR, mes.getMessageCode());
+    EXPECT_EQ(false, command.parseParams(params4));
+    mes = command.getPtrMessage();
+    EXPECT_EQ(INVALID_PARAM_ERR, mes.getMessageCode());
+    EXPECT_EQ(false, command.parseParams(params5));
+    mes = command.getPtrMessage();
+    EXPECT_EQ(INVALID_PARAM_ERR, mes.getMessageCode());
+    EXPECT_EQ(false, command.parseParams(params7));
+    mes = command.getPtrMessage();
+    EXPECT_EQ(INVALID_PARAM_ERR, mes.getMessageCode());
 
 	//tear-down
-}*/
+}
