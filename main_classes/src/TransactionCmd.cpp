@@ -180,7 +180,7 @@ bool TransactionCmd::validateParams(vector<string>& params)
 	else
 	{//amount is valid
 		//truncate amount to have only two decimals and no leading zeros
-		string truncatedAmount=truncateAmount(walletEntity.getAmount().c_str());
+		string truncatedAmount=truncateAmount(walletEntity.getAmount());
 		//check if validated sum is negative or zero
 		if(atof(truncatedAmount.c_str()) <= 0.00)
 		{//amount is valid, but negative or zero

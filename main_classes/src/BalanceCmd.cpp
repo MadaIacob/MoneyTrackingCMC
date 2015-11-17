@@ -201,8 +201,8 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 	balanceString = sstream.str();
 
 	// truncate amount to add + to positive balance
-	const char *amn = balanceString.c_str() ;
-	balanceString = truncateAmount(amn) ;
+//	const char *amn = balanceString.c_str() ;
+	balanceString = truncateAmount(balanceString) ;
 
 	if ( params.empty() )
 	{

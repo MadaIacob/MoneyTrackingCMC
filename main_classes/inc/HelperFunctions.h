@@ -5,8 +5,8 @@
 
 bool validateFileName(std::string fileName) ;
 std::string convertPath(std::string givenPath) ;
-bool validateAmount(const char word []) ;
-std::string truncateAmount(const char word[]) ;
+bool validateAmount(std::string word) ;
+std::string truncateAmount(std::string word) ;
 std::string cutSign(std::string validAmount) ;
 
 #endif
