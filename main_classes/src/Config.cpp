@@ -10,6 +10,7 @@
 #include <fstream>
 #include <algorithm>
 #include "Config.h"
+#include <string>
 
 using namespace std;
 
@@ -65,23 +66,27 @@ bool Config::readConfigFile()
             //check if the line contains an "="
             found = line.find("=");
             if (found != std::string::npos) {
-                //get ridd of all spaces and tabs
-                line.erase(remove(line.begin(), line.end(), ' '), line.end());
-                line.erase(remove(line.begin(), line.end(), '\t'), line.end());
                 //format a line that contains a "," so that it has a
                 //  space after every comma
                 for( size_t pos = 0; pos < line.length(); pos += 2)
                 {
                     pos = line.find( ",", pos );
-                    if( pos == string::npos ) break;
-                    line.erase( pos, 1 );
-                    line.insert( pos, ", " );
+                    if( pos != string::npos )
+                    {
+                        unsigned int i = pos +1;
+                        while(line [i] == ' ' && i < line.length()) {
+                            i++;
+                        }
+                        line.erase( pos, i-pos );
+                        line.insert( pos, ", " );
+                    }
+                    else break;
                 }
                 //get the position of the "="
                 found = line.find("=");
                 //separate the key val pairs
-                string key = line.substr(0, found);
-                string value = line.substr(found+1);
+                string key = removeLRSpaces(line.substr(0, found));
+                string value = removeLRSpaces(line.substr(found+1));
                 if (value == "")
                 {
                     key += " = ";
@@ -174,6 +179,7 @@ bool Config::existsTag(const string tag){
     {
         //iterate trough the configContent and check if the provided tag
         //  exists in the key->value pairs of the configContent
+        //std::cout << "vasile mondialu" << std::endl;
         for (unsigned int i = 0; i < configContent.size(); i++)
         {
             string aux = configContent.at(i).key;
@@ -281,33 +287,50 @@ string Config::getConfigFileName()
     return configFileName;
 }
 
+string Config::removeLRSpaces(string stripString)
+{
+    while(std::isspace(*stripString.begin()))
+        stripString.erase(stripString.begin());
+
+    while(std::isspace(*stripString.rbegin()))
+        stripString.erase(stripString.length()-1);
+    return stripString;
+}
+
+
 
 // int main(int argc, char const *argv[]) {
-//     Config config("vasilica");
-//     //config.createConfigFile();
-//     std::cout << "paramaterii valizi sunt : " << config.validTagsToString() << std::endl;
-//     //std::cout << "crearea efectuata ? " << config.createConfigFile() << std::endl;
-//     std::cout << "citirea efectuata ? " << config.readConfigFile() << std::endl;
-//     vector<KeyVal> cont = config.getConfigContent();
-//     std::cout << "scrierea efectuata ? " << config.writeConfigFile() << std::endl;
-//     cout << "dimensiunea este : " << cont.size() << endl;
-//     for (unsigned int i =0; i < cont.size(); i++)
-//     {
-//         cout << "key is : " << cont.at(i).key << "-> value is : " << cont.at(i).value << std::endl;
-//     }
-//     config.printConfigContent();
-//     cout << "exista tagul default_wallet ? : " << config.existsTag("default_wallet") << endl;
-//     cout << "este valid tagul  default_wallet ? : " << config.isValidTag("default_wallet") << endl;
-//     std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
-//     cout << "modificarea efectuata cu succes ? : " << config.modifyContent("leguma","carnea") << endl;
-//     config.writeConfigFile();
-//     cont = config.getConfigContent();
-//     for (unsigned int i =0; i < cont.size(); i++)
-//     {
-//         cout << "key is : " << cont.at(i).key << "-> value is : " << cont.at(i).value << std::endl;
-//     }
-//     std::cout << "value for default_wallet -> " << config.getTagValue("default_wallet") << std::endl;
-//     std::cout << "configFileName : " << config.getConfigFileName() << std::endl;
-//
-//     return 0;
+    // Config config("vasilica");
+    // //config.createConfigFile();
+    // //std::cout << "paramaterii valizi sunt : " << config.validTagsToString() << std::endl;
+    // //std::cout << "crearea efectuata ? " << config.createConfigFile() << std::endl;
+    // std::cout << "citirea efectuata ? " << config.readConfigFile() << std::endl;
+    // vector<KeyVal> cont = config.getConfigContent();
+    // std::cout << "scrierea efectuata ? " << config.writeConfigFile() << std::endl;
+    // cout << "dimensiunea este : " << cont.size() << endl;
+    // for (unsigned int i =0; i < cont.size(); i++)
+    // {
+    //     cout << "key is : " << cont.at(i).key << "-> value is : " << cont.at(i).value << std::endl;
+    // }
+    // config.printConfigContent();
+    // cout << "exista tagul default_wallet ? : " << config.existsTag("default_wallet") << endl;
+    // //cout << "este valid tagul  default_wallet ? : " << config.isValidTag("default_wallet") << endl;
+    // std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
+    // cout << "modificarea efectuata cu succes ? : " << config.modifyContent("leguma","carnea") << endl;
+    // config.writeConfigFile();
+    // cont = config.getConfigContent();
+    // for (unsigned int i =0; i < cont.size(); i++)
+    // {
+    //     cout << "key is : " << cont.at(i).key << "-> value is : " << cont.at(i).value << std::endl;
+    // }
+    // std::cout << "value for default_wallet -> " << config.getTagValue("default_wallet") << std::endl;
+    // std::cout << "configFileName : " << config.getConfigFileName() << std::endl;
+
+
+    // Config config;
+    // string aux = "    vas      ile     ";
+    // std::cout << "stingul netransformat este : " << "//" << aux << "//" << std::endl;
+    // std::cout << "stingul transformat este : " << "//" << config.removeLRSpaces(aux) << "//" << std::endl;
+    //
+    // return 0;
 // }

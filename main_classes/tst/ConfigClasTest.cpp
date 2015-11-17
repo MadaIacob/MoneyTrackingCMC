@@ -256,7 +256,7 @@ TEST(ExistsConfigTagTest, defaultWalletTagNotOK)
 	string containtOkConfig2("		default_wallet 	= ");
 
 	string testOkConfigFile3("okConfig3");
-	string containtOkConfig3("not_ default_wallet = my.wallet");
+	string containtOkConfig3("def ault_wallet = my.wallet");
 
 	string testOkConfigFile4("okConfig4");
 	string containtOkConfig4("somethig_default_wallet = my.wallet");

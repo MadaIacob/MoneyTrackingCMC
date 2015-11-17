@@ -9,6 +9,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include <vector>
+#include <string>
 
 struct KeyVal {
     std::string key;
@@ -80,6 +81,8 @@ class Config
 
         //returns the configFileName
         std::string getConfigFileName();
+
+        std::string removeLRSpaces(std::string stripString);
 };
 
 #endif // CONFIG_H
