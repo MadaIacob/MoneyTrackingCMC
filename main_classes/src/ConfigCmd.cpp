@@ -20,7 +20,6 @@ bool ConfigCmd::parseParams(vector<string>& params)
 {
 	if(params.size() > 3)
 	{
-		//cout << "nu trebuie sa fiu aici" << endl;
 		params.clear();
 		params.push_back("config");
 		ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
