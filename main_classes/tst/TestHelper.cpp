@@ -93,3 +93,33 @@ bool validateFileName(string fileName)
 	return isValidFileName;
 
 }
+
+//helper function
+//reads all content from a file to a string
+//returns the string
+string fileToString(const string fileName)
+{
+	//value to return
+	string content = "";
+	//open file and create stream object
+	ifstream fileStream(fileName.c_str());
+	//put file content to string
+	if (fileStream.good())
+    {//file ok
+        string line = "";
+		//read file content line by line
+        while (getline(fileStream, line))
+        {//append line to content string
+			content = content + line + "\n";
+ 		}
+		//cut last "\n"
+		content.resize(content.length()-1);
+	}
+	else
+	{// file not ok		
+	}
+	//close file
+	fileStream.close();
+	
+	return content;
+}
