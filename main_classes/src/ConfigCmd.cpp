@@ -19,13 +19,16 @@ bool ConfigCmd::parseParams(vector<string>& params)
 {
 	if(params.size() > 3)
 	{
+		//cout << "nu trebuie sa fiu aici" << endl;
 		params.clear();
 		params.push_back("config");
 		ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
+		return false;
 	}
 	else if(params.size() == 0)
 	{
-
+		//cout << "nu trebuie sa fiu aici 2" << endl;
+		return true;
 	}
 	else
 	{
@@ -40,6 +43,7 @@ bool ConfigCmd::parseParams(vector<string>& params)
 	paramsSize = auxParams.size();
 	if(paramsSize >= 1)
 	{
+		//cout << "aici0" << endl;
 		size_t i = 0;
 		for (; i <= paramsSize-1 ; i++)
 		{
@@ -47,6 +51,7 @@ bool ConfigCmd::parseParams(vector<string>& params)
 			size_t foundStr = aux.find("=");
 			if(foundStr != std::string::npos)
 			{
+				//cout << "nu trebuie sa fiu aici 3" << endl;
 				if(!(foundStr >= aux.length()-1))
 				{
 					//cazul in care "=" este in mijlocul primului argument
@@ -68,6 +73,7 @@ bool ConfigCmd::parseParams(vector<string>& params)
 			}
 			else if((i+1 <= paramsSize-1) && (strcmp(auxParams.at(i+1).c_str(),"=") == 0))
 			{
+				//cout << "nu trebuie sa fiu aici 4" << endl;
 				//cazul in care "=" este un argument separat
 				//exemplu "default_wallet = mywallet"
 				i +=2;
@@ -77,7 +83,7 @@ bool ConfigCmd::parseParams(vector<string>& params)
 					params.push_back(auxParams.at(i));
 				}
 			}
-			else if(i <= paramsSize - 2)
+			else if((i + 2) <= paramsSize)
 			{
 				//cazul in care "=" este la inceputul argumentului doi
 				//exemplu "default_wallet =mywallet"
@@ -86,11 +92,13 @@ bool ConfigCmd::parseParams(vector<string>& params)
 				aux = auxParams.at(i);
 				if(aux.find("=") != string::npos)
 				{
+					//cout << "nu trebuie sa fiu aici 5" << endl;
 					params.push_back(auxParams.at(i-1));
 					params.push_back(aux.substr(1));
 				}
 				else
 				{
+					//cout << "aici 1" << endl;
 					params.clear();
 					params.push_back("config");
 					ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
@@ -99,15 +107,16 @@ bool ConfigCmd::parseParams(vector<string>& params)
 			}
 			if((i+1) != paramsSize)
 			{
-
+				//cout << "aici 2" << endl;
 				params.clear();
 				params.push_back("config");
 				ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
 				return false;
 			}
 		}
-		if(params.at(0) == "" || params.at(1) == "")
+		if(params.empty() || params.at(0) == "" || params.at(1) == "")
 		{
+			//cout << "aici 3" << endl;
 			params.clear();
 			params.push_back("config");
 			ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
@@ -121,11 +130,13 @@ bool ConfigCmd::parseParams(vector<string>& params)
 
 bool ConfigCmd::validateParams(vector<string>& params)
 {
+	//cout << "in validate" << endl;
 	return true;
 }
 
 bool ConfigCmd::executeCommand(vector<string>& params)
 {
+	//cout << "in execute command" << endl;
 	params.push_back(config.getConfigFileName());
 	if(!validateFileName(config.getConfigFileName()))
 	{

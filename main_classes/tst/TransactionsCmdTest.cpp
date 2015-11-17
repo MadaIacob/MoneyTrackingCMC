@@ -10,14 +10,15 @@
 #include "MessageCodes_E.h"
 #include "TransactionCmd.h"
 #include "TestHelper.h"
+#include "TransactionType.h"
 
 using namespace std;
 
 TEST(TransactionParseTest, noParameters)
 {
     //set-up
-    TransactionCmd commandI("income");
-    TransactionCmd commandS("spent");
+    TransactionCmd commandI(INCOME);
+    TransactionCmd commandS(SPEND);
 
     vector<string> paramsI;
     vector<string> paramsS;
@@ -41,8 +42,8 @@ TEST(TransactionParseTest, noParameters)
 TEST(TransactionParseTest, oneParameter)
 {
     //set-up
-    TransactionCmd commandI("income");
-    TransactionCmd commandS("spent");
+    TransactionCmd commandI(INCOME);
+    TransactionCmd commandS(SPEND);
 
     vector<string> paramsI;
     paramsI.push_back("123.369");
@@ -63,8 +64,8 @@ TEST(TransactionParseTest, oneParameter)
 TEST(TransactionParseTest, moreParameters)
 {
     //set-up
-    TransactionCmd commandI("income");
-    TransactionCmd commandS("spent");
+    TransactionCmd commandI(INCOME);
+    TransactionCmd commandS(SPEND);
 
     vector<string> paramsI2;
     paramsI2.push_back("-w");
@@ -93,8 +94,8 @@ TEST(TransactionParseTest, moreParameters)
 TEST(TransactionValidateTest, invalidAmount)
 {
     //set-up
-    TransactionCmd command1("income");
-    TransactionCmd command2("income");
+    TransactionCmd command1(INCOME);
+    TransactionCmd command2(INCOME);
 
     vector<string> params1;
     params1.push_back("123,25");
@@ -122,7 +123,7 @@ TEST(TransactionValidateTest, invalidAmount)
 TEST(TransactionValidateTest, negativeAmount)
 {
     //set-up
-    TransactionCmd command1("income");
+    TransactionCmd command1(INCOME);
 
     vector<string> params1;
     params1.push_back("-123.25");
@@ -141,7 +142,7 @@ TEST(TransactionValidateTest, negativeAmount)
 TEST(TransactionValidateTest, missingWallet)
 {
     //set-up
-    TransactionCmd command1("income");
+    TransactionCmd command1(INCOME);
 
     vector<string> params1;
     params1.push_back("123.25");
@@ -162,8 +163,8 @@ TEST(TransactionValidateTest, missingWallet)
 TEST(TransactionExecuteTest, addIncomeSpend)
 {
     //set-up
-    TransactionCmd command1("income");
-    TransactionCmd command2("spent");
+    TransactionCmd command1(INCOME);
+    TransactionCmd command2(SPEND);
 
     createFile("mada.wallet", "+100.00 RON\n");
 
