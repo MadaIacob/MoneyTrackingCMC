@@ -188,3 +188,27 @@ string removeLRSpaces(string stripString)
         stripString.erase(stripString.length()-1);
     return stripString;
 }
+
+//gets a string containing GMT calculated time, formatted like:
+//"08-11-2015 10:52"
+//returns unix timestamp format 
+time_t stringToUnixTime(const string timeValue)
+{
+//to be implemented	
+/*	time_t rawtime;
+	struct tm * timeinfo;
+	int year, month ,day;
+
+	// get time info and modify it to fit
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+	timeinfo->tm_year = year - 1900;
+	timeinfo->tm_mon = month - 1;
+	timeinfo->tm_mday = day;
+
+	//convert to time_t
+	mktime ( timeinfo );
+*/
+	return time(NULL);
+}
+

@@ -10,6 +10,7 @@
 #include <string>
 #include <cstdlib>
 #include "WalletEntity.h"
+#include "HelperFunctions.h"
 using namespace std;
 	WalletEntity::WalletEntity(const string lhSign, 
 					const string lhAmount, 
@@ -81,10 +82,17 @@ using namespace std;
 		return currency;;
 	}
 	
-	void WalletEntity::setTimeStamp()
+	void WalletEntity::setTimeStamp(const string timeValue)
 	{
-		time_t now = time(NULL);
-		timeStamp = now;
+		if(timeValue != "")
+		{
+			timeStamp = stringToUnixTime(timeValue);
+		}
+		else
+		{
+			timeStamp = time(NULL);
+		}
+		 
 	}
 	void WalletEntity::setSign(const string sign)
 	{

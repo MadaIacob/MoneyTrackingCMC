@@ -22,15 +22,11 @@ TransactionCmd::TransactionCmd(Transaction_E transaction)
 	{//"income" command
 		//set transaction sign to (+)
 		walletEntity.setSign("+");
-		//set transaction category to default value
-		//walletEntity.setCategory("salary");
 	}
 	else
 	{//"spend" command
 		//set transaction sign to (-)
 		walletEntity.setSign("-");
-		//set transaction category to default value
-		//walletEntity.setCategory("other");
 	}
 	//set transaction time stamp
 	walletEntity.setTimeStamp();
@@ -65,6 +61,8 @@ bool TransactionCmd::parseParams(vector<string>& params)
 			bool categoryFound = false;
 			//signalises the first wallet flag found;
 			bool walletFound = false;
+			//signalises the first time flag found;
+			bool timeFound = false;
 			//signalises the first amount found;
 			bool amountFound = false;
 
@@ -93,6 +91,17 @@ bool TransactionCmd::parseParams(vector<string>& params)
 					i++;
 					//put the next command line argument into Wallet.walletName
 					wallet.setName(params.at(i));
+				}
+				//check for the first "-t" or "--time" flag among parameters
+				else if(((params.at(i) == "-t") ||
+					(params.at(i) == "--time")) &&
+					 timeFound == false)
+				{//first time flag found
+					timeFound = true;
+					//jump over "-t" or "--time" flag
+					i++;
+					//put the next command line argument into WalletEntity.timeStamp
+					walletEntity.setTimeStamp(params.at(i));
 				}
 				//check for the first amount among parameters
 				else if(!amountFound)
