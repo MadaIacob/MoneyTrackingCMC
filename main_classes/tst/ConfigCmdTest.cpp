@@ -40,39 +40,39 @@ TEST(ConfigParseTest, invalidParameters)
     command1.setMessageHandler(mes1);
     vector<string> params1;
 	params1.push_back("-w");
-	
+
     ConfigCmd command2;
 	MessageHandler mes2;
     command2.setMessageHandler(mes2);
     vector<string> params2;
 	params2.push_back("default");
-	
+
     ConfigCmd command3;
 	MessageHandler mes3;
     command3.setMessageHandler(mes3);
     vector<string> params3;
 	params3.push_back("default_wallet");
-	
+
 	ConfigCmd command4;
  	MessageHandler mes4;
     command4.setMessageHandler(mes4);
     vector<string> params4;
 	params4.push_back("default_wallet=");
-	
+
 	ConfigCmd command5;
 	MessageHandler mes5;
     command5.setMessageHandler(mes5);
     vector<string> params5;
  	params5.push_back("default_wallet");
 	params5.push_back("=");
-	
+
 	ConfigCmd command6;
 	MessageHandler mes6;
     command6.setMessageHandler(mes6);
     vector<string> params6;
 	params6.push_back("-w");
 	params6.push_back("my.wallet");
-	
+
 	ConfigCmd command7;
 	MessageHandler mes7;
     command7.setMessageHandler(mes7);
@@ -115,7 +115,7 @@ TEST(ConfigParseTest, invalidParameters)
 	params12.push_back("a");
 	params12.push_back("default_wallet=");
 	params12.push_back("my.wallet");
-	
+
 	ConfigCmd command13;
 	MessageHandler mes13;
     command13.setMessageHandler(mes13);
@@ -128,27 +128,27 @@ TEST(ConfigParseTest, invalidParameters)
     EXPECT_EQ(false, command1.parseParams(params1));
     mes1 = command1.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes1.getMessageCode());
-	
+
     EXPECT_EQ(false, command2.parseParams(params2));
     mes2 = command2.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes2.getMessageCode());
-	
+
     EXPECT_EQ(false, command3.parseParams(params3));
     mes3 = command3.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes3.getMessageCode());
-	
+
     EXPECT_EQ(false, command4.parseParams(params4));
     mes4 = command4.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes4.getMessageCode());
-	
+
     EXPECT_EQ(false, command5.parseParams(params5));
     mes5 = command5.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes5.getMessageCode());
-	
+
     EXPECT_EQ(false, command6.parseParams(params6));
     mes6 = command6.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes6.getMessageCode());
-	
+
     EXPECT_EQ(false, command7.parseParams(params7));
     mes7 = command7.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes7.getMessageCode());
@@ -189,57 +189,57 @@ TEST(ConfigExecuteTest, invalidTags)
     vector<string> params1;
 	params1.push_back("-w");
 	params1.push_back("wallet");
-	
+
     ConfigCmd command2;
 	MessageHandler mes2;
     command2.setMessageHandler(mes2);
     vector<string> params2;
 	params2.push_back("default=");
 	params2.push_back("wallet");
-	
+
     ConfigCmd command3;
 	MessageHandler mes3;
     command3.setMessageHandler(mes3);
     vector<string> params3;
 	params3.push_back("default");
 	params3.push_back("=wallet");
-	
+
 	ConfigCmd command4;
  	MessageHandler mes4;
     command4.setMessageHandler(mes4);
     vector<string> params4;
 	params4.push_back("default= ");
 	params4.push_back("wallet");
-	
+
 	ConfigCmd command5;
 	MessageHandler mes5;
     command5.setMessageHandler(mes5);
     vector<string> params5;
 	params5.push_back("default");
 	params5.push_back(" =wallet");
-	
+
 
     //test
     EXPECT_EQ(true, command1.executeCommand(params1));
     mes1 = command1.getPtrMessage();
     EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes1.getMessageCode());
-	
+
     EXPECT_EQ(true, command2.executeCommand(params2));
     mes2 = command2.getPtrMessage();
     EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes2.getMessageCode());
-	
+
     EXPECT_EQ(true, command3.executeCommand(params3));
     mes3 = command3.getPtrMessage();
     EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes3.getMessageCode());
-	
+
     EXPECT_EQ(true, command4.executeCommand(params4));
     mes4 = command4.getPtrMessage();
     EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes4.getMessageCode());
-	
+
     EXPECT_EQ(true, command5.executeCommand(params5));
     mes5 = command5.getPtrMessage();
     EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes5.getMessageCode());
-	
+
 	//tear-down
 }
 
@@ -259,17 +259,17 @@ TEST(ConfigExecuteTest, invalidTags)
     command1.setMessageHandler(mes1);
     vector<string> params1;
 	params1.push_back("default_wallet");
-	params1.push_back("wallet");   
-	
+	params1.push_back("wallet");
+
 	ConfigCmd command2;
 	MessageHandler mes2;
     command2.setMessageHandler(mes2);
     vector<string> params2;
 	params2.push_back("default_currency");
-	params2.push_back("EUR");  
+	params2.push_back("EUR");
 
 //test
-	
+
 	//test function executeCommand
 	EXPECT_TRUE(command1.executeCommand(params1));
     mes1 = command1.getPtrMessage();
@@ -279,9 +279,9 @@ TEST(ConfigExecuteTest, invalidTags)
 	//copy content to string
 	string modifiedConfigContent = fileToString("moneytracker.config");
 	//compare string with expected content
-	EXPECT_TRUE(modifiedConfigContent.find("default_wallet = wallet",0) < 
+	EXPECT_TRUE(modifiedConfigContent.find("default_wallet = wallet",0) <
 				modifiedConfigContent.length());
-	
+
 	//test function executeCommand
 	EXPECT_TRUE(command2.executeCommand(params2));
     mes2 = command2.getPtrMessage();
@@ -291,10 +291,10 @@ TEST(ConfigExecuteTest, invalidTags)
 	//copy content to string
 	modifiedConfigContent = fileToString("moneytracker.config");
 	//compare string with expected content
-	EXPECT_TRUE(modifiedConfigContent.find("default_currency = EUR",0) < 
+	EXPECT_TRUE(modifiedConfigContent.find("default_currency = EUR",0) <
 				modifiedConfigContent.length());
 //tear-down
-	
+
 	//delete modified file
 	remove("moneytracker.config");
 	//rewrite original config file

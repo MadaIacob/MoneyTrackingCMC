@@ -8,5 +8,6 @@ std::string convertPath(std::string givenPath) ;
 bool validateAmount(std::string word) ;
 std::string truncateAmount(std::string word) ;
 std::string cutSign(std::string validAmount) ;
+std::string removeLRSpaces(std::string stripString);
 
 #endif

@@ -178,3 +178,13 @@ string truncateAmount(string word)
 
 	return amountConverted;
 }
+
+string removeLRSpaces(string stripString)
+{
+    while(std::isspace(*stripString.begin()))
+        stripString.erase(stripString.begin());
+
+    while(std::isspace(*stripString.rbegin()))
+        stripString.erase(stripString.length()-1);
+    return stripString;
+}

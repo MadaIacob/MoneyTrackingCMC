@@ -2,6 +2,7 @@
 #include "Command.h"
 #include "MessageHandler.h"
 #include "FileHelper.h"
+#include "HelperFunctions.h"
 
 #include <vector>
 #include <string>
@@ -86,10 +87,11 @@ bool ConfigCmd::parseParams(vector<string>& params)
 				//cazul in care "=" este la inceputul argumentului doi
 				//exemplu "default_wallet =mywallet"
 				i++;
-				aux = auxParams.at(i);
-				aux.erase(remove(aux.begin(), aux.end(), ' '), aux.end());
-				aux.erase(remove(aux.begin(), aux.end(), '\t'), aux.end());
+				aux = removeLRSpaces(auxParams.at(i));
+				//aux.erase(remove(aux.begin(), aux.end(), ' '), aux.end());
+				//aux.erase(remove(aux.begin(), aux.end(), '\t'), aux.end());
 				size_t posFound = aux.find("=");
+
 				if(posFound != string::npos && posFound < aux.size()-1)
 				{
 					params.push_back(auxParams.at(i-1));

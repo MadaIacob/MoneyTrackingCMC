@@ -10,6 +10,7 @@
 #include <fstream>
 #include <algorithm>
 #include "Config.h"
+#include "HelperFunctions.h"
 #include <string>
 
 using namespace std;
@@ -287,15 +288,16 @@ string Config::getConfigFileName()
     return configFileName;
 }
 
-string Config::removeLRSpaces(string stripString)
-{
-    while(std::isspace(*stripString.begin()))
-        stripString.erase(stripString.begin());
 
-    while(std::isspace(*stripString.rbegin()))
-        stripString.erase(stripString.length()-1);
-    return stripString;
-}
+// string Config::removeLRSpaces(string stripString)
+// {
+//     while(std::isspace(*stripString.begin()))
+//         stripString.erase(stripString.begin());
+//
+//     while(std::isspace(*stripString.rbegin()))
+//         stripString.erase(stripString.length()-1);
+//     return stripString;
+// }
 
 
 

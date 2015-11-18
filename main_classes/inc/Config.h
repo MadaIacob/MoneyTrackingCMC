@@ -82,7 +82,6 @@ class Config
         //returns the configFileName
         std::string getConfigFileName();
 
-        std::string removeLRSpaces(std::string stripString);
 };
 
 #endif // CONFIG_H
