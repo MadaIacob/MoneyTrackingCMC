@@ -316,28 +316,38 @@ bool TransactionCmd::validateParams(vector<string>& params)
 			//put config file content into config object
 			if(configFile.readConfigFile())
 			{//no error reading config file
-				//check for default_category tag in config
-				if(configFile.existsTag("default_category") &&
-				   (configFile.getTagValue("default_category") != ""))
-				{//default_category tag exists
-					//set default_category as category
-					walletEntity.setCategory(configFile.getTagValue("default_category"));
-					}
-				else
-				{//default_category tag doesn't exist or is empty
-				 //set "salary"/"other" as category
-					//check whether the command is "income" or "spend"
-					if(walletEntity.getSign() == "+")
-					{//the command is "income"
-						//set "salary" as category
-						walletEntity.setCategory("salary");
+				//check whether the command is "income" or "spend"
+				if(walletEntity.getSign() == "+")
+				{//the command is "income"	
+					//check for default_income_category tag in config
+					if(configFile.existsTag("default_income_category") &&
+					   (configFile.getTagValue("default_income_category") != ""))
+					{//default_income_category tag exists
+						//set default_income_category as category
+						walletEntity.setCategory(configFile.getTagValue("default_income_category"));
 					}
 					else
-					{//the command is "spend"
+					{//default_income_category tag doesn't exist or is empty
+					 	//set "salary" as category
+						walletEntity.setCategory("salary");
+					}
+				}
+				else
+				{//the command is "spend"		
+					//check for default_spending_category tag in config
+					if(configFile.existsTag("default_spending_category") &&
+					   (configFile.getTagValue("default_spending_category") != ""))
+					{//default_spending_category tag exists
+						//set default_spending_category as category
+						walletEntity.setCategory(configFile.getTagValue("default_spending_category"));
+					}
+					else
+					{//default_spending_category tag doesn't exist or is empty
 						//set "other" as category
 						walletEntity.setCategory("other");
 					}
 				}
+					
 			}
 			else
 			{//error reading config file
