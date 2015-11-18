@@ -1,3 +1,8 @@
+/*
+File Description		Implementation of TransactionCmd class
+Author					calin-ciprian.popita
+Date					17.11.2015
+*/
 #include "gtest/gtest.h"
 
 #include <string>
