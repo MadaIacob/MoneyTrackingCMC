@@ -240,7 +240,7 @@ TEST(ConfigExecuteTest, invalidTags)
 
  TEST(ConfigExecuteTest, validParams)
 {
-    //set-up
+//set-up
 
 	//save original config file to a string
 	string originalConfigContent = fileToString("moneytracker.config");
@@ -248,36 +248,49 @@ TEST(ConfigExecuteTest, invalidTags)
 	remove("moneytracker.config");
 	//create test file
 	createFile("moneytracker.config", "default_wallet = my.wallet\ndefault_currency = RON");
-	
-	//test
-	
+
     ConfigCmd command1;
 	MessageHandler mes1;
     command1.setMessageHandler(mes1);
     vector<string> params1;
 	params1.push_back("default_wallet");
 	params1.push_back("wallet");   
-	EXPECT_EQ(true, command1.executeCommand(params1));
-    mes1 = command1.getPtrMessage();
-    EXPECT_EQ(TAG_CONFIGURED_MSG, mes1.getMessageCode());
-	string modifiedConfigContent = fileToString("moneytracker.config");
-//	EXPECT_NE(4294967295,modifiedConfigContent.find("default_wallet = wallet",0));
 	
 	ConfigCmd command2;
 	MessageHandler mes2;
     command2.setMessageHandler(mes2);
     vector<string> params2;
 	params2.push_back("default_currency");
-	params2.push_back("EUR");   
-	EXPECT_EQ(true, command2.executeCommand(params2));
+	params2.push_back("EUR");  
+
+//test
+	
+	//test function executeCommand
+	EXPECT_TRUE(command1.executeCommand(params1));
+    mes1 = command1.getPtrMessage();
+	//check for success message
+    EXPECT_EQ(TAG_CONFIGURED_MSG, mes1.getMessageCode());
+	//search for the modified content within config file
+	//copy content to string
+	string modifiedConfigContent = fileToString("moneytracker.config");
+	//compare string with expected content
+	EXPECT_TRUE(modifiedConfigContent.find("default_wallet = wallet",0) < 
+				modifiedConfigContent.length());
+	
+	//test function executeCommand
+	EXPECT_TRUE(command2.executeCommand(params2));
     mes2 = command2.getPtrMessage();
+	//check for success message
     EXPECT_EQ(TAG_CONFIGURED_MSG, mes2.getMessageCode());
+	//search for the modified content within config file
+	//copy content to string
 	modifiedConfigContent = fileToString("moneytracker.config");
-//	EXPECT_NE(4294967295,modifiedConfigContent.find("default_currency = EUR",0));
+	//compare string with expected content
+	EXPECT_TRUE(modifiedConfigContent.find("default_currency = EUR",0) < 
+				modifiedConfigContent.length());
+//tear-down
 	
-	//tear-down
-	
-	//delete original file
+	//delete modified file
 	remove("moneytracker.config");
 	//rewrite original config file
 	createFile("moneytracker.config", originalConfigContent);
