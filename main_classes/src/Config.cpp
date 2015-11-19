@@ -10,6 +10,7 @@
 #include <fstream>
 #include <algorithm>
 #include "Config.h"
+#include "HelperFunctions.h"
 #include <string>
 
 using namespace std;
@@ -125,17 +126,10 @@ bool Config::writeConfigFile()
         {
             //check if the key->value pair has a value and if so,
             //  put both key and value in the line to be written to file
-            if (configContent.at(i).value != "")
-            {
-                line = configContent.at(i).key + " = " +
-                configContent.at(i).value + "\n";
-            }
-            else
-            {
-                //if the key->value pair does not have a value,
-                //  put only the key in the line to be written to file
-                line = configContent.at(i).key + "\n";
-            }
+
+            line = configContent.at(i).key + " = " +
+            configContent.at(i).value + "\n";
+
             //write the line to the file
             file << line;
         }
@@ -287,15 +281,16 @@ string Config::getConfigFileName()
     return configFileName;
 }
 
-string Config::removeLRSpaces(string stripString)
-{
-    while(std::isspace(*stripString.begin()))
-        stripString.erase(stripString.begin());
 
-    while(std::isspace(*stripString.rbegin()))
-        stripString.erase(stripString.length()-1);
-    return stripString;
-}
+// string Config::removeLRSpaces(string stripString)
+// {
+//     while(std::isspace(*stripString.begin()))
+//         stripString.erase(stripString.begin());
+//
+//     while(std::isspace(*stripString.rbegin()))
+//         stripString.erase(stripString.length()-1);
+//     return stripString;
+// }
 
 
 

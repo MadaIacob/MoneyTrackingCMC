@@ -94,8 +94,8 @@ bool CreateWalletCmd::executeCommand(vector<string>& params)
 		amount = "00.00" ;
 	}
 
-	const char *amn = amount.c_str() ;
-	amount = truncateAmount(amn) ; //could modify this function to take string
+//	const char *amn = amount.c_str() ;
+	amount = truncateAmount(amount) ; //could modify this function to take string
 	// set sign according to amount
 	char s = amount.at(0) ;
 	string sign = "" ;

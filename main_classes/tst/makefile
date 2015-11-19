@@ -2,7 +2,7 @@ CPP = g++
 
 AR = ar crf
 
-CPP_FLAGS = -Wall
+CPP_FLAGS = -g -Wall
 INC_FLAG = -I..\inc
 
 GTEST_DIR = C:\gtest-1.7.0
@@ -20,6 +20,7 @@ HEADERS = \
 	..\inc\Config.h \
 	..\inc\HelperFunctions.h \
 	..\inc\TransactionCmd.h \
+	..\inc\BalanceCmd.h \
 	..\inc\FileHelper.h \
 	..\inc\ConfigCmd.h
 
@@ -30,9 +31,10 @@ TESTS = \
 	ConfigClasTest.o \
 	HelperFunctionsTest.o \
 	TransactionsCmdTest.o \
+	BalanceCmdTest.o \
 	FileHelperTest.o \
 	ConfigCmdTest.o
-
+	
 LIB_OBJ = ..\lib\WalletLib.a
 
 all: ..\..\test.exe ..\lib\TestLib.a
@@ -62,6 +64,9 @@ ConfigCmdTest.o: ConfigCmdTest.cpp $(TEST_HELPER_H)
 TransactionsCmdTest.o: TransactionsCmdTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o TransactionsCmdTest.o -c TransactionsCmdTest.cpp
 
+BalanceCmdTest.o: BalanceCmdTest.cpp $(TEST_HELPER_H)
+	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o BalanceCmdTest.o -c BalanceCmdTest.cpp
+	
 FileHelperTest.o: FileHelperTest.cpp $(TEST_HELPER_H)
 	$(CPP) $(CPP_FLAGS) $(GTEST_INC) $(INC_FLAG) -o FileHelperTest.o -c FileHelperTest.cpp
 

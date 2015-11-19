@@ -2,11 +2,14 @@
 #define HELPER_FUNCTIONS_H
 
 #include <string>
+#include <ctime>
 
 bool validateFileName(std::string fileName) ;
 std::string convertPath(std::string givenPath) ;
-bool validateAmount(const char word []) ;
-std::string truncateAmount(const char word[]) ;
+bool validateAmount(std::string word) ;
+std::string truncateAmount(std::string word) ;
 std::string cutSign(std::string validAmount) ;
+std::string removeLRSpaces(std::string stripString);
+time_t stringToUnixTime(const std::string timeValue) ;
 
 #endif

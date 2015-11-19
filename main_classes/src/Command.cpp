@@ -31,6 +31,4 @@ MessageHandler& Command::getPtrMessage()
 
 Command::~Command()
 {
-	delete ptrMessage;
-	ptrMessage = 0;
 }

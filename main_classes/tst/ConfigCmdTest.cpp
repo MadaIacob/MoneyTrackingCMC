@@ -1,3 +1,8 @@
+/*
+File Description		Implementation of TransactionCmd class
+Author					calin-ciprian.popita
+Date					17.11.2015
+*/
 #include "gtest/gtest.h"
 
 #include <string>
@@ -8,6 +13,7 @@
 #include "MessageHandler.h"
 #include "MessageCodes_E.h"
 #include "ConfigCmd.h"
+#include "TestHelper.h"
 
 using namespace std;
 
@@ -102,61 +108,220 @@ TEST(ConfigParseTest, invalidParameters)
 	params11.push_back("a");
 	params11.push_back("default_wallet=");
 
+	ConfigCmd command12;
+	MessageHandler mes12;
+    command12.setMessageHandler(mes12);
+    vector<string> params12;
+	params12.push_back("a");
+	params12.push_back("default_wallet=");
+	params12.push_back("my.wallet");
+
+	ConfigCmd command13;
+	MessageHandler mes13;
+    command13.setMessageHandler(mes13);
+    vector<string> params13;
+	params13.push_back("default_wallet=");
+	params13.push_back("my.wallet");
+	params13.push_back("a");
+
     //test
-    cout << "t1" << endl;
     EXPECT_EQ(false, command1.parseParams(params1));
     mes1 = command1.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes1.getMessageCode());
 
-    cout << "t2" << endl;
     EXPECT_EQ(false, command2.parseParams(params2));
     mes2 = command2.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes2.getMessageCode());
 
-    cout << "t3" << endl;
     EXPECT_EQ(false, command3.parseParams(params3));
     mes3 = command3.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes3.getMessageCode());
 
-    cout << "t4" << endl;
     EXPECT_EQ(false, command4.parseParams(params4));
     mes4 = command4.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes4.getMessageCode());
 
-    cout << "t5" << endl;
     EXPECT_EQ(false, command5.parseParams(params5));
     mes5 = command5.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes5.getMessageCode());
 
-    cout << "t6" << endl;
     EXPECT_EQ(false, command6.parseParams(params6));
     mes6 = command6.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes6.getMessageCode());
 
-    cout << "t7" << endl;
     EXPECT_EQ(false, command7.parseParams(params7));
     mes7 = command7.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes7.getMessageCode());
 
-    cout << "t8" << endl;
 	EXPECT_EQ(false, command8.parseParams(params8));
     mes8 = command8.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes8.getMessageCode());
 
-    cout << "t9" << endl;
     EXPECT_EQ(false, command9.parseParams(params9));
     mes9 = command9.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes9.getMessageCode());
 
-    cout << "t10" << endl;
     EXPECT_EQ(false, command10.parseParams(params10));
     mes10 = command10.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes10.getMessageCode());
 
-    cout << "t11" << endl;
     EXPECT_EQ(false, command11.parseParams(params11));
     mes11 = command11.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes11.getMessageCode());
 
+    EXPECT_EQ(false, command12.parseParams(params12));
+    mes12 = command12.getPtrMessage();
+    EXPECT_EQ(INVALID_PARAM_ERR, mes12.getMessageCode());
+
+    EXPECT_EQ(false, command13.parseParams(params13));
+    mes13 = command13.getPtrMessage();
+    EXPECT_EQ(INVALID_PARAM_ERR, mes13.getMessageCode());
+
 	//tear-down
 }
+
+TEST(ConfigExecuteTest, invalidTags)
+{
+    //set-up
+    ConfigCmd command1;
+	MessageHandler mes1;
+    command1.setMessageHandler(mes1);
+    vector<string> params1;
+	params1.push_back("-w");
+	params1.push_back("wallet");
+
+    ConfigCmd command2;
+	MessageHandler mes2;
+    command2.setMessageHandler(mes2);
+    vector<string> params2;
+	params2.push_back("default=");
+	params2.push_back("wallet");
+
+    ConfigCmd command3;
+	MessageHandler mes3;
+    command3.setMessageHandler(mes3);
+    vector<string> params3;
+	params3.push_back("default");
+	params3.push_back("=wallet");
+
+	ConfigCmd command4;
+ 	MessageHandler mes4;
+    command4.setMessageHandler(mes4);
+    vector<string> params4;
+	params4.push_back("default= ");
+	params4.push_back("wallet");
+
+	ConfigCmd command5;
+	MessageHandler mes5;
+    command5.setMessageHandler(mes5);
+    vector<string> params5;
+	params5.push_back("default");
+	params5.push_back(" =wallet");
+
+
+    //test
+    EXPECT_EQ(true, command1.executeCommand(params1));
+    mes1 = command1.getPtrMessage();
+    EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes1.getMessageCode());
+
+    EXPECT_EQ(true, command2.executeCommand(params2));
+    mes2 = command2.getPtrMessage();
+    EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes2.getMessageCode());
+
+    EXPECT_EQ(true, command3.executeCommand(params3));
+    mes3 = command3.getPtrMessage();
+    EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes3.getMessageCode());
+
+    EXPECT_EQ(true, command4.executeCommand(params4));
+    mes4 = command4.getPtrMessage();
+    EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes4.getMessageCode());
+
+    EXPECT_EQ(true, command5.executeCommand(params5));
+    mes5 = command5.getPtrMessage();
+    EXPECT_EQ(NO_VALID_CONFIG_VALUE_ERR, mes5.getMessageCode());
+
+	//tear-down
+}
+
+ TEST(ConfigExecuteTest, validParams)
+{
+//set-up
+
+	//save original config file to a string
+	string originalConfigContent = fileToString("moneytracker.config");
+	//delete original file
+	remove("moneytracker.config");
+	//create test file
+	createFile("moneytracker.config", "default_wallet = my.wallet\ndefault_currency = RON");
+
+    ConfigCmd command1;
+	MessageHandler mes1;
+    command1.setMessageHandler(mes1);
+    vector<string> params1;
+	params1.push_back("default_wallet");
+	params1.push_back("wallet");
+
+	ConfigCmd command2;
+	MessageHandler mes2;
+    command2.setMessageHandler(mes2);
+    vector<string> params2;
+	params2.push_back("default_currency");
+	params2.push_back("EUR");
+
+//test
+
+	//test function executeCommand
+	EXPECT_TRUE(command1.executeCommand(params1));
+    mes1 = command1.getPtrMessage();
+	//check for success message
+    EXPECT_EQ(TAG_CONFIGURED_MSG, mes1.getMessageCode());
+	//search for the modified content within config file
+	//copy content to string
+	string modifiedConfigContent = fileToString("moneytracker.config");
+	//compare string with expected content
+	EXPECT_TRUE(modifiedConfigContent.find("default_wallet = wallet",0) <
+				modifiedConfigContent.length());
+
+	//test function executeCommand
+	EXPECT_TRUE(command2.executeCommand(params2));
+    mes2 = command2.getPtrMessage();
+	//check for success message
+    EXPECT_EQ(TAG_CONFIGURED_MSG, mes2.getMessageCode());
+	//search for the modified content within config file
+	//copy content to string
+	modifiedConfigContent = fileToString("moneytracker.config");
+	//compare string with expected content
+	EXPECT_TRUE(modifiedConfigContent.find("default_currency = EUR",0) <
+				modifiedConfigContent.length());
+//tear-down
+
+	//delete modified file
+	remove("moneytracker.config");
+	//rewrite original config file
+	createFile("moneytracker.config", originalConfigContent);
+
+}
+
+ TEST(ConfigExecuteTest, clearTagValue)
+ {
+    createFile("mada.config", "default_wallet = mmm");
+
+    ConfigCmd command1("mada.config");
+
+    MessageHandler mes1;
+    command1.setMessageHandler(mes1);
+    vector<string> params1;
+    params1.push_back("default_wallet");
+    params1.push_back("=");
+    params1.push_back("wallet");
+
+    bool smt = command1.parseParams(params1);
+    bool mmm = command1.executeCommand(params1);
+
+    EXPECT_EQ(true, mmm);
+    params1.clear();
+    cout << "parse =" << smt << endl;
+    cout << command1.executeCommand(params1) << endl;
+    cout << "parse =" << mmm << endl;
+
+ }

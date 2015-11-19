@@ -2,6 +2,7 @@
 #include "Command.h"
 #include "MessageHandler.h"
 #include "FileHelper.h"
+#include "HelperFunctions.h"
 
 #include <vector>
 #include <string>
@@ -16,11 +17,15 @@ ConfigCmd::ConfigCmd()
 
 }
 
+ConfigCmd::ConfigCmd(string configFileName) : config(configFileName)
+{
+
+}
+
 bool ConfigCmd::parseParams(vector<string>& params)
 {
 	if(params.size() > 3)
 	{
-		//cout << "nu trebuie sa fiu aici" << endl;
 		params.clear();
 		params.push_back("config");
 		ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
@@ -87,10 +92,11 @@ bool ConfigCmd::parseParams(vector<string>& params)
 				//cazul in care "=" este la inceputul argumentului doi
 				//exemplu "default_wallet =mywallet"
 				i++;
-				aux = auxParams.at(i);
-				aux.erase(remove(aux.begin(), aux.end(), ' '), aux.end());
-				aux.erase(remove(aux.begin(), aux.end(), '\t'), aux.end());
+				aux = removeLRSpaces(auxParams.at(i));
+				//aux.erase(remove(aux.begin(), aux.end(), ' '), aux.end());
+				//aux.erase(remove(aux.begin(), aux.end(), '\t'), aux.end());
 				size_t posFound = aux.find("=");
+
 				if(posFound != string::npos && posFound < aux.size()-1)
 				{
 					params.push_back(auxParams.at(i-1));
@@ -112,7 +118,14 @@ bool ConfigCmd::parseParams(vector<string>& params)
 				return false;
 			}
 		}
-		if(params.empty() || params.at(0) == "" || params.at(1) == "")
+
+		if(params.at(0) == "default_wallet" && params.at(1) == "")
+		{
+			params.clear();
+			params.push_back("config");
+			ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
+			return false;
+		}else if(params.empty() || params.at(0) == "")
 		{
 			params.clear();
 			params.push_back("config");
@@ -132,6 +145,8 @@ bool ConfigCmd::validateParams(vector<string>& params)
 
 bool ConfigCmd::executeCommand(vector<string>& params)
 {
+
+
 	params.push_back(config.getConfigFileName());
 	if(!validateFileName(config.getConfigFileName()))
 	{
@@ -144,9 +159,17 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		}
 		else
 		{
+			if((params.at(0) == "default_income_category" ||
+			   params.at(0) == "default_spend_category" ) &&
+		   	   params.at(1).find(";") != std::string::npos)
+			   {
+				   ptrMessage->setMessageCode(NOT_ALLOWED_CHARACTER);
+				   return false;
+			   }
+
 			if(config.existsTag(params.at(0)))
 			{
-				config.modifyContent(params.at(0), params.at(1));
+				config.modifyContent(removeLRSpaces(params.at(0)), removeLRSpaces(params.at(1)));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 			}
@@ -154,7 +177,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 			{
 				config.readConfigFile();
 				config.printConfigContent();
-				config.modifyContent(params.at(0), params.at(1));
+				config.modifyContent(removeLRSpaces(params.at(0)), removeLRSpaces(params.at(1)));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 				config.readConfigFile();
