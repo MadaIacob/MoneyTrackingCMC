@@ -301,3 +301,27 @@ TEST(ConfigExecuteTest, invalidTags)
 	createFile("moneytracker.config", originalConfigContent);
 
 }
+
+ TEST(ConfigExecuteTest, clearTagValue)
+ {
+    createFile("mada.config", "default_wallet = mmm");
+
+    ConfigCmd command1("mada.config");
+
+    MessageHandler mes1;
+    command1.setMessageHandler(mes1);
+    vector<string> params1;
+    params1.push_back("default_wallet");
+    params1.push_back("=");
+    params1.push_back("wallet");
+
+    bool smt = command1.parseParams(params1);
+    bool mmm = command1.executeCommand(params1);
+
+    EXPECT_EQ(true, mmm);
+    params1.clear();
+    cout << "parse =" << smt << endl;
+    cout << command1.executeCommand(params1) << endl;
+    cout << "parse =" << mmm << endl;
+
+ }

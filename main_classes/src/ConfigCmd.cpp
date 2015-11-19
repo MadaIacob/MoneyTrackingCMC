@@ -17,6 +17,11 @@ ConfigCmd::ConfigCmd()
 
 }
 
+ConfigCmd::ConfigCmd(string configFileName) : config(configFileName)
+{
+
+}
+
 bool ConfigCmd::parseParams(vector<string>& params)
 {
 	if(params.size() > 3)
@@ -161,7 +166,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 				   ptrMessage->setMessageCode(NOT_ALLOWED_CHARACTER);
 				   return false;
 			   }
-			   
+
 			if(config.existsTag(params.at(0)))
 			{
 				config.modifyContent(removeLRSpaces(params.at(0)), removeLRSpaces(params.at(1)));

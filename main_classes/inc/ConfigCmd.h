@@ -11,6 +11,7 @@ class ConfigCmd : public Command {
 		Config config;
 	public:
 		ConfigCmd();
+		ConfigCmd(std::string configFileName);
 		bool parseParams(std::vector<std::string>& params);
 		bool validateParams(std::vector<std::string>& params);
 		bool executeCommand(std::vector<std::string>& params);
