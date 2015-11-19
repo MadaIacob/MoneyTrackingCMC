@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <cstdio>
 
 using namespace std;
 
@@ -132,7 +133,9 @@ TEST(CreateWalletValidateTest, validAmount)
   vector<string> params2;
   vector<string> params3;
 
-
+  MessageHandler mes;
+  command.setMessageHandler(mes);
+  
   params1.push_back("wallet1");
   params1.push_back("00.236");
 
@@ -160,6 +163,9 @@ TEST(CreateWalletExecuteTest, createWallet)
   vector<string> params2;
   vector<string> params3;
   vector<string> params4;
+  
+  MessageHandler mes;
+  command.setMessageHandler(mes);
 
   params1.push_back("wallet1");
   params1.push_back("00.232");
