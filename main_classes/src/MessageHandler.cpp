@@ -132,6 +132,11 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			<< " value." << endl;
 			break;
 		}
+		case NOT_ALLOWED_CHARACTER:
+		{
+			cout << "';' is not a valid character." << endl;
+			break;
+		}
 		case WALLET_CRETED_MSG:
 		{
 			//parameters[0] = wallet name

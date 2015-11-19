@@ -307,11 +307,16 @@ bool TransactionCmd::validateParams(vector<string>& params)
 			return false;
 		}
 	}
-	
-	
+
+
 	//---------------  validate category for transaction  ----------------------
 
 	//check if category was provided
+	if(walletEntity.getCategory().find(";") != std::string::npos)
+	   {
+		   ptrMessage->setMessageCode(NOT_ALLOWED_CHARACTER);
+		   return false;
+	   }
 	if(walletEntity.getCategory() == "")
 	{//no category provided
 		//check for config file
@@ -327,7 +332,7 @@ bool TransactionCmd::validateParams(vector<string>& params)
 			{//no error reading config file
 				//check whether the command is "income" or "spend"
 				if(walletEntity.getSign() == "+")
-				{//the command is "income"	
+				{//the command is "income"
 					//check for default_income_category tag in config
 					if(configFile.existsTag("default_income_category") &&
 					   (configFile.getTagValue("default_income_category") != ""))
@@ -342,7 +347,7 @@ bool TransactionCmd::validateParams(vector<string>& params)
 					}
 				}
 				else
-				{//the command is "spend"		
+				{//the command is "spend"
 					//check for default_spending_category tag in config
 					if(configFile.existsTag("default_spending_category") &&
 					   (configFile.getTagValue("default_spending_category") != ""))
@@ -356,7 +361,7 @@ bool TransactionCmd::validateParams(vector<string>& params)
 						walletEntity.setCategory("other");
 					}
 				}
-					
+
 			}
 			else
 			{//error reading config file
@@ -382,7 +387,7 @@ bool TransactionCmd::validateParams(vector<string>& params)
 	{//category provided
 	}
 
-	
+
 	return true;
 }
 

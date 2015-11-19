@@ -113,7 +113,14 @@ bool ConfigCmd::parseParams(vector<string>& params)
 				return false;
 			}
 		}
-		if(params.empty() || params.at(0) == "" || params.at(1) == "")
+
+		if(params.at(0) == "default_wallet" && params.at(1) == "")
+		{
+			params.clear();
+			params.push_back("config");
+			ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
+			return false;
+		}else if(params.empty() || params.at(0) == "")
 		{
 			params.clear();
 			params.push_back("config");
@@ -133,6 +140,8 @@ bool ConfigCmd::validateParams(vector<string>& params)
 
 bool ConfigCmd::executeCommand(vector<string>& params)
 {
+
+
 	params.push_back(config.getConfigFileName());
 	if(!validateFileName(config.getConfigFileName()))
 	{
@@ -145,9 +154,17 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		}
 		else
 		{
+			if((params.at(0) == "default_income_category" ||
+			   params.at(0) == "default_spend_category" ) &&
+		   	   params.at(1).find(";") != std::string::npos)
+			   {
+				   ptrMessage->setMessageCode(NOT_ALLOWED_CHARACTER);
+				   return false;
+			   }
+			   
 			if(config.existsTag(params.at(0)))
 			{
-				config.modifyContent(params.at(0), params.at(1));
+				config.modifyContent(removeLRSpaces(params.at(0)), removeLRSpaces(params.at(1)));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 			}
@@ -155,7 +172,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 			{
 				config.readConfigFile();
 				config.printConfigContent();
-				config.modifyContent(params.at(0), params.at(1));
+				config.modifyContent(removeLRSpaces(params.at(0)), removeLRSpaces(params.at(1)));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 				config.readConfigFile();

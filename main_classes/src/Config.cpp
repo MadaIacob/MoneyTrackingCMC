@@ -126,17 +126,10 @@ bool Config::writeConfigFile()
         {
             //check if the key->value pair has a value and if so,
             //  put both key and value in the line to be written to file
-            if (configContent.at(i).value != "")
-            {
-                line = configContent.at(i).key + " = " +
-                configContent.at(i).value + "\n";
-            }
-            else
-            {
-                //if the key->value pair does not have a value,
-                //  put only the key in the line to be written to file
-                line = configContent.at(i).key + "\n";
-            }
+
+            line = configContent.at(i).key + " = " +
+            configContent.at(i).value + "\n";
+
             //write the line to the file
             file << line;
         }
