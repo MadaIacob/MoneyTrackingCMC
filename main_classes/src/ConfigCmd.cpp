@@ -160,7 +160,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		else
 		{
 			if((params.at(0) == "default_income_category" ||
-			   params.at(0) == "default_spend_category" ) &&
+			   params.at(0) == "default_spending_category" ) &&
 		   	   params.at(1).find(";") != std::string::npos)
 			   {
 				   ptrMessage->setMessageCode(NOT_ALLOWED_CHARACTER);
@@ -173,7 +173,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 				vector<KeyVal> cont = config.getConfigContent();
-				
+
 			}
 			else if(config.isValidTag(params.at(0)))
 			{

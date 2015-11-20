@@ -21,7 +21,7 @@ Config::Config(string configFileName)
     validTags.push_back("default_wallet");
     validTags.push_back("default_currency");
     validTags.push_back("default_income_category");
-    validTags.push_back("default_spend_category");
+    validTags.push_back("default_spending_category");
 }
 
 string Config::validTagsToString()
@@ -88,7 +88,7 @@ bool Config::readConfigFile()
                 //separate the key val pairs
                 string key = removeLRSpaces(line.substr(0, found));
                 string value = removeLRSpaces(line.substr(found+1));
-                
+
                 KeyVal kV;
                 kV.key = key;
                 kV.value = value;
