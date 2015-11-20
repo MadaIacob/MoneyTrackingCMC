@@ -169,6 +169,10 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 
 			if(config.existsTag(params.at(0)))
 			{
+				if(params.at(1) == "")
+				{
+					ptrMessage->setMessageCode(NO_DEFAULT_CATEGORY_CONFIGURED);
+				}
 				config.modifyContent(removeLRSpaces(params.at(0)), removeLRSpaces(params.at(1)));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
@@ -177,6 +181,10 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 			}
 			else if(config.isValidTag(params.at(0)))
 			{
+				if(params.at(1) == "")
+				{
+					ptrMessage->setMessageCode(NO_DEFAULT_CATEGORY_CONFIGURED);
+				}
 				config.readConfigFile();
 				config.printConfigContent();
 				config.modifyContent(removeLRSpaces(params.at(0)), removeLRSpaces(params.at(1)));
