@@ -137,6 +137,11 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			cout << "error: ';' is not a valid character." << endl;
 			break;
 		}
+		case NO_DEFAULT_CATEGORY_CONFIGURED:
+		{
+			cout << "No '" << parameters.at(0) << "' is configured as default." << endl;
+			break;
+		}
 		case WALLET_CRETED_MSG:
 		{
 			//parameters[0] = wallet name

@@ -160,7 +160,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		else
 		{
 			if((params.at(0) == "default_income_category" ||
-			   params.at(0) == "default_spend_category" ) &&
+			   params.at(0) == "default_spending_category" ) &&
 		   	   params.at(1).find(";") != std::string::npos)
 			   {
 				   ptrMessage->setMessageCode(NOT_ALLOWED_CHARACTER);
@@ -169,14 +169,22 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 
 			if(config.existsTag(params.at(0)))
 			{
+				if(params.at(1) == "")
+				{
+					ptrMessage->setMessageCode(NO_DEFAULT_CATEGORY_CONFIGURED);
+				}
 				config.modifyContent(removeLRSpaces(params.at(0)), removeLRSpaces(params.at(1)));
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 				vector<KeyVal> cont = config.getConfigContent();
-				
+
 			}
 			else if(config.isValidTag(params.at(0)))
 			{
+				if(params.at(1) == "")
+				{
+					ptrMessage->setMessageCode(NO_DEFAULT_CATEGORY_CONFIGURED);
+				}
 				config.readConfigFile();
 				config.printConfigContent();
 				config.modifyContent(removeLRSpaces(params.at(0)), removeLRSpaces(params.at(1)));
