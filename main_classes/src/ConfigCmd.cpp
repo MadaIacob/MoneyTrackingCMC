@@ -173,10 +173,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 				config.writeConfigFile();
 				ptrMessage->setMessageCode(TAG_CONFIGURED_MSG);
 				vector<KeyVal> cont = config.getConfigContent();
-				for (size_t i = 0; i< cont.size(); i++)
-				{
-					cout << "i: " << i << " key: " << cont.at(i).key << "\n  val: " << cont.at(i).value << endl;
-				}
+				
 			}
 			else if(config.isValidTag(params.at(0)))
 			{
