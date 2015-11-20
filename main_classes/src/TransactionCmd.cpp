@@ -100,8 +100,21 @@ bool TransactionCmd::parseParams(vector<string>& params)
 					timeFound = true;
 					//jump over "-t" or "--time" flag
 					i++;
-					//put the next command line argument into WalletEntity.timeStamp
-					walletEntity.setTimeStamp(params.at(i));
+					//copy argument
+					string dateTime = params.at(i);
+					//check if next command line argument is a valid timeStamp
+					if(parseDateTime(dateTime) && validateDateTime(dateTime))
+					{//valid timeStamp
+						//put the next command line argument into WalletEntity.timeStamp
+						walletEntity.setTimeStamp(dateTime);
+					}
+					else
+					{//not valid timeStamp
+						//set error message
+						ptrMessage->setMessageCode(INVALID_PARAM_ERR);
+						isParseOK = false;
+						break;
+					}
 				}
 				//check for the first amount among parameters
 				else if(!amountFound)
