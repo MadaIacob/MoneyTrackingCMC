@@ -82,11 +82,11 @@ using namespace std;
 		return currency;;
 	}
 	
-	void WalletEntity::setTimeStamp(const string timeValue)
+	void WalletEntity::setTimeStamp(string dateTime)
 	{
-		if(timeValue != "")
+		if(dateTime != "")
 		{
-			timeStamp = stringToUnixTime(timeValue);
+			timeStamp = stringToUnixTime(dateTime);
 		}
 		else
 		{
