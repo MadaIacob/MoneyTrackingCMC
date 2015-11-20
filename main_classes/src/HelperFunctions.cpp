@@ -1,4 +1,11 @@
+/*
+File Description		Implementation of TransactionCmd class
+Author					sas.catalin.raul, calin-ciprian.popita
+Date					10.11.2015
 
+20.11.2015 - 	calin-ciprian.popita 
+				added stoi, parseDateTime, validateDateTime, stringToUnixTime
+*/
 #include "HelperFunctions.h"
 #include <string>
 #include <cstring>
@@ -190,7 +197,7 @@ string removeLRSpaces(string stripString)
     return stripString;
 }
 
-//converts string to int
+//converts a string containing digits to int
 //returns 0 if at least one character from string is not a digit
 int stoi(const string stringNumber)
 {
@@ -217,7 +224,7 @@ int stoi(const string stringNumber)
 
 //Gets reference to a string containing GMT calculated time, formatted like:
 //"DD-MM-YYYY HH:MM" (also accepts day, month and hour as one digit number)
-//If input string respects format,it formattes the string like:
+//If input string respects format,this function also formats the string like:
 //"DD-MM-YYYY HH:MM" (adding zeros where needed, removing separators)
 //and checks if all characters are digits
 //Returns true if the string respects input format 
@@ -335,8 +342,16 @@ bool parseDateTime(string& dateTime)
 	{//string length is outof range
 		isValid = false;
 	}
+	//check if date/time is not valid
 	if (!isValid)
+	{//not valid date/time
+		//put original content back in referenced string
 		dateTime = originalDateTime;
+	}
+	else
+	{//valid date/time
+		//keep the formatted content in referenced string
+	}
 	return isValid;
 }
 
@@ -378,7 +393,7 @@ bool validateDateTime(string& dateTime)
 	//check year and day if month is february
 	int day = stoi(dateTime.substr(0, 2));
 	int year = stoi(dateTime.substr(6, 4));
-	//check year if valid leap year
+	//check year if valid
 	if (year >= 1970) 
 	{//valid year
 		//check if february and leap year
@@ -397,8 +412,8 @@ bool validateDateTime(string& dateTime)
 			//check month
 			switch(month)
 			{
-				case 2:
-				{//check day if february
+				case 2://february
+				{//check day
 					if((day > 0) && (day < 29))
 					{//valid day
 						isValid = true;

@@ -3,7 +3,10 @@ File Description		Implementation of TransactionCmd class
 Author					calin-ciprian.popita
 Date					10.11.2015
 
-18.11.2015 - added default category taken from config file or hardcoded
+18.11.2015 - calin-ciprian.popita
+			 added default category taken from config file or hardcoded
+20.11.2015 - calin-ciprian.popita
+			 added -t/--time flag to specify timestamp
 */
 
 #include <stdlib.h>
