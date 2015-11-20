@@ -88,10 +88,7 @@ bool Config::readConfigFile()
                 //separate the key val pairs
                 string key = removeLRSpaces(line.substr(0, found));
                 string value = removeLRSpaces(line.substr(found+1));
-                if (value == "")
-                {
-                    key += " = ";
-                }
+                
                 KeyVal kV;
                 kV.key = key;
                 kV.value = value;

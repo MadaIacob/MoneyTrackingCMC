@@ -12,4 +12,4 @@ yetother
 *.bat
 *.build
 .gcc-flags.json
-
+moneytracker.config

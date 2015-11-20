@@ -7,6 +7,7 @@ Date					17.11.2015
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "Wallet.h"
 #include "WalletEntity.h"
@@ -246,15 +247,9 @@ TEST(ConfigExecuteTest, invalidTags)
  TEST(ConfigExecuteTest, validParams)
 {
 //set-up
+	createFile("test.config", "default_wallet = my.wallet\ndefault_currency = RON");
 
-	//save original config file to a string
-	string originalConfigContent = fileToString("moneytracker.config");
-	//delete original file
-	remove("moneytracker.config");
-	//create test file
-	createFile("moneytracker.config", "default_wallet = my.wallet\ndefault_currency = RON");
-
-    ConfigCmd command1;
+    ConfigCmd command1("test.config");
 	MessageHandler mes1;
     command1.setMessageHandler(mes1);
     vector<string> params1;
@@ -275,9 +270,8 @@ TEST(ConfigExecuteTest, invalidTags)
     mes1 = command1.getPtrMessage();
 	//check for success message
     EXPECT_EQ(TAG_CONFIGURED_MSG, mes1.getMessageCode());
-	//search for the modified content within config file
 	//copy content to string
-	string modifiedConfigContent = fileToString("moneytracker.config");
+	string modifiedConfigContent = fileToString("test.config");
 	//compare string with expected content
 	EXPECT_TRUE(modifiedConfigContent.find("default_wallet = wallet",0) <
 				modifiedConfigContent.length());
@@ -288,40 +282,82 @@ TEST(ConfigExecuteTest, invalidTags)
 	//check for success message
     EXPECT_EQ(TAG_CONFIGURED_MSG, mes2.getMessageCode());
 	//search for the modified content within config file
-	//copy content to string
-	modifiedConfigContent = fileToString("moneytracker.config");
+	modifiedConfigContent = fileToString("test.config");
 	//compare string with expected content
 	EXPECT_TRUE(modifiedConfigContent.find("default_currency = EUR",0) <
 				modifiedConfigContent.length());
 //tear-down
 
 	//delete modified file
-	remove("moneytracker.config");
-	//rewrite original config file
-	createFile("moneytracker.config", originalConfigContent);
+	remove("test.config");
 
 }
 
- TEST(ConfigExecuteTest, clearTagValue)
+ TEST(ConfigExecuteTest, clearTagValueParse)
  {
-    createFile("mada.config", "default_wallet = mmm");
+     //set-up
+    createFile("test.config", "default_wallet = wallet\ndefault_income_category = category");
 
-    ConfigCmd command1("mada.config");
+    ConfigCmd command1("test.config");
+    ConfigCmd command2("test.config");
 
     MessageHandler mes1;
     command1.setMessageHandler(mes1);
     vector<string> params1;
     params1.push_back("default_wallet");
     params1.push_back("=");
-    params1.push_back("wallet");
+    params1.push_back("");
 
-    bool smt = command1.parseParams(params1);
-    bool mmm = command1.executeCommand(params1);
+    MessageHandler mes2;
+    command2.setMessageHandler(mes2);
+    vector<string> params2;
+    params2.push_back("default_income_category");
+    params2.push_back("=");
+    params2.push_back("");
 
-    EXPECT_EQ(true, mmm);
-    params1.clear();
-    cout << "parse =" << smt << endl;
-    cout << command1.executeCommand(params1) << endl;
-    cout << "parse =" << mmm << endl;
+    //test
+    EXPECT_EQ(false, command1.parseParams(params1));
+    EXPECT_EQ(true, command2.parseParams(params2));
 
+    //tear-down
+    remove("test.config");
+ }
+
+ TEST(ConfigExecuteTest, clearTagValueExecute)
+ {
+     //set-up
+    createFile("test.config", "default_wallet = wallet\ndefault_income_category = category");
+
+    ConfigCmd command1("test.config");
+    ConfigCmd command2("test.config");
+
+    MessageHandler mes1;
+    command1.setMessageHandler(mes1);
+    vector<string> params1;
+    params1.push_back("default_wallet");
+    params1.push_back("=");
+    params1.push_back("");
+
+    MessageHandler mes2;
+    command2.setMessageHandler(mes2);
+    vector<string> params2;
+    params2.push_back("default_income_category");
+    params2.push_back("=");
+    params2.push_back("");
+
+    //test
+    EXPECT_EQ(false, command1.parseParams(params1));
+    EXPECT_EQ(true, command2.parseParams(params2));
+    if(!mes1.isSetMessageCode())
+    {
+        EXPECT_EQ(false, command1.executeCommand(params1));
+    }
+
+    if(!mes2.isSetMessageCode())
+    {
+        EXPECT_EQ(true, command2.executeCommand(params2));
+    }
+
+    //tear-down
+    remove("test.config");
  }
