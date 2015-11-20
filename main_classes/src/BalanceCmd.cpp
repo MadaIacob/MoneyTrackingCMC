@@ -23,6 +23,8 @@ using namespace std;
 
 BalanceCmd::BalanceCmd(){}
 
+BalanceCmd::BalanceCmd(string configFileName) : configFile(configFileName) {} 
+
 bool BalanceCmd::parseParams(vector<string>& params)
 {
 	// balance command with no parameters
@@ -61,7 +63,6 @@ bool BalanceCmd::parseParams(vector<string>& params)
 
 bool BalanceCmd::validateParams(vector<string>& params)
 {
-	Config configFile;
 	
 	// verify if 'moneytracker.config' can be opened to get default_wallet
 	if	( !configFile.readConfigFile() && ( params.empty() || 
@@ -99,7 +100,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 		{
 			wallet.setName(defaultWallet) ;
 			categForBalance = params.at(1) ;
-		}
+			}
 		else //else is the case with params.at(0)== "-w"
 		{
 			wallet.setName(params.at(1)) ;
@@ -122,12 +123,11 @@ bool BalanceCmd::validateParams(vector<string>& params)
 	{
 		wallet.setName(defaultWallet) ;
 	}
-	
 	// verify that file specified as wallet for use exists
 	if ( !wallet.existsWalletFile() )
 	{
 			params.clear();
-			params.push_back(defaultWallet) ;
+			params.push_back(wallet.getName()) ;
 			ptrMessage->setMessageCode(COULD_NOT_OPEN_FILE_BAL_ERR) ;
 			return false ;
 	}
