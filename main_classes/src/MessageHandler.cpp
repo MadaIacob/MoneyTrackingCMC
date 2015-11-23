@@ -206,6 +206,12 @@ void MessageHandler::printMessage(vector<string>& parameters)
 			<< "' was configured as default." << endl;
 			break;
 		}
+		case TIME_NOT_VALID_ERR:
+		{
+			//error: transaction time is not valid
+			cout << "error: transaction time is not valid." << endl;
+			break;
+		}
 		case HELP_MSG:
 		{
 			cout << endl << "Accepted commands and arguments:" << endl;

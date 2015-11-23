@@ -114,7 +114,7 @@ bool TransactionCmd::parseParams(vector<string>& params)
 					else
 					{//not valid timeStamp
 						//set error message
-						ptrMessage->setMessageCode(INVALID_PARAM_ERR);
+						ptrMessage->setMessageCode(TIME_NOT_VALID_ERR);
 						isParseOK = false;
 						break;
 					}
