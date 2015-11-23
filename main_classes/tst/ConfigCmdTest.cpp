@@ -126,11 +126,9 @@ TEST(ConfigParseTest, invalidParameters)
 	params13.push_back("a");
 
     //test
-    // cout << "aici1" << endl;
-    // EXPECT_EQ(false, command1.parseParams(params1));
-    // cout << "aici1" << endl;
-    // mes1 = command1.getPtrMessage();
-    // EXPECT_EQ(INVALID_PARAM_ERR, mes1.getMessageCode());
+    EXPECT_EQ(false, command1.parseParams(params1));
+    mes1 = command1.getPtrMessage();
+    EXPECT_EQ(INVALID_PARAM_ERR, mes1.getMessageCode());
 
     cout << "aici2" << endl;
     EXPECT_EQ(false, command2.parseParams(params2));

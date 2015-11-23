@@ -159,7 +159,7 @@ TEST(IsValidTagTest, ValidTags)
 	kv3.key = "default_income_category";
 	vect.push_back(kv3);
 
-	kv4.key = "default_spend_category";
+	kv4.key = "default_spending_category";
 	vect.push_back(kv4);
 
 	Config okConfig1(testOkConfigFile1);
