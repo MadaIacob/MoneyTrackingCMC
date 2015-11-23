@@ -169,7 +169,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 
 			if(config.existsTag(params.at(0)))
 			{
-				if(params.at(1) == "")
+				if(removeLRSpaces(params.at(1) ) == "")
 				{
 					ptrMessage->setMessageCode(NO_DEFAULT_CATEGORY_CONFIGURED);
 				}
