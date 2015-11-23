@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : HelperFunctionsTest.cpp
-// Author      : AmadeusCPPL
+// Author      : AmadeusCPPL, calin-ciprian.popita
 // Version     : 0.1
 // Copyright   : Your copyright notice
 // Description : Test implementation for HelperFunctions, in C++
@@ -51,7 +51,6 @@ TEST(validateAmountTest, leadingZeros)
 	EXPECT_EQ(true, validateAmount("39998"));
 	EXPECT_EQ(true, validateAmount("-5"));
 	EXPECT_EQ(true, validateAmount("-35987"));
-
 }
 
 TEST(cutSignTest, cutMinus)
@@ -94,7 +93,6 @@ TEST(truncateAmountTest, allowedCharacters)
 	EXPECT_EQ("+00.00", truncateAmount("+0.00"));
 	EXPECT_EQ("+00.00", truncateAmount("-000.000"));
 	EXPECT_EQ("+00.00", truncateAmount("-0.00"));
-
 }
 
 TEST(stoiTest, valid)
@@ -122,56 +120,238 @@ TEST(stoiTest, notValid)
 	EXPECT_EQ(-1, stoi("00000000000123456789+"));
 }
 
-TEST(parseDateTimeTest, valid)
-{
-	//set-up
-	string dateTime1 = "0-0-0000 0:00";
-	string dateTime2 = "00-0-0100 0:05";
-	string dateTime3 = "0-00-0000 0:10";
-	string dateTime4 = "9-0-8000 00:00";
-	string dateTime5 = "00-00-0080 0:00";
-	string dateTime6 = "00-00-0000 00:04";	
-	
-	//test
-	EXPECT_TRUE(parseDateTime(dateTime1));
-	EXPECT_TRUE(parseDateTime(dateTime2));
-	EXPECT_TRUE(parseDateTime(dateTime3));
-	EXPECT_TRUE(parseDateTime(dateTime4));
-	EXPECT_TRUE(parseDateTime(dateTime5));
-	EXPECT_TRUE(parseDateTime(dateTime6));	
-	
-	//tear-down
-}
-
 TEST(parseDateTimeTest, notValid)
 {
 	//set-up
-	string dateTime1 = "0 0-0000 0:00";
+	string dateTime1 = "0--0-0000 0:00";
 	string dateTime2 = "00-0-0100 0:005";
-	string dateTime3 = "0-00-000 0:10";
+	string dateTime3 = "0-00-+000 0:10";
 	string dateTime4 = "9-0 8000 00:00";
 	string dateTime5 = "00-00-0080 0-00";
 	string dateTime6 = "00-00-0000 0004";	
-	string dateTime7 = "0 0-0000 0:00";
+	string dateTime7 = "0-0-0000 *0:00";
 	string dateTime8 = "300-0-0100 0:005";
 	string dateTime9 = "G0-00-000 0:10";
 	string dateTime10 = "9-0i-8000 00:00";
 	string dateTime11 = "00-00-0r80 0:00";
 	string dateTime12 = "00/00-0000 09:04";	
+	string dateTime13 = " 00-00-0000 09:04";	
+	string dateTime14 = "00-00-0000  09:04";	
+	string dateTime15 = "00-00-0000 09:04 ";	
+	string dateTime16 = "00-00-0000 09 :04";	
+	string dateTime17 = "00-00-0000 +09:04";	
 	
 	//test
 	EXPECT_FALSE(parseDateTime(dateTime1));
+	EXPECT_EQ("0--0-0000 0:00", dateTime1);
 	EXPECT_FALSE(parseDateTime(dateTime2));
+	EXPECT_EQ("00-0-0100 0:005", dateTime2);
 	EXPECT_FALSE(parseDateTime(dateTime3));
+	EXPECT_EQ("0-00-+000 0:10", dateTime3);
 	EXPECT_FALSE(parseDateTime(dateTime4));
+	EXPECT_EQ("9-0 8000 00:00", dateTime4);
 	EXPECT_FALSE(parseDateTime(dateTime5));
+	EXPECT_EQ("00-00-0080 0-00", dateTime5);
 	EXPECT_FALSE(parseDateTime(dateTime6));	
+	EXPECT_EQ("00-00-0000 0004", dateTime6);
 	EXPECT_FALSE(parseDateTime(dateTime7));
+	EXPECT_EQ("0-0-0000 *0:00", dateTime7);
 	EXPECT_FALSE(parseDateTime(dateTime8));
+	EXPECT_EQ("300-0-0100 0:005", dateTime8);
 	EXPECT_FALSE(parseDateTime(dateTime9));
+	EXPECT_EQ("G0-00-000 0:10", dateTime9);
 	EXPECT_FALSE(parseDateTime(dateTime10));
+	EXPECT_EQ("9-0i-8000 00:00", dateTime10);
 	EXPECT_FALSE(parseDateTime(dateTime11));
+	EXPECT_EQ("00-00-0r80 0:00", dateTime11);
 	EXPECT_FALSE(parseDateTime(dateTime12));	
+	EXPECT_EQ("00/00-0000 09:04", dateTime12);
+	EXPECT_FALSE(parseDateTime(dateTime13));
+	EXPECT_EQ(" 00-00-0000 09:04", dateTime13);
+	EXPECT_FALSE(parseDateTime(dateTime14));
+	EXPECT_EQ("00-00-0000  09:04", dateTime14);
+	EXPECT_FALSE(parseDateTime(dateTime15));
+	EXPECT_EQ("00-00-0000 09:04 ", dateTime15);
+	EXPECT_FALSE(parseDateTime(dateTime16));
+	EXPECT_EQ("00-00-0000 09 :04", dateTime16);
+	EXPECT_FALSE(parseDateTime(dateTime17));
+	EXPECT_EQ("00-00-0000 +09:04", dateTime17);
+	
+	//tear-down
+}
+
+TEST(parseDateTimeTest, valid)
+{
+	//set-up
+	string dateTime1 = "0-0-0000 0:00";
+	string dateTime2 = "00-0-0100 0:05";
+	string dateTime3 = "0-00-0105 0:10";
+	string dateTime4 = "9-0-8000 00:00";
+	string dateTime5 = "10-03-0080 0:00";
+	string dateTime6 = "3-00-0000 00:04";	
+	string dateTime7 = "17-0-2004 24:00";
+	string dateTime8 = "30-20-0100 03:05";
+	
+	//test
+	EXPECT_TRUE(parseDateTime(dateTime1));
+	EXPECT_EQ("00-00-0000 00:00", dateTime1);
+	EXPECT_TRUE(parseDateTime(dateTime2));
+	EXPECT_EQ("00-00-0100 00:05", dateTime2);
+	EXPECT_TRUE(parseDateTime(dateTime3));
+	EXPECT_EQ("00-00-0105 00:10", dateTime3);
+	EXPECT_TRUE(parseDateTime(dateTime4));
+	EXPECT_EQ("09-00-8000 00:00", dateTime4);
+	EXPECT_TRUE(parseDateTime(dateTime5));
+	EXPECT_EQ("10-03-0080 00:00", dateTime5);
+	EXPECT_TRUE(parseDateTime(dateTime6));	
+	EXPECT_EQ("03-00-0000 00:04", dateTime6);
+	EXPECT_TRUE(parseDateTime(dateTime7));
+	EXPECT_EQ("17-00-2004 24:00", dateTime7);
+	EXPECT_TRUE(parseDateTime(dateTime8));
+	EXPECT_EQ("30-20-0100 03:05", dateTime8);
+	
+	//tear-down
+}
+
+TEST(validateDateTimeTest, boundariesDay)
+{
+	//set-up
+	string dateTime1 = "12-12-1970 23:59";
+	string dateTime2 = "01-01-1971 00:00";
+	string dateTime3 = "31-01-1971 23:59";
+	string dateTime4 = "32-01-1971 00:00";
+	string dateTime5 = "01-02-1971 00:00";
+	string dateTime6 = "28-02-1971 23:59";	
+	string dateTime7 = "29-02-1971 00:00";
+	string dateTime8 = "01-03-1971 00:00";
+	string dateTime9 = "31-03-1971 00:00";
+	string dateTime10 = "32-03-1971 00:00";
+	string dateTime11 = "01-04-1971 00:00";
+	string dateTime12 = "30-04-1971 23:59";	
+	string dateTime13 = "31-04-1971 00:00";	
+	string dateTime14 = "01-05-1971 00:00";	
+	string dateTime15 = "31-05-1971 23:59";	
+	string dateTime16 = "32-05-1971 00:00";	
+	string dateTime17 = "01-06-1971 00:00";
+	string dateTime18 = "30-06-1971 23:59";	
+	string dateTime19 = "31-06-1971 00:00";	
+	string dateTime20 = "01-07-1971 00:00";	
+	string dateTime21 = "31-07-1971 23:59";	
+	string dateTime22 = "32-07-1971 00:00";
+	string dateTime23 = "01-08-1971 00:00";
+	string dateTime24 = "31-08-1971 23:59";	
+	string dateTime25 = "32-08-1971 00:00";
+	string dateTime26 = "01-09-1971 00:00";
+	string dateTime27 = "30-09-1971 23:59";
+	string dateTime28 = "31-09-1971 00:00";
+	string dateTime29 = "01-10-1971 00:00";
+	string dateTime30 = "31-10-1971 23:59";
+	string dateTime31 = "32-10-1971 00:00";
+	string dateTime32 = "01-11-1971 00:00";
+	string dateTime33 = "30-11-1971 23:59";
+	string dateTime34 = "31-11-1971 00:00";
+	string dateTime35 = "01-12-1971 00:00";
+	string dateTime36 = "31-12-1971 23:59";
+	string dateTime37 = "32-12-1971 00:00";
+	string dateTime38 = "01-01-1972 00:00";
+	string dateTime39 = "29-02-1972 23:59";	//leap year
+	string dateTime40 = "30-02-1972 00:00"; //leap year
+	string dateTime41 = "01-03-1972 00:00"; //leap year
+	
+	//test
+	EXPECT_TRUE(validateDateTime(dateTime1));
+	EXPECT_TRUE(validateDateTime(dateTime2));
+	EXPECT_TRUE(validateDateTime(dateTime3));
+	EXPECT_FALSE(validateDateTime(dateTime4));
+	EXPECT_TRUE(validateDateTime(dateTime5));
+	EXPECT_TRUE(validateDateTime(dateTime6));
+	EXPECT_FALSE(validateDateTime(dateTime7));
+	EXPECT_TRUE(validateDateTime(dateTime8));
+	EXPECT_TRUE(validateDateTime(dateTime9));
+	EXPECT_FALSE(validateDateTime(dateTime10));
+	EXPECT_TRUE(validateDateTime(dateTime11));
+	EXPECT_TRUE(validateDateTime(dateTime12));
+	EXPECT_FALSE(validateDateTime(dateTime13));
+	EXPECT_TRUE(validateDateTime(dateTime14));
+	EXPECT_TRUE(validateDateTime(dateTime15));
+	EXPECT_FALSE(validateDateTime(dateTime16));
+	EXPECT_TRUE(validateDateTime(dateTime17));
+	EXPECT_TRUE(validateDateTime(dateTime18));
+	EXPECT_FALSE(validateDateTime(dateTime19));
+	EXPECT_TRUE(validateDateTime(dateTime20));
+	EXPECT_TRUE(validateDateTime(dateTime21));
+	EXPECT_FALSE(validateDateTime(dateTime22));
+	EXPECT_TRUE(validateDateTime(dateTime23));
+	EXPECT_TRUE(validateDateTime(dateTime24));
+	EXPECT_FALSE(validateDateTime(dateTime25));
+	EXPECT_TRUE(validateDateTime(dateTime26));
+	EXPECT_TRUE(validateDateTime(dateTime27));
+	EXPECT_FALSE(validateDateTime(dateTime28));
+	EXPECT_TRUE(validateDateTime(dateTime29));
+	EXPECT_TRUE(validateDateTime(dateTime30));
+	EXPECT_FALSE(validateDateTime(dateTime31));
+	EXPECT_TRUE(validateDateTime(dateTime32));
+	EXPECT_TRUE(validateDateTime(dateTime33));
+	EXPECT_FALSE(validateDateTime(dateTime34));
+	EXPECT_TRUE(validateDateTime(dateTime35));
+	EXPECT_TRUE(validateDateTime(dateTime36));
+	EXPECT_FALSE(validateDateTime(dateTime37));
+	EXPECT_TRUE(validateDateTime(dateTime38));
+	EXPECT_TRUE(validateDateTime(dateTime39)); //leap year
+	EXPECT_FALSE(validateDateTime(dateTime40)); //leap year
+	EXPECT_TRUE(validateDateTime(dateTime41)); //leap year
+	
+	//tear-down
+}
+
+TEST(validateDateTimeTest, boundariesMonth)
+{
+	//set-up
+	string dateTime1 = "12-00-1989 23:59";
+	string dateTime2 = "01-13-1972 00:00";
+	
+	//test
+	EXPECT_FALSE(validateDateTime(dateTime1));
+	EXPECT_FALSE(validateDateTime(dateTime2));
+	
+	//tear-down
+}
+
+TEST(validateDateTimeTest, boundariesYear)
+{
+	//set-up
+	string dateTime1 = "31-12-1969 23:59";
+	string dateTime2 = "01-13-9999 00:00";
+	
+	//test
+	EXPECT_FALSE(validateDateTime(dateTime1));
+	EXPECT_FALSE(validateDateTime(dateTime2));
+	
+	//tear-down
+}
+
+TEST(validateDateTimeTest, outOfRangeHour)
+{
+	//set-up
+	string dateTime1 = "31-12-1989 24:00";
+	string dateTime2 = "01-13-2013 99:00";
+	
+	//test
+	EXPECT_FALSE(validateDateTime(dateTime1));
+	EXPECT_FALSE(validateDateTime(dateTime2));
+	
+	//tear-down
+}
+
+TEST(validateDateTimeTest, outOfRangeMinute)
+{
+	//set-up
+	string dateTime1 = "31-12-1989 22:60";
+	string dateTime2 = "01-13-2013 00:99";
+	
+	//test
+	EXPECT_FALSE(validateDateTime(dateTime1));
+	EXPECT_FALSE(validateDateTime(dateTime2));
 	
 	//tear-down
 }

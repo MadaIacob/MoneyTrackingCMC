@@ -365,7 +365,7 @@ bool validateDateTime(string& dateTime)
 	
 	//check minute
 	int minute = stoi(dateTime.substr(14, 2));
-	if(minute >= 60)
+	if((minute >= 60) || (minute < 0))
 	{//out of range
 		return false;
 	}
@@ -374,7 +374,7 @@ bool validateDateTime(string& dateTime)
 	
 	//check hour
 	int hour = stoi(dateTime.substr(11, 2));
-	if(hour >= 24)
+	if((hour >= 24) || (hour < 0))
 	{//out of range
 		return false;
 	}
@@ -383,7 +383,7 @@ bool validateDateTime(string& dateTime)
 	
 	//check month
 	int month = stoi(dateTime.substr(3, 2));
-	if((month >= 13) || (month == 0))
+	if((month >= 13) || (month < 1))
 	{//out of range
 		return false;
 	}
