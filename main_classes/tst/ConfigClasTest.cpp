@@ -37,7 +37,7 @@ TEST(ReadWriteConfigFileTest, ValidContent)
 	kv3.value = "salary";
 	vect.push_back(kv3);
 
-	kv4.key = "default_spend_category";
+	kv4.key = "default_spending_category";
 	kv4.value = "other";
 	vect.push_back(kv4);
 

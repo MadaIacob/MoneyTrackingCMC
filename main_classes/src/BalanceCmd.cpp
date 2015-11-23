@@ -23,7 +23,7 @@ using namespace std;
 
 BalanceCmd::BalanceCmd(){}
 
-BalanceCmd::BalanceCmd(string configFileName) : configFile(configFileName) {} 
+BalanceCmd::BalanceCmd(string configFileName) : configFile(configFileName) {}
 
 bool BalanceCmd::parseParams(vector<string>& params)
 {
@@ -34,22 +34,22 @@ bool BalanceCmd::parseParams(vector<string>& params)
 	}
 	// balance command with 2 parameters
 	else if ( ( params.size()==2 ) &&
-			  ( (params.at(0) == "-c") || (params.at(0) == "--category") 
+			  ( (params.at(0) == "-c") || (params.at(0) == "--category")
 			  || (params.at(0) == "-w") || (params.at(0) == "--wallet") ) )
 	{
 		// do nothing, allow to get balance
 	}
 	// balance command with 4 parameters
 	else if ( ( params.size()==4 ) &&
-			  ( ( ((params.at(0) == "-c") || (params.at(0) == "--category")) 
-			    && ((params.at(2) == "-w") || (params.at(2) == "--wallet")) ) 
+			  ( ( ((params.at(0) == "-c") || (params.at(0) == "--category"))
+			    && ((params.at(2) == "-w") || (params.at(2) == "--wallet")) )
 			   ||
 			  ( ((params.at(0)=="-w") || (params.at(0)=="--wallet"))
-			    && ((params.at(2)=="-c") || (params.at(2)=="--category")) )	) 
+			    && ((params.at(2)=="-c") || (params.at(2)=="--category")) )	)
 			)
 	{
 		// do nothing, allow to get balance
-	}	
+	}
 	// balance command with 1 or more than 2 parameters
 	else
 	{
@@ -63,10 +63,10 @@ bool BalanceCmd::parseParams(vector<string>& params)
 
 bool BalanceCmd::validateParams(vector<string>& params)
 {
-	
+
 	// verify if 'moneytracker.config' can be opened to get default_wallet
-	if	( !configFile.readConfigFile() && ( params.empty() || 
-			( params.size()==2 && ( params.at(0) == "-c" || params.at(0) == "--category" ))) 
+	if	( !configFile.readConfigFile() && ( params.empty() ||
+			( params.size()==2 && ( params.at(0) == "-c" || params.at(0) == "--category" )))
 		)
 	{
 			params.clear();
@@ -77,8 +77,8 @@ bool BalanceCmd::validateParams(vector<string>& params)
 	else{} //in all other cases wallet is specified by the user
 
 	//error: no default wallet configured in 'moneytracker.config'
-	if ( configFile.getTagValue("default_wallet") == "" && ( params.empty() || 
-				( params.size()==2 && ( params.at(0) == "-c" || params.at(0) == "--category" ))) 
+	if ( configFile.getTagValue("default_wallet") == "" && ( params.empty() ||
+				( params.size()==2 && ( params.at(0) == "-c" || params.at(0) == "--category" )))
 		)
 	{
 			params.clear();
@@ -92,7 +92,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 	configFile.readConfigFile() ;
 	string defaultWallet = configFile.getTagValue ("default_wallet") ;
 	string categForBalance = "" ;
-	
+
 	// set walletName and category according to case: command with -w/-c or no
 	if( params.size()==2 )
 	{
@@ -137,7 +137,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 
 	if ( params.size()==2 || params.size()==4 )
 	{
-	
+
 		// validate that specified category exists in wallet
 		bool existsCategory = false ;
 		// len = length of walletContent = number of lines in wallet
@@ -152,7 +152,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 			}
 			else {}// category not found in wallet file line
 		}
-		
+
 		//  check if existsCategory was changed to true
 		if(existsCategory == false)
 		{	// set error message
@@ -161,7 +161,7 @@ bool BalanceCmd::validateParams(vector<string>& params)
 			ptrMessage->setMessageCode(NO_TRANSACTION_REG_ERR) ;
 			return false ;
 		}
-		else{} 
+		else{}
 	}
 	else // case with params.empty()
 	{}
@@ -173,7 +173,7 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 {
 	// set category for balance
 	string categForBalance = "" ;
-	if( params.size()==2 && ( params.at(0) == "-c" || 
+	if( params.size()==2 && ( params.at(0) == "-c" ||
 		   params.at(0) == "--category" )
 	  )
 	{
@@ -191,14 +191,14 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 		}
 	}
 	else{}
-	
+
 	double balance = 0 ;
 	int len = wallet.getWalletContent().size() ;
 	// get balance for entire wallet for params.empty and size=2 with '-w'
-	if ( params.empty() || 
-		 ( params.size()==2 && ( params.at(0) == "-w" || 
+	if ( params.empty() ||
+		 ( params.size()==2 && ( params.at(0) == "-w" ||
 		   params.at(0) == "--wallet" )
-		 ) 
+		 )
 	   )
 	{
 		// do stuff to get balance
@@ -250,10 +250,10 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 	balanceString = truncateAmount(balanceString) ;
 
 	// prepare vector for printing function
-	if ( params.empty() || 
-		 ( params.size()==2 && ( params.at(0) == "-w" || 
+	if ( params.empty() ||
+		 ( params.size()==2 && ( params.at(0) == "-w" ||
 		   params.at(0) == "--wallet" )
-		 ) 
+		 )
 	   )
 	{
 		params.clear() ;
@@ -263,14 +263,14 @@ bool BalanceCmd::executeCommand(vector<string>& params)
 	}
 	else // 2 params with -c or 4 params
 	{
-		
+
 		params.clear() ;
 		params.push_back(balanceString) ;
 		params.push_back("RON") ;
 		params.push_back(wallet.getName()) ;
 		params.push_back(categForBalance) ;
 	}
-	
+
 	ptrMessage->setMessageCode(BALANCE_IS_MSG) ;
 
 	return true;
