@@ -96,3 +96,82 @@ TEST(truncateAmountTest, allowedCharacters)
 	EXPECT_EQ("+00.00", truncateAmount("-0.00"));
 
 }
+
+TEST(stoiTest, valid)
+{
+	//test
+	EXPECT_EQ(0, stoi("0"));
+	EXPECT_EQ(0, stoi("00"));
+	EXPECT_EQ(0, stoi("00000000000000"));
+	EXPECT_EQ(1, stoi("1"));
+	EXPECT_EQ(1, stoi("01"));
+	EXPECT_EQ(20004, stoi("00000000020004"));
+	EXPECT_EQ(30005, stoi("00030005"));
+	EXPECT_EQ(700004, stoi("00000000000700004"));
+	EXPECT_EQ(123456789, stoi("00000000000123456789"));
+}
+
+TEST(stoiTest, notValid)
+{
+	//test
+	EXPECT_EQ(-1, stoi("+0"));
+	EXPECT_EQ(-1, stoi("0.0"));
+	EXPECT_EQ(-1, stoi("00000000000-000"));
+	EXPECT_EQ(-1, stoi("-1"));
+	EXPECT_EQ(-1, stoi("00030 005"));
+	EXPECT_EQ(-1, stoi("00000000000123456789+"));
+}
+
+TEST(parseDateTimeTest, valid)
+{
+	//set-up
+	string dateTime1 = "0-0-0000 0:00";
+	string dateTime2 = "00-0-0100 0:05";
+	string dateTime3 = "0-00-0000 0:10";
+	string dateTime4 = "9-0-8000 00:00";
+	string dateTime5 = "00-00-0080 0:00";
+	string dateTime6 = "00-00-0000 00:04";	
+	
+	//test
+	EXPECT_TRUE(parseDateTime(dateTime1));
+	EXPECT_TRUE(parseDateTime(dateTime2));
+	EXPECT_TRUE(parseDateTime(dateTime3));
+	EXPECT_TRUE(parseDateTime(dateTime4));
+	EXPECT_TRUE(parseDateTime(dateTime5));
+	EXPECT_TRUE(parseDateTime(dateTime6));	
+	
+	//tear-down
+}
+
+TEST(parseDateTimeTest, notValid)
+{
+	//set-up
+	string dateTime1 = "0 0-0000 0:00";
+	string dateTime2 = "00-0-0100 0:005";
+	string dateTime3 = "0-00-000 0:10";
+	string dateTime4 = "9-0 8000 00:00";
+	string dateTime5 = "00-00-0080 0-00";
+	string dateTime6 = "00-00-0000 0004";	
+	string dateTime7 = "0 0-0000 0:00";
+	string dateTime8 = "300-0-0100 0:005";
+	string dateTime9 = "G0-00-000 0:10";
+	string dateTime10 = "9-0i-8000 00:00";
+	string dateTime11 = "00-00-0r80 0:00";
+	string dateTime12 = "00/00-0000 09:04";	
+	
+	//test
+	EXPECT_FALSE(parseDateTime(dateTime1));
+	EXPECT_FALSE(parseDateTime(dateTime2));
+	EXPECT_FALSE(parseDateTime(dateTime3));
+	EXPECT_FALSE(parseDateTime(dateTime4));
+	EXPECT_FALSE(parseDateTime(dateTime5));
+	EXPECT_FALSE(parseDateTime(dateTime6));	
+	EXPECT_FALSE(parseDateTime(dateTime7));
+	EXPECT_FALSE(parseDateTime(dateTime8));
+	EXPECT_FALSE(parseDateTime(dateTime9));
+	EXPECT_FALSE(parseDateTime(dateTime10));
+	EXPECT_FALSE(parseDateTime(dateTime11));
+	EXPECT_FALSE(parseDateTime(dateTime12));	
+	
+	//tear-down
+}

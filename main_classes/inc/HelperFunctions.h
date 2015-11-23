@@ -13,5 +13,6 @@ std::string removeLRSpaces(std::string stripString) ;
 bool parseDateTime(std::string& dateTime) ;
 bool validateDateTime(std::string& dateTime) ;
 time_t stringToUnixTime(std::string& dateTime) ;
+int stoi(const std::string stringNumber);
 
 #endif

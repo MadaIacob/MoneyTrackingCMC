@@ -14,6 +14,7 @@ Date					10.11.2015
 #include <sstream>
 #include <stdlib.h>
 #include <cmath>
+#include <iostream>
 
 using namespace std ;
 
@@ -198,28 +199,27 @@ string removeLRSpaces(string stripString)
 }
 
 //converts a string containing digits to int
-//returns 0 if at least one character from string is not a digit
+//returns -1 if at least one character from string is not a digit
 int stoi(const string stringNumber)
 {
 	//returned value
-	int res = 0;
+	double res = 0;
 	//parse string one by one character
 	for (unsigned int i = 0; i < stringNumber.length(); i++)
 	{
-		//check if digit
-		if((stringNumber[i] >= '0') && (stringNumber[i] <= '9'))
+		//check if digit (48 is ASCII value for '0', 57 for '9')
+		if((stringNumber[i] >= 48) && (stringNumber[i] <= 57))
 		{//digit
 			//iteratively calculate result using powers of 10
-			//48 is ASCII value for '0'
-			res += (stringNumber[i]-48)*pow(10, stringNumber.length() - i - 1);
+			res += (stringNumber[i]-'0')*pow(10, stringNumber.length() - i - 1);
 		}
 		else
 		{//not digit 
 			//force exit
-			return 0;
+			return -1;
 		}
 	}
-	return res;
+	return (int)res;
 }
 
 //Gets reference to a string containing GMT calculated time, formatted like:
