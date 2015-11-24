@@ -35,6 +35,19 @@ bool ConfigCmd::parseParams(vector<string>& params)
 	{
 		return true;
 	}
+	
+	//check if only one parameter without any "=" in it
+	else if((params.size() == 1) && (params.at(0).find("=", 0) == string::npos))
+	{// one parameter only without any "=" in it
+		//prepare vector for error message display
+		params.clear();
+		params.push_back("config");
+		//set error message
+		ptrMessage->setMessageCode(INVALID_PARAM_ERR) ;
+		//forced exit
+		return false;
+	}
+	
 	else
 	{
 	vector<string> auxParams;
@@ -145,8 +158,6 @@ bool ConfigCmd::validateParams(vector<string>& params)
 
 bool ConfigCmd::executeCommand(vector<string>& params)
 {
-
-
 	params.push_back(config.getConfigFileName());
 	if(!validateFileName(config.getConfigFileName()))
 	{

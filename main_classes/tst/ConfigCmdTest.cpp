@@ -127,65 +127,65 @@ TEST(ConfigParseTest, invalidParameters)
 
     //test
     EXPECT_EQ(false, command1.parseParams(params1));
-    mes1 = command1.getPtrMessage();
+	mes1 = command1.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes1.getMessageCode());
 
-    cout << "aici2" << endl;
+    //cout << "aici2" << endl;
     EXPECT_EQ(false, command2.parseParams(params2));
     mes2 = command2.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes2.getMessageCode());
 
-    cout << "aici3" << endl;
+    //cout << "aici3" << endl;
     EXPECT_EQ(false, command3.parseParams(params3));
     mes3 = command3.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes3.getMessageCode());
 
-    cout << "aici4" << endl;
+    //cout << "aici4" << endl;
     EXPECT_EQ(false, command4.parseParams(params4));
     mes4 = command4.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes4.getMessageCode());
 
-    cout << "aici5" << endl;
+    //cout << "aici5" << endl;
     EXPECT_EQ(false, command5.parseParams(params5));
     mes5 = command5.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes5.getMessageCode());
 
-    cout << "aici6" << endl;
+    //cout << "aici6" << endl;
     EXPECT_EQ(false, command6.parseParams(params6));
     mes6 = command6.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes6.getMessageCode());
 
-    cout << "aici7" << endl;
+    //cout << "aici7" << endl;
     EXPECT_EQ(false, command7.parseParams(params7));
     mes7 = command7.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes7.getMessageCode());
 
-    cout << "aici8" << endl;
+    //cout << "aici8" << endl;
 	EXPECT_EQ(false, command8.parseParams(params8));
     mes8 = command8.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes8.getMessageCode());
 
-    cout << "aici9" << endl;
+    //cout << "aici9" << endl;
     EXPECT_EQ(false, command9.parseParams(params9));
     mes9 = command9.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes9.getMessageCode());
 
-    cout << "aici10" << endl;
+    //cout << "aici10" << endl;
     EXPECT_EQ(false, command10.parseParams(params10));
     mes10 = command10.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes10.getMessageCode());
 
-    cout << "aici11" << endl;
+    //cout << "aici11" << endl;
     EXPECT_EQ(false, command11.parseParams(params11));
     mes11 = command11.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes11.getMessageCode());
 
-    cout << "aici12" << endl;
+    //cout << "aici12" << endl;
     EXPECT_EQ(false, command12.parseParams(params12));
     mes12 = command12.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes12.getMessageCode());
 
-    cout << "aici13" << endl;
+    //cout << "aici13" << endl;
     EXPECT_EQ(false, command13.parseParams(params13));
     mes13 = command13.getPtrMessage();
     EXPECT_EQ(INVALID_PARAM_ERR, mes13.getMessageCode());
