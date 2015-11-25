@@ -332,7 +332,7 @@ TEST(ConfigExecuteTest, invalidTags)
     EXPECT_EQ(true, command2.parseParams(params2));
 
     //tear-down
-    //remove("test.config");
+    remove("test.config");
  }
 
  TEST(ConfigExecuteTest, clearTagValueExecute)
@@ -371,5 +371,5 @@ TEST(ConfigExecuteTest, invalidTags)
     }
 
     //tear-down
-    //remove("test.config");
+    remove("test.config");
  }
