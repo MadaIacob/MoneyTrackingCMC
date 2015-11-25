@@ -166,7 +166,7 @@ bool ConfigCmd::executeCommand(vector<string>& params)
 		{
 
 			config.readConfigFile();
-			config.printConfigContent();
+			config.printConfigContent(); // BUG
 		}
 		else
 		{
