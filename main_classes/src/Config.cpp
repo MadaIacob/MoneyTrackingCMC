@@ -88,7 +88,14 @@ bool Config::readConfigFile()
                 //separate the key val pairs
                 string key = removeLRSpaces(line.substr(0, found));
                 string value = removeLRSpaces(line.substr(found+1));
-
+                if (value == "") 
+                {
+                    //std::cout << "dadada" << std::endl;
+                    key += " = ";
+                }
+                //std::cout << std::endl;
+                //std::cout << "key : " << key << "// ";
+                //std::cout << "value : " << value << "//" << std::endl;
                 KeyVal kV;
                 kV.key = key;
                 kV.value = value;
@@ -123,10 +130,15 @@ bool Config::writeConfigFile()
         {
             //check if the key->value pair has a value and if so,
             //  put both key and value in the line to be written to file
-
-            line = configContent.at(i).key + " = " +
-            configContent.at(i).value + "\n";
-
+            if (configContent.at(i).value != "") 
+            {
+                line = configContent.at(i).key + " = " +
+                configContent.at(i).value + "\n";
+            }
+            else 
+            {
+                line = configContent.at(i).key + "\n";
+            }
             //write the line to the file
             file << line;
         }
@@ -234,10 +246,21 @@ bool Config::modifyContent(const std::string key, const std::string value)
                 }
                 if (aux == kv.key)
                 {
-                    configContent.at(i).key = aux;
-                    configContent.at(i).value = kv.value;
-                    contentModified = true;
-                    break;
+                    if (removeLRSpaces(value) != "")
+                    {
+                        configContent.at(i).key = aux;
+                        configContent.at(i).value = kv.value;
+                        contentModified = true;
+                        break;
+                    }
+                    else 
+                    {
+                        configContent.at(i).key = key + " = ";
+                        configContent.at(i).value = kv.value;
+                        contentModified = true;
+                        break;
+                    }
+                    
                 }
             }
         }
@@ -291,7 +314,7 @@ string Config::getConfigFileName()
 
 
 
-// int main(int argc, char const *argv[]) {
+//int main(int argc, char const *argv[]) {
     // Config config("vasilica");
     // //config.createConfigFile();
     // //std::cout << "paramaterii valizi sunt : " << config.validTagsToString() << std::endl;
@@ -324,5 +347,28 @@ string Config::getConfigFileName()
     // std::cout << "stingul netransformat este : " << "//" << aux << "//" << std::endl;
     // std::cout << "stingul transformat este : " << "//" << config.removeLRSpaces(aux) << "//" << std::endl;
     //
-    // return 0;
+    
+//     std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
+//     Config config("config.test");
+//     //config.createConfigFile();
+//     std::cout << "numele fisierului este : " <<config.getConfigFileName() << std::endl;
+//     cout << "citirea efectuata cu succes ? " << config.readConfigFile() << endl;
+//     // KeyVal kv;
+//     // kv.key = "default_spending_category";
+//     // kv.value = "";
+//     // config.modifyContent(kv.key, kv.value);
+//     
+//     vector<KeyVal> cont = config.getConfigContent();
+//     for (unsigned int i =0; i < cont.size(); i++)
+//     {
+//         cout << "key is : " << cont.at(i).key << "-> value is : " << cont.at(i).value << std::endl;
+//     }
+//     cout << "scrierea efectuata cu succes ? " << config.writeConfigFile() << endl;
+//     cout << "citirea efectuata cu succes ? " << config.readConfigFile() << endl;
+//     cont = config.getConfigContent();
+//     for (unsigned int i =0; i < cont.size(); i++)
+//     {
+//         cout << "key is : " << cont.at(i).key << "-> value is : " << cont.at(i).value << std::endl;
+//     }
+//     return 0;
 // }
