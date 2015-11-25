@@ -339,7 +339,7 @@ bool parseDateTime(string& dateTime)
 		}
 	}
 	else
-	{//string length is outof range
+	{//string length is out of range
 		isValid = false;
 	}
 	//check if date/time is not valid
@@ -461,7 +461,8 @@ bool validateDateTime(string& dateTime)
 
 //gets reference to a string containing GMT time, formatted like:
 //"DD-MM-YYYY HH:MM" 
-//returns unix timestamp format 
+//returns unix timestamp format or
+//returns -1 if year<1970
 time_t stringToUnixTime(string& dateTime)
 {
 	//value to return

@@ -355,3 +355,37 @@ TEST(validateDateTimeTest, outOfRangeMinute)
 	
 	//tear-down
 }
+
+TEST(stringToUnixTimeTest, valid)
+{
+	//set-up
+	string dateTime1 = "01-01-1970 00:00";
+	string dateTime2 = "29-02-1972 23:59";
+	string dateTime3 = "24-11-2015 09:58";
+	
+	//test
+	EXPECT_EQ(0, stringToUnixTime(dateTime1));
+	EXPECT_EQ(68255940, stringToUnixTime(dateTime2));
+	EXPECT_EQ(1448359080, stringToUnixTime(dateTime3));
+	
+	//tear-down
+}
+
+TEST(stringToUnixTimeTest, notValid)
+{
+	//set-up
+	string dateTime1 = "01-01-1970 02:00";
+	string dateTime2 = "29-02-1972 21:59";
+	string dateTime3 = "24-11-2015 11:58";
+	string dateTime4 = "31-12-1969 23:59";
+	string dateTime5 = "31-12-1269 23:59";
+	
+	//test
+	EXPECT_NE(0, stringToUnixTime(dateTime1));
+	EXPECT_NE(68255940, stringToUnixTime(dateTime2));
+	EXPECT_NE(1448359080, stringToUnixTime(dateTime3));
+	EXPECT_EQ(-1, stringToUnixTime(dateTime4));
+	EXPECT_EQ(-1, stringToUnixTime(dateTime5));
+	
+	//tear-down
+}
